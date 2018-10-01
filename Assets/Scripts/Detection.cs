@@ -5,7 +5,7 @@ using UnityEngine;
 public class Detection : MonoBehaviour {
 public Ball Ball;
 private Vector2 BallSize;
-public ObjectPooler ObjectPooler;
+//public ObjectPooler ObjectPooler;
 public Rigidbody2D Rigidbody2D;
 private RaycastHit2D[] HitUp;
 private RaycastHit2D[] HitDown;
@@ -19,7 +19,7 @@ private Enums.BallColor BallColor;
 	void Start () {
 		BallColor = Ball.BallColor;
 		BallSize = Constants.FindOffset(Ball.gameObject);
-		ObjectPooler = GameObject.FindGameObjectWithTag("ObjectPooler").GetComponent<ObjectPooler>();
+		//ObjectPooler = GameObject.FindGameObjectWithTag("ObjectPooler").GetComponent<ObjectPooler>();
 		Hits = new List<GameObject>();
 	}
 	
@@ -33,7 +33,6 @@ private Enums.BallColor BallColor;
 		HitDown = Physics2D.RaycastAll(transform.position, -Vector2.up, BallSize.x * 2);
 		HitLeft = Physics2D.RaycastAll(transform.position, -Vector2.right, BallSize.y * 2);
 		HitRight = Physics2D.RaycastAll(transform.position, Vector2.right, BallSize.y * 2);
-
 		CheckDirection(Hits, HitUp);
 		CheckDirection(Hits, HitDown);
 		CheckDirection(Hits, HitLeft);
@@ -51,18 +50,21 @@ private Enums.BallColor BallColor;
 
 	}
 	private List<GameObject> CheckDirection(List<GameObject> Hits, RaycastHit2D[] Direction){
-		if(Direction.Length > 1 && Direction[1].collider.GetComponent<Ball>().BallColor == BallColor){
-			print(Direction[1].transform.gameObject);
-			GameObject Hit = Direction[0].transform.gameObject;
-			Hits.Add(Hit);
-			Hit = Direction[1].transform.gameObject;
-			Hits.Add(Hit);
-			
-			if(Direction.Length > 2 && Direction[2].collider.gameObject.GetComponent<Ball>().BallColor == BallColor){
-				Hit = Direction[2].transform.gameObject;
+		if(Direction.Length > 1){
+			print(Direction[1].transform.gameObject.tag);
+			if(Direction[1].transform.gameObject.tag == "Ball" && Direction[1].transform.GetComponent<Ball>().BallColor == BallColor){
+				GameObject Hit = Direction[0].transform.gameObject;
 				Hits.Add(Hit);
+				Hit = Direction[1].transform.gameObject;
+				Hits.Add(Hit);
+				if(Direction.Length > 2){
+					if(Direction[2].collider.gameObject.GetComponent<Ball>().BallColor == BallColor){
+						Hit = Direction[2].transform.gameObject;
+						Hits.Add(Hit);
+					}
+				}
+				return Hits;
 			}
-			return Hits;
 		}
 		return Hits;
 	}
