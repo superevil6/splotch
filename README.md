@@ -9,9 +9,8 @@ This is a Unity Project, if you want to try it out, you have to download Unity.
 To do next:
 
 - Object pool balls, create a maximum amount that should repopulate if it falls below.
-- Detect Sequential Neighbors, if there are more than three in a row, they disapear and drop the balls above them down.
-- Add in color weighting: White balls appear more often, black balls less. Make this determined when creating the level.
-
+- Implement a combo system.
+- Implement Scoring.
 
 Basic Premise:
 You have a grid of balls with various different colors. Colors mix as they would in real life. 
