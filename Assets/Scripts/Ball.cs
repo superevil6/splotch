@@ -6,33 +6,43 @@ using UnityEngine.UI;
 
 public class Ball : MonoBehaviour {
 public Enums.BallColor BallColor;
+public Detection Detection;
+private Enums.BallColor NewColor;
 public Enums.BallType Type;
 public SpriteRenderer SpriteRenderer;
 public Sprite Sprite;
 public GameObject PlayerColorObject;
 public PlayerColor PlayerColor;
-public BoxCollider2D BoxCollider2D;
+public CircleCollider2D CircleCollider2D;
+private Color32 OldBallColor;
+private Color32 NewBallColor;
+public float TransitionTime;
+private float TimeLeft;
+private bool TransitionColorCheck = false;
 
 	// Use this for initialization
 	void Start () {
 		PlayerColorObject = GameObject.FindGameObjectWithTag("PlayerColor");
 		PlayerColor = PlayerColorObject.GetComponent<PlayerColor>();
+		Detection = gameObject.GetComponent<Detection>();
 		SetupBall();
 		
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
+		if(TimeLeft > 0){
+			SpriteRenderer.color = Color.Lerp(SpriteRenderer.color, NewBallColor, Time.deltaTime / TimeLeft);
+			TimeLeft -= Time.deltaTime;
+		}
 	}
 	void OnMouseDown()
 	{
-		print("Detecting Touch");
 		ChangeBallColor(PlayerColor.NextColor);
 	}
 	private void SetupBall(){
 		SpriteRenderer = GetComponent<SpriteRenderer>();
-		BoxCollider2D = GetComponent<BoxCollider2D>();
+		CircleCollider2D = GetComponent<CircleCollider2D>();
 		SpriteRenderer.sprite = Sprite;
 		DetermineColor();
 
@@ -40,98 +50,90 @@ public BoxCollider2D BoxCollider2D;
 
 	//placeholder for color generation: Eventually it will have weighted values.		
 	private void DetermineColor(){
-		BallColor = Constants.GenerateColor();
+		BallColor = Constants.WeightedGenerateColor(Constants.DefaultColorWeights);
 		SpriteRenderer.color = Constants.SetColor(BallColor);
 	}
-	private void DetermineColor(Enums.BallColor NewBallColor){
-		print(NewBallColor);
-		SpriteRenderer.color = Constants.SetColor(NewBallColor);
-	}
+	// private void DetermineColor(Color32 OldBallColor, Color32 NewBallColor){
+	// 	SpriteRenderer.color = Color.Lerp(OldBallColor, NewBallColor, TransitionTime);
+	// }
+
 	private void ChangeBallColor(Enums.PlayerColor PlayerColor){
 		switch(PlayerColor){
 			case (Enums.PlayerColor.red) :
-			print("Red Ball");
 				if(BallColor.Equals(Enums.BallColor.white)){
-					DetermineColor(Enums.BallColor.red);
-					BallColor = Enums.BallColor.red;
-					PlayerColorObject.GetComponent<PlayerColor>().NextColor = Constants.GeneratePlayerColor();
+					SetNewBallColor(Enums.BallColor.red);
+					break;
 				}
 				if(BallColor.Equals(Enums.BallColor.blue)){
-					DetermineColor(Enums.BallColor.purple);
-					BallColor = Enums.BallColor.purple;
-					PlayerColorObject.GetComponent<PlayerColor>().NextColor = Constants.GeneratePlayerColor();
+					SetNewBallColor(Enums.BallColor.purple);
+					break;
 				}
 				if(BallColor.Equals(Enums.BallColor.yellow)){
-					DetermineColor(Enums.BallColor.orange);
-					BallColor = Enums.BallColor.orange;
-					PlayerColorObject.GetComponent<PlayerColor>().NextColor = Constants.GeneratePlayerColor();
+					SetNewBallColor(Enums.BallColor.orange);
+					break;
 				}
 				else if(BallColor.Equals(Enums.BallColor.purple) || BallColor.Equals(Enums.BallColor.green) || BallColor.Equals(Enums.BallColor.orange)){
-					DetermineColor(Enums.BallColor.brown);
-					BallColor = Enums.BallColor.brown;
-					PlayerColorObject.GetComponent<PlayerColor>().NextColor = Constants.GeneratePlayerColor();
+					SetNewBallColor(Enums.BallColor.brown);
+					break;
 				}
 				else if(BallColor.Equals(Enums.BallColor.brown)){
-					DetermineColor(Enums.BallColor.black);
-					BallColor = Enums.BallColor.black;
-					PlayerColorObject.GetComponent<PlayerColor>().NextColor = Constants.GeneratePlayerColor();
+					SetNewBallColor(Enums.BallColor.black);
+					break;
 				}
 			break;
 			case (Enums.PlayerColor.yellow) :
 				if(BallColor.Equals(Enums.BallColor.white)){
-					DetermineColor(Enums.BallColor.yellow);
-					BallColor = Enums.BallColor.yellow;
-					PlayerColorObject.GetComponent<PlayerColor>().NextColor = Constants.GeneratePlayerColor();
+					SetNewBallColor(Enums.BallColor.yellow);
+					break;
 				}
 				if(BallColor.Equals(Enums.BallColor.blue)){
-					DetermineColor(Enums.BallColor.green);
-					BallColor = Enums.BallColor.green;
-					PlayerColorObject.GetComponent<PlayerColor>().NextColor = Constants.GeneratePlayerColor();
+					SetNewBallColor(Enums.BallColor.green);
+					break;
 				}
 				if(BallColor.Equals(Enums.BallColor.red)){
-					DetermineColor(Enums.BallColor.orange);
-					BallColor = Enums.BallColor.orange;
-					PlayerColorObject.GetComponent<PlayerColor>().NextColor = Constants.GeneratePlayerColor();
+					SetNewBallColor(Enums.BallColor.orange);
+					break;
 				}
 				else if(BallColor.Equals(Enums.BallColor.purple) || BallColor.Equals(Enums.BallColor.green) || BallColor.Equals(Enums.BallColor.orange)){
-					DetermineColor(Enums.BallColor.brown);
-					BallColor = Enums.BallColor.brown;
-					PlayerColorObject.GetComponent<PlayerColor>().NextColor = Constants.GeneratePlayerColor();
+					SetNewBallColor(Enums.BallColor.brown);
+					break;
 				}
 				else if(BallColor.Equals(Enums.BallColor.brown)){
-					DetermineColor(Enums.BallColor.black);
-					BallColor = Enums.BallColor.black;
-					PlayerColorObject.GetComponent<PlayerColor>().NextColor = Constants.GeneratePlayerColor();
+					SetNewBallColor(Enums.BallColor.black);
+					break;
 				}
 			break;
 			case (Enums.PlayerColor.blue) :
 				if(BallColor.Equals(Enums.BallColor.white)){
-					DetermineColor(Enums.BallColor.blue);
-					BallColor = Enums.BallColor.blue;
-					PlayerColorObject.GetComponent<PlayerColor>().NextColor = Constants.GeneratePlayerColor();
+					SetNewBallColor(Enums.BallColor.blue);
+					break;
 				}
 				if(BallColor.Equals(Enums.BallColor.yellow)){
-					DetermineColor(Enums.BallColor.green);
-					BallColor = Enums.BallColor.green;
-					PlayerColorObject.GetComponent<PlayerColor>().NextColor = Constants.GeneratePlayerColor();
+					SetNewBallColor(Enums.BallColor.green);
+					break;
 				}
 				if(BallColor.Equals(Enums.BallColor.red)){
-					DetermineColor(Enums.BallColor.purple);
-					BallColor = Enums.BallColor.purple;
-					PlayerColorObject.GetComponent<PlayerColor>().NextColor = Constants.GeneratePlayerColor();
+					SetNewBallColor(Enums.BallColor.purple);
+					break;
 				}
 				else if(BallColor.Equals(Enums.BallColor.purple) || BallColor.Equals(Enums.BallColor.green) || BallColor.Equals(Enums.BallColor.orange)){
-					DetermineColor(Enums.BallColor.brown);
-					BallColor = Enums.BallColor.brown;
-					PlayerColorObject.GetComponent<PlayerColor>().NextColor = Constants.GeneratePlayerColor();
+					SetNewBallColor(Enums.BallColor.brown);
+					break;
 				}
 				else if(BallColor.Equals(Enums.BallColor.brown)){
-					DetermineColor(Enums.BallColor.black);
-					BallColor = Enums.BallColor.black;
-					PlayerColorObject.GetComponent<PlayerColor>().NextColor = Constants.GeneratePlayerColor();
+					SetNewBallColor(Enums.BallColor.black);
+					break;
 				}
 			break;
 		} 
+	}
+	private void SetNewBallColor(Enums.BallColor InputBallColor){
+		OldBallColor = Constants.SetColor(BallColor);
+		BallColor = InputBallColor;
+		NewBallColor = Constants.SetColor(BallColor);
+		TimeLeft = TransitionTime;
+		Detection.CheckForMatches();
+		PlayerColorObject.GetComponent<PlayerColor>().NextColor = Constants.GeneratePlayerColor();
 	}
 
 }

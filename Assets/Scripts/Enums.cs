@@ -5,14 +5,14 @@ using UnityEngine;
 public static class Enums {
 	public enum BallColor {
 		white,
-		red,
-		blue,
-		yellow,
+		black,
+		brown,
 		green,
 		purple,
 		orange,
-		brown,
-		black
+		red,
+		blue,
+		yellow
 	};
 	public enum PlayerColor {
 		red,
