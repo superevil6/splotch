@@ -9,6 +9,7 @@ public int Rows;
 public Vector2 InitialColumnPosition;
 private Vector2 ObjectOffset;
 public GameObject GO; //This is for size reference
+public int InitialBallCount;
 
 	// Use this for initialization
 	void Start () {
@@ -19,7 +20,10 @@ public GameObject GO; //This is for size reference
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if(Constants.RensaCheck){
+			Constants.RensaCheck = false;
+			StartCoroutine(ObjectPooler.RensaCheck());
+		}
 	}
 
 	public void SetUpGameBoard(int Columns, int Rows){
@@ -40,7 +44,7 @@ public GameObject GO; //This is for size reference
 				}
 			}
 		}
-		for(int i = 0; i <= ObjectPooler.PooledItems.Count - 1; i++){
+		for(int i = 0; i <= InitialBallCount; i++){
 			ObjectPooler.PooledItems[i].transform.position = Locations[i];
 			ObjectPooler.PooledItems[i].SetActive(true);
 		}

@@ -24,11 +24,13 @@ public GameObject ItemToPool;
 			PooledItems.Add(obj);
 		}
 	}
-	public void RensaCheck(){
+	
+	public IEnumerator RensaCheck(){
 		foreach(GameObject obj in PooledItems){
 			if(obj.activeInHierarchy){
 				obj.GetComponent<Detection>().CheckForMatches();
 			}
 		}
+		yield return new WaitForSeconds(0.5f);
 	}
 }

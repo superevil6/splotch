@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 58556850610748982}
   - component: {fileID: 114108338342639858}
   - component: {fileID: 50413992120349606}
+  - component: {fileID: 61898284635218806}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Ball
@@ -43,21 +44,21 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_LinearDrag: 0.75
+  m_AngularDrag: 0.75
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 4eed1101af82643eba8e0c268b90b1ce, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 1
+  m_Constraints: 5
 --- !u!58 &58556850610748982
 CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1254343284260142}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -65,7 +66,32 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.35
+  m_Radius: 0.3
+--- !u!61 &61898284635218806
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1254343284260142}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: 4eed1101af82643eba8e0c268b90b1ce, type: 2}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.64, y: 0.64}
+    newSize: {x: 1.28, y: 1.28}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.64, y: 0.8}
+  m_EdgeRadius: 0
 --- !u!114 &114108338342639858
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -97,8 +123,10 @@ MonoBehaviour:
   Sprite: {fileID: 21300000, guid: f1227688a3db344198aa19ee64ffb760, type: 3}
   PlayerColorObject: {fileID: 0}
   PlayerColor: {fileID: 0}
-  CircleCollider2D: {fileID: 0}
+  BoxCollider2D: {fileID: 61898284635218806}
+  Rigidbody2D: {fileID: 50413992120349606}
   TransitionTime: 0.5
+  TimeBetweenChecksTotal: 1
 --- !u!212 &212478847813018770
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -159,5 +187,5 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 1, y: 1}
-  m_SizeDelta: {x: 0.75, y: 0.75}
+  m_SizeDelta: {x: 0.8, y: 0.8}
   m_Pivot: {x: 0.5, y: 0.5}

@@ -13,20 +13,25 @@ public SpriteRenderer SpriteRenderer;
 public Sprite Sprite;
 public GameObject PlayerColorObject;
 public PlayerColor PlayerColor;
-public CircleCollider2D CircleCollider2D;
+public BoxCollider2D BoxCollider2D;
+public Rigidbody2D Rigidbody2D;
 private Color32 OldBallColor;
 private Color32 NewBallColor;
 public float TransitionTime;
+private float TimeBetweenChecks;
+public float TimeBetweenChecksTotal;
 private float TimeLeft;
 private bool TransitionColorCheck = false;
+private bool HasMoved;
 
 	// Use this for initialization
-	void Start () {
+
+	void OnEnable () {
+		print("Enabling");
 		PlayerColorObject = GameObject.FindGameObjectWithTag("PlayerColor");
 		PlayerColor = PlayerColorObject.GetComponent<PlayerColor>();
 		Detection = gameObject.GetComponent<Detection>();
 		SetupBall();
-		
 	}
 	
 	// Update is called once per frame
@@ -35,27 +40,39 @@ private bool TransitionColorCheck = false;
 			SpriteRenderer.color = Color.Lerp(SpriteRenderer.color, NewBallColor, Time.deltaTime / TimeLeft);
 			TimeLeft -= Time.deltaTime;
 		}
+		// if(TimeBetweenChecks > 0){
+		// 	TimeBetweenChecks -= Time.deltaTime;
+		// }
+		// else if(Rigidbody2D.velocity.magnitude == 0){
+		// 	Detection.CheckForMatches();
+		// 	TimeBetweenChecks = TimeBetweenChecksTotal;
+		// }
+		
+		if(Rigidbody2D.velocity.magnitude >= 0.5){
+			HasMoved = true;
+		}
+		if(Rigidbody2D.velocity.magnitude <= 1 && HasMoved){
+			Detection.CheckForMatches();
+			HasMoved = false;
+		}
 	}
+
 	void OnMouseDown()
 	{
 		ChangeBallColor(PlayerColor.NextColor);
 	}
+
 	private void SetupBall(){
 		SpriteRenderer = GetComponent<SpriteRenderer>();
-		CircleCollider2D = GetComponent<CircleCollider2D>();
+		BoxCollider2D = GetComponent<BoxCollider2D>();
 		SpriteRenderer.sprite = Sprite;
 		DetermineColor();
-
 	}
 
-	//placeholder for color generation: Eventually it will have weighted values.		
-	private void DetermineColor(){
+	public void DetermineColor(){
 		BallColor = Constants.WeightedGenerateColor(Constants.DefaultColorWeights);
 		SpriteRenderer.color = Constants.SetColor(BallColor);
 	}
-	// private void DetermineColor(Color32 OldBallColor, Color32 NewBallColor){
-	// 	SpriteRenderer.color = Color.Lerp(OldBallColor, NewBallColor, TransitionTime);
-	// }
 
 	private void ChangeBallColor(Enums.PlayerColor PlayerColor){
 		switch(PlayerColor){

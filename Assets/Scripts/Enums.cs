@@ -23,5 +23,8 @@ public static class Enums {
 		normal,
 		rainbow
 	}
-
+	public enum Orientation {
+	Horizontal,
+	Vertical
+}
 }
