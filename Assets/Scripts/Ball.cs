@@ -3,16 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Enums;
 
 public class Ball : MonoBehaviour {
-public Enums.BallColor BallColor;
+public BallColor BallColor;
 public Detection Detection;
-private Enums.BallColor NewColor;
-public Enums.BallType Type;
+private BallColor NewColor;
+public BallType Type;
 public SpriteRenderer SpriteRenderer;
 public Sprite Sprite;
 public GameObject PlayerColorObject;
-public PlayerColor PlayerColor;
+public PlayerColorManager PlayerColorManager;
 public BoxCollider2D BoxCollider2D;
 public Rigidbody2D Rigidbody2D;
 private Color32 OldBallColor;
@@ -27,9 +28,8 @@ private bool HasMoved;
 	// Use this for initialization
 
 	void OnEnable () {
-		print("Enabling");
 		PlayerColorObject = GameObject.FindGameObjectWithTag("PlayerColor");
-		PlayerColor = PlayerColorObject.GetComponent<PlayerColor>();
+		PlayerColorManager = PlayerColorObject.GetComponent<PlayerColorManager>();
 		Detection = gameObject.GetComponent<Detection>();
 		SetupBall();
 	}
@@ -59,7 +59,7 @@ private bool HasMoved;
 
 	void OnMouseDown()
 	{
-		ChangeBallColor(PlayerColor.NextColor);
+		ChangeBallColor(PlayerColorManager.ColorQueue[0]);
 	}
 
 	private void SetupBall(){
@@ -74,83 +74,90 @@ private bool HasMoved;
 		SpriteRenderer.color = Constants.SetColor(BallColor);
 	}
 
-	private void ChangeBallColor(Enums.PlayerColor PlayerColor){
+	private void ChangeBallColor(PlayerColor PlayerColor){
 		switch(PlayerColor){
-			case (Enums.PlayerColor.red) :
-				if(BallColor.Equals(Enums.BallColor.white)){
-					SetNewBallColor(Enums.BallColor.red);
+			case (PlayerColor.red) :
+				if(BallColor.Equals(BallColor.white)){
+					SetNewBallColor(BallColor.red);
 					break;
 				}
-				if(BallColor.Equals(Enums.BallColor.blue)){
-					SetNewBallColor(Enums.BallColor.purple);
+				if(BallColor.Equals(BallColor.blue)){
+					SetNewBallColor(BallColor.purple);
 					break;
 				}
-				if(BallColor.Equals(Enums.BallColor.yellow)){
-					SetNewBallColor(Enums.BallColor.orange);
+				if(BallColor.Equals(BallColor.yellow)){
+					SetNewBallColor(BallColor.orange);
 					break;
 				}
-				else if(BallColor.Equals(Enums.BallColor.purple) || BallColor.Equals(Enums.BallColor.green) || BallColor.Equals(Enums.BallColor.orange)){
-					SetNewBallColor(Enums.BallColor.brown);
+				else if(BallColor.Equals(BallColor.purple) || BallColor.Equals(BallColor.green) || BallColor.Equals(BallColor.orange)){
+					SetNewBallColor(BallColor.brown);
 					break;
 				}
-				else if(BallColor.Equals(Enums.BallColor.brown)){
-					SetNewBallColor(Enums.BallColor.black);
-					break;
-				}
-			break;
-			case (Enums.PlayerColor.yellow) :
-				if(BallColor.Equals(Enums.BallColor.white)){
-					SetNewBallColor(Enums.BallColor.yellow);
-					break;
-				}
-				if(BallColor.Equals(Enums.BallColor.blue)){
-					SetNewBallColor(Enums.BallColor.green);
-					break;
-				}
-				if(BallColor.Equals(Enums.BallColor.red)){
-					SetNewBallColor(Enums.BallColor.orange);
-					break;
-				}
-				else if(BallColor.Equals(Enums.BallColor.purple) || BallColor.Equals(Enums.BallColor.green) || BallColor.Equals(Enums.BallColor.orange)){
-					SetNewBallColor(Enums.BallColor.brown);
-					break;
-				}
-				else if(BallColor.Equals(Enums.BallColor.brown)){
-					SetNewBallColor(Enums.BallColor.black);
+				else if(BallColor.Equals(BallColor.brown)){
+					SetNewBallColor(BallColor.black);
 					break;
 				}
 			break;
-			case (Enums.PlayerColor.blue) :
-				if(BallColor.Equals(Enums.BallColor.white)){
-					SetNewBallColor(Enums.BallColor.blue);
+			case (PlayerColor.yellow) :
+				if(BallColor.Equals(BallColor.white)){
+					SetNewBallColor(BallColor.yellow);
 					break;
 				}
-				if(BallColor.Equals(Enums.BallColor.yellow)){
-					SetNewBallColor(Enums.BallColor.green);
+				if(BallColor.Equals(BallColor.blue)){
+					SetNewBallColor(BallColor.green);
 					break;
 				}
-				if(BallColor.Equals(Enums.BallColor.red)){
-					SetNewBallColor(Enums.BallColor.purple);
+				if(BallColor.Equals(BallColor.red)){
+					SetNewBallColor(BallColor.orange);
 					break;
 				}
-				else if(BallColor.Equals(Enums.BallColor.purple) || BallColor.Equals(Enums.BallColor.green) || BallColor.Equals(Enums.BallColor.orange)){
-					SetNewBallColor(Enums.BallColor.brown);
+				else if(BallColor.Equals(BallColor.purple) || BallColor.Equals(BallColor.green) || BallColor.Equals(BallColor.orange)){
+					SetNewBallColor(BallColor.brown);
 					break;
 				}
-				else if(BallColor.Equals(Enums.BallColor.brown)){
-					SetNewBallColor(Enums.BallColor.black);
+				// else if(BallColor.Equals(BallColor.brown)){
+				// 	SetNewBallColor(BallColor.black);
+				// 	break;
+				// }
+			break;
+			case (PlayerColor.blue) :
+				if(BallColor.Equals(BallColor.white)){
+					SetNewBallColor(BallColor.blue);
 					break;
 				}
+				if(BallColor.Equals(BallColor.yellow)){
+					SetNewBallColor(BallColor.green);
+					break;
+				}
+				if(BallColor.Equals(BallColor.red)){
+					SetNewBallColor(BallColor.purple);
+					break;
+				}
+				else if(BallColor.Equals(BallColor.purple) || BallColor.Equals(BallColor.green) || BallColor.Equals(BallColor.orange)){
+					SetNewBallColor(BallColor.brown);
+					break;
+				}
+				// else if(BallColor.Equals(BallColor.brown)){
+				// 	SetNewBallColor(BallColor.black);
+				// 	break;
+				// }
 			break;
 		} 
 	}
-	private void SetNewBallColor(Enums.BallColor InputBallColor){
+	private void SetNewBallColor(BallColor InputBallColor){
 		OldBallColor = Constants.SetColor(BallColor);
 		BallColor = InputBallColor;
 		NewBallColor = Constants.SetColor(BallColor);
 		TimeLeft = TransitionTime;
 		Detection.CheckForMatches();
-		PlayerColorObject.GetComponent<PlayerColor>().NextColor = Constants.GeneratePlayerColor();
+		PlayerColorObject.GetComponent<PlayerColorManager>().ColorQueue.Remove(PlayerColorManager.ColorQueue[0]);
+		if(PlayerColorManager.ColorQueue[0] == PlayerColorManager.ColorQueue[1]){
+			PlayerColorManager.ColorQueue.Add(Constants.GenerateNonConsecutiveColor(PlayerColorManager.ColorQueue[0]));
+		}
+		else{
+			PlayerColorManager.ColorQueue.Add(Constants.GeneratePlayerColor());
+		}
+		//PlayerColorObject.GetComponent<PlayerColorManager>().ColorQueue.Add(Constants.GeneratePlayerColorManager());
 	}
 
 }

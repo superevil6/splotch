@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Enums;
 using System;
 
 public static class Constants {
@@ -12,58 +13,65 @@ public static class Constants {
 	public static float RensaTime;
 
 //Weighted Values are processed in this order, WHITE(Ignored) BLACK BROWN GREEN PURPLE ORANGE RED BLUE YELLOW, if it doesn't proc any of those, it's white
-public static int[] DefaultColorWeights = {5, 5, 10, 10, 10, 20, 20, 20};
+public static int[] DefaultColorWeights = {0, 5, 10, 0, 0, 0, 20, 20};
 public static bool RensaCheck = false;
 
-	public static Enums.BallColor GenerateColor(){
-		Array Colors = Enum.GetValues(typeof(Enums.BallColor));
-		return (Enums.BallColor)Colors.GetValue(UnityEngine.Random.Range(0, Colors.Length));
+	public static BallColor GenerateColor(){
+		Array Colors = Enum.GetValues(typeof(BallColor));
+		return (BallColor)Colors.GetValue(UnityEngine.Random.Range(0, Colors.Length));
 	}
-	public static Enums.PlayerColor GeneratePlayerColor(){
-		Array Colors = Enum.GetValues(typeof(Enums.PlayerColor));
-		return (Enums.PlayerColor)Colors.GetValue(UnityEngine.Random.Range(0, Colors.Length));
+	public static PlayerColor GeneratePlayerColor(){
+		Array Colors = Enum.GetValues(typeof(PlayerColor));
+		return (PlayerColor)Colors.GetValue(UnityEngine.Random.Range(0, Colors.Length));
 	}
-	public static Enums.BallColor WeightedGenerateColor(int[] WeightedValues){
-		Array Colors = Enum.GetValues(typeof(Enums.BallColor));
+	public static PlayerColor GenerateNonConsecutiveColor(PlayerColor AlreadyUsedColor){
+		PlayerColor ChosenColor = GeneratePlayerColor();
+		while(ChosenColor == AlreadyUsedColor){
+			ChosenColor = GeneratePlayerColor();
+		}
+		return ChosenColor;
+	}
+	public static BallColor WeightedGenerateColor(int[] WeightedValues){
+		Array Colors = Enum.GetValues(typeof(BallColor));
 		for(int i = 0; i < WeightedValues.Length; i++){
 			int RNG = UnityEngine.Random.Range(0, 100);
 			if(RNG < WeightedValues[i]){
-				return (Enums.BallColor)Colors.GetValue(i + 1);
+				return (BallColor)Colors.GetValue(i + 1);
 			}
 			continue;
 		}
-		return Enums.BallColor.white;
+		return BallColor.white;
 	}
-	public static Color32 SetColor(Enums.BallColor BallColor){
+	public static Color32 SetColor(BallColor BallColor){
 			switch(BallColor){
-				case Enums.BallColor.white : 
+				case BallColor.white : 
 					return Color.white;
-				case Enums.BallColor.red : 
+				case BallColor.red : 
 					return Color.red;
-				case Enums.BallColor.blue : 
+				case BallColor.blue : 
 					return Color.blue;
-				case Enums.BallColor.yellow : 
+				case BallColor.yellow : 
 					return Color.yellow;
-				case Enums.BallColor.green : 
+				case BallColor.green : 
 					return Color.green;
-				case Enums.BallColor.orange : 
+				case BallColor.orange : 
 					return new Color32(255,165,0,255);
-				case Enums.BallColor.purple : 
+				case BallColor.purple : 
 					return new Color32(128,0,128,255);
-				case Enums.BallColor.brown : 
+				case BallColor.brown : 
 					return new Color32(128,80,0,255);
-				case Enums.BallColor.black : 
+				case BallColor.black : 
 					return Color.black;
 		}
 		return Color.grey;
 	}
-	public static Color32 SetColor(Enums.PlayerColor PlayerColor){
+	public static Color32 SetColor(PlayerColor PlayerColor){
 			switch(PlayerColor){
-				case Enums.PlayerColor.red : 
+				case PlayerColor.red : 
 					return Color.red;
-				case Enums.PlayerColor.blue : 
+				case PlayerColor.blue : 
 					return Color.blue;
-				case Enums.PlayerColor.yellow : 
+				case PlayerColor.yellow : 
 					return Color.yellow;
 		}
 		return Color.grey;

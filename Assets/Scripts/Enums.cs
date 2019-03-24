@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class Enums {
-	public enum BallColor {
+namespace Enums{
+
+	public enum BallColor{
 		white,
 		black,
 		brown,
@@ -13,8 +14,8 @@ public static class Enums {
 		red,
 		blue,
 		yellow
-	};
-	public enum PlayerColor {
+	}
+	public enum PlayerColor{
 		red,
 		blue,
 		yellow
@@ -23,8 +24,20 @@ public static class Enums {
 		normal,
 		rainbow
 	}
+	public enum PlayerNumber{
+		one,
+		two,
+		three,
+		four
+	}
 	public enum Orientation {
-	Horizontal,
-	Vertical
-}
+		Horizontal,
+		Vertical
+		}
+	public enum Direction {
+		up,
+		down,
+		left,
+		right
+	}
 }

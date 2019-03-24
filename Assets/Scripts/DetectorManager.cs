@@ -25,7 +25,7 @@ public float InitialY;
 	}
 
 	public void GenerateDetectors(int rows, int columns){
-		print(GameBoard.InitialColumnPosition);
+		//print(GameBoard.InitialColumnPosition);
 		Vector2 Offset = Constants.FindOffset(Ball);
 		//First make horizontal detectors
 		// for(int i = 1; i < rows; i++){
