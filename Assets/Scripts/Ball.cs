@@ -74,7 +74,7 @@ private bool HasMoved;
 		SpriteRenderer.color = Constants.SetColor(BallColor);
 	}
 
-	private void ChangeBallColor(PlayerColor PlayerColor){
+	public void ChangeBallColor(PlayerColor PlayerColor){
 		switch(PlayerColor){
 			case (PlayerColor.red) :
 				if(BallColor.Equals(BallColor.white)){
@@ -144,7 +144,7 @@ private bool HasMoved;
 			break;
 		} 
 	}
-	private void SetNewBallColor(BallColor InputBallColor){
+	public void SetNewBallColor(BallColor InputBallColor){
 		OldBallColor = Constants.SetColor(BallColor);
 		BallColor = InputBallColor;
 		NewBallColor = Constants.SetColor(BallColor);
