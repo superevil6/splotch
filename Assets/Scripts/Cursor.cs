@@ -25,10 +25,6 @@ public class Cursor : MonoBehaviour
         Sprite = GetComponent<SpriteRenderer>();
         this.transform.position = new Vector3(0, 0, 0);
         playerColorManager = GameObject.FindGameObjectWithTag("PlayerColor").GetComponent<PlayerColorManager>();
-        string[] joysticks = Input.GetJoystickNames();
-        foreach(string js in joysticks){
-            print(js);
-        }
     }
 
     // Update is called once per frame
@@ -40,45 +36,56 @@ public class Cursor : MonoBehaviour
         if(WaitTimer <= 0){
             //Up
             if(Input.GetAxis("Vertical") ==  -1f){
-                print("Derop");
                 HitUp = Physics2D.RaycastAll(transform.position, Vector2.up, Ballsize.y * 2);
                 if(HitUp.Length > 1 && HitUp[1].transform.gameObject.tag == "Ball"){
                     transform.position = HitUp[1].transform.position;
                 }
-                WaitTimer += 0.15f;
+                else if(HitUp.Length == 1 && HitUp[0].transform.gameObject.tag == "Ball"){
+                    transform.position = HitUp[0].transform.position;
+                }
+                WaitTimer = 0.15f;
             }
             //Down
             if(Input.GetAxis("Vertical") == 1f){
-                print("input detected");
-                HitDown = Physics2D.RaycastAll(transform.position, -Vector2.up, Ballsize.y * 2);
+                HitDown = Physics2D.RaycastAll(transform.position, -Vector2.up, Ballsize.y * 3);
                 if(HitDown.Length > 1 && HitDown[1].transform.gameObject.tag == "Ball"){
                     transform.position = HitDown[1].transform.position;
                 }
-                WaitTimer += 0.15f;
+                else if(HitDown.Length == 1 && HitDown[0].transform.gameObject.tag == "Ball"){
+                    transform.position = HitDown[0].transform.position;
+                }
+                WaitTimer = 0.15f;
 
             }
             //Left
             if(Input.GetAxis("Horizontal") == -1f){
-                HitLeft = Physics2D.RaycastAll(transform.position, -Vector2.right, Ballsize.x * 2);
+                HitLeft = Physics2D.RaycastAll(transform.position, -Vector2.right, Ballsize.x * 3);
                 if(HitLeft.Length > 1 && HitLeft[1].transform.gameObject.tag == "Ball"){
                     transform.position = HitLeft[1].transform.position;
                 }
-                WaitTimer += 0.15f;
+                else if(HitLeft.Length == 1 && HitLeft[0].transform.gameObject.tag == "Ball"){
+                    transform.position = HitLeft[0].transform.position;
+                }
+                WaitTimer = 0.15f;
             }
             //Right
             if(Input.GetAxis("Horizontal") == 1f){
-                HitRight = Physics2D.RaycastAll(transform.position, Vector2.right, Ballsize.x * 2);
+                HitRight = Physics2D.RaycastAll(transform.position, Vector2.right, Ballsize.x * 3);
                 if(HitRight.Length > 1 && HitRight[1].transform.gameObject.tag == "Ball"){
                     transform.position = HitRight[1].transform.position;
                 }
-                WaitTimer += 0.15f;
+                else if(HitRight.Length == 1 && HitRight[0].transform.gameObject.tag == "Ball"){
+                    transform.position = HitRight[0].transform.position;
+                }
+                WaitTimer = 0.15f;
             }
             if(Input.GetButton("Fire1")){
                 CurrentBall = Physics2D.Raycast(transform.position, Vector2.zero, 0.1f);
                 if(CurrentBall && CurrentBall.transform.gameObject.tag == "Ball"){
                     CurrentBall.transform.gameObject.GetComponent<Ball>().ChangeBallColor(playerColorManager.ColorQueue[0]);
+                    playerColorManager.UpdateColorQueue();
                 }
-                WaitTimer += 0.15f;
+                WaitTimer = 0.15f;
             }
             if(Input.GetButton("Fire2")){
                 print("Remove Color");
@@ -90,7 +97,7 @@ public class Cursor : MonoBehaviour
                         StartCoroutine(RemoveColor.RegenerateRemoveColor(RemoveColor.RegenTime));
                     }
                 }
-                WaitTimer += 0.15f;
+                WaitTimer = 0.15f;
             }        }
         if(WaitTimer > 0){
             WaitTimer -= Time.deltaTime;
@@ -99,10 +106,3 @@ public class Cursor : MonoBehaviour
     }
 
 }
-
-/*
-Ideas:
-Snap it to the 0, 0 of a game object so you don't have to calculate position or use hard coded values.
-
- */
-

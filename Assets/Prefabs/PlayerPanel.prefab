@@ -260,7 +260,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000030518, y: 0}
+  m_AnchoredPosition: {x: 0.000030517578, y: 0}
   m_SizeDelta: {x: -129, y: -162.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4999555431571524250
@@ -877,7 +877,9 @@ MonoBehaviour:
   ObjectPooler: {fileID: 7604532531917387858}
   Columns: 6
   Rows: 12
+  Scale: 0
   InitialColumnPosition: {x: -3.25, y: 0}
+  ObjectOffset: {x: 0, y: 0}
   GO: {fileID: 1254343284260142, guid: 79ae8dd76bb384c328c25239630fa4a4, type: 3}
   InitialBallCount: 25
 --- !u!114 &7604532531917387858

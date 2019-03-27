@@ -282,14 +282,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Gameplay Elements
   textList:
-  - s: Selection Cursor
-    state: 0
-    show: 0
-    deleteQuestion: 0
-  - s: Whitening Blocks
-    state: 0
-    show: 0
-    deleteQuestion: 0
   - s: Controller Support
     state: 0
     show: 0
@@ -304,6 +296,27 @@ MonoBehaviour:
     deleteQuestion: 0
   - s: Special Blocks
     state: 0
+    show: 0
+    deleteQuestion: 0
+  - s: 'BUG: Three red blocks on the rightmost side vertically didn''t pop.'
+    state: 1
+    show: 0
+    deleteQuestion: 0
+  - s: 'BUG: You can keep clicking colors on a black ball'
+    state: 1
+    show: 0
+    deleteQuestion: 0
+  - s: 'BUG: Down Cursor goes down two spaces instead of 3 if it''s not currently
+      on a ball.'
+    state: 3
+    show: 0
+    deleteQuestion: 0
+  - s: Selection Cursor
+    state: 3
+    show: 0
+    deleteQuestion: 0
+  - s: Whitening Blocks
+    state: 3
     show: 0
     deleteQuestion: 0
 --- !u!114 &1214722880 stripped
@@ -559,21 +572,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840179337}
     m_Modifications:
-    - target: {fileID: 3133417409140420805, guid: f6edc78711b57d94795de27b25e2c25a,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0.000030517578
-      objectReference: {fileID: 0}
-    - target: {fileID: 5009545307292936001, guid: f6edc78711b57d94795de27b25e2c25a,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -233.11
-      objectReference: {fileID: 0}
-    - target: {fileID: 5009545307292936001, guid: f6edc78711b57d94795de27b25e2c25a,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: -1703.41
-      objectReference: {fileID: 0}
     - target: {fileID: 7604532533473166493, guid: f6edc78711b57d94795de27b25e2c25a,
         type: 3}
       propertyPath: m_Name
@@ -684,6 +682,21 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3133417409140420805, guid: f6edc78711b57d94795de27b25e2c25a,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.000030517578
+      objectReference: {fileID: 0}
+    - target: {fileID: 5009545307292936001, guid: f6edc78711b57d94795de27b25e2c25a,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -233.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 5009545307292936001, guid: f6edc78711b57d94795de27b25e2c25a,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -1703.41
+      objectReference: {fileID: 0}
     - target: {fileID: 1021630001999376167, guid: f6edc78711b57d94795de27b25e2c25a,
         type: 3}
       propertyPath: m_SortingOrder
@@ -714,6 +727,46 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7604532533182775622, guid: f6edc78711b57d94795de27b25e2c25a,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 182.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7604532532690821478, guid: f6edc78711b57d94795de27b25e2c25a,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 448.65002
+      objectReference: {fileID: 0}
+    - target: {fileID: 7604532532690821478, guid: f6edc78711b57d94795de27b25e2c25a,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -897.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7604532531917387857, guid: f6edc78711b57d94795de27b25e2c25a,
+        type: 3}
+      propertyPath: InitialBallCount
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 7604532531917387857, guid: f6edc78711b57d94795de27b25e2c25a,
+        type: 3}
+      propertyPath: Columns
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7604532531917387870, guid: f6edc78711b57d94795de27b25e2c25a,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7604532531917387870, guid: f6edc78711b57d94795de27b25e2c25a,
+        type: 3}
+      propertyPath: RandomRange
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026275054471243514, guid: f6edc78711b57d94795de27b25e2c25a,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6edc78711b57d94795de27b25e2c25a, type: 3}

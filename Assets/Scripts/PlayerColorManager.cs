@@ -30,4 +30,13 @@ public Image ThirdColorPanel;
 			ThirdColorPanel.color = Constants.SetColor(ColorQueue[2]);
 		}
 	}
+		public void UpdateColorQueue(){
+		ColorQueue.Remove(ColorQueue[0]);
+		if(ColorQueue[0] == ColorQueue[1]){
+			ColorQueue.Add(Constants.GenerateNonConsecutiveColor(ColorQueue[0]));
+		}
+		else{
+			ColorQueue.Add(Constants.GeneratePlayerColor());
+		}
+	}
 }

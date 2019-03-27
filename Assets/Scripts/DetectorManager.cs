@@ -25,23 +25,18 @@ public float InitialY;
 	}
 
 	public void GenerateDetectors(int rows, int columns){
-		//print(GameBoard.InitialColumnPosition);
-		Vector2 Offset = Constants.FindOffset(Ball);
-		//First make horizontal detectors
-		// for(int i = 1; i < rows; i++){
-		// 	Detector obj = Instantiate(Detector);
-		// 	HorizontalDetectors.Add(obj);
-		// 	obj.transform.SetParent(GameBoard.transform);
-		// 	obj.Orientation = Enums.Orientation.Horizontal;
-		// 	obj.transform.position = new Vector3(GameBoard.InitialColumnPosition.x + Offset.x, InitialY - Offset.y * i, 0);
-		// }
-		for(int i = 1; i <= columns; i++){
+		//Vector2 Offset = GameBoard.Scale;//= Constants.FindOffset(Ball);
+		float GameboardWidth = GameBoard.GetComponentInParent<RectTransform>().rect.width;
+		float GameboardHeight = GameBoard.GetComponentInParent<RectTransform>().rect.height / 2;
+		Vector2 ObjectDimensions = new Vector2((GameboardWidth / columns), 10);
+		for(int i = 0; i < columns; i++){
 			Detector obj = Instantiate(Detector);
 			VerticalDetectors.Add(obj);
 			obj.transform.SetParent(GameBoard.transform);
-			obj.Orientation = Enums.Orientation.Vertical;
-			//obj.transform.position = new Vector3(GameBoard.InitialColumnPosition.x + Offset.x * i, GameBoard.InitialColumnPosition.y, 0);
-			obj.transform.position = new Vector3(GameBoard.InitialColumnPosition.x + Offset.x * i, InitialY, 0);
+			obj.transform.localScale = new Vector2((ObjectDimensions.x / columns) * 10, 10);
+			obj.transform.localPosition = new Vector2(
+				((GameboardWidth/columns) * i) + ((GameboardWidth/columns)/2), GameboardHeight);
+
 		}
 	}
 	public void SpawnDetectors(int Rows, int Columns){

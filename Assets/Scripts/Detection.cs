@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Enums;
 
 public class Detection : MonoBehaviour {
 public Ball Ball;
@@ -14,11 +15,13 @@ private RaycastHit2D[] HitRight;
 private List<GameObject> Hits;
 private List<GameObject> VerticalHits;
 private List<GameObject> HorizontalHits;
-private Enums.BallColor BallColor;
+private BallColor BallColor;
+//Rework this so Columns is in a more accessible area, so I don't have repeate variables.
 	// Use this for initialization
 	void Start () {
 		BallColor = Ball.BallColor;
 		BallSize = Constants.FindOffset(Ball.gameObject);
+		//BallSize = new Vector2(BallSize.x - Ball.GameBoardObject.Scale , BallSize.y - Ball.GameBoardObject.Scale);
 		//ObjectPooler = GameObject.FindGameObjectWithTag("ObjectPooler").GetComponent<ObjectPooler>();
 		Hits = new List<GameObject>();
 		VerticalHits = new List<GameObject>();
@@ -34,6 +37,8 @@ private Enums.BallColor BallColor;
 		VerticalHits.Clear();
 		HorizontalHits.Clear();
 		BallColor = Ball.BallColor;
+		/* HitUp will check for as many balls that spawn in a column, that way if bottom ball detects the max
+		number of balls, it knows the game is over. Kind of hacky, I might redo this. */
 		HitUp = Physics2D.RaycastAll(transform.position, Vector2.up, BallSize.x * 2);
 		HitDown = Physics2D.RaycastAll(transform.position, -Vector2.up, BallSize.x * 2);
 		HitLeft = Physics2D.RaycastAll(transform.position, -Vector2.right, BallSize.y * 2);
@@ -89,21 +94,21 @@ private Enums.BallColor BallColor;
 	}
 
 	private bool CheckForBlackAndWhite(GameObject Ball){
-		if(Ball.GetComponent<Ball>().BallColor != Enums.BallColor.white && Ball.GetComponent<Ball>().BallColor != Enums.BallColor.black){
+		if(Ball.GetComponent<Ball>().BallColor != BallColor.white && Ball.GetComponent<Ball>().BallColor != BallColor.black){
 			return true;
 		}
 		else{
 			return false;
 		}
 	}
-	private int PointValue(Enums.BallColor ballColor){
-		if(ballColor == Enums.BallColor.red || ballColor == Enums.BallColor.blue || ballColor == Enums.BallColor.yellow){
+	private int PointValue(BallColor ballColor){
+		if(ballColor == BallColor.red || ballColor == BallColor.blue || ballColor == BallColor.yellow){
 			return 100;
 		}
-		if(ballColor == Enums.BallColor.purple || ballColor == Enums.BallColor.green || ballColor == Enums.BallColor.orange){
+		if(ballColor == BallColor.purple || ballColor == BallColor.green || ballColor == BallColor.orange){
 			return 200;
 		}
-		if(ballColor == Enums.BallColor.brown){
+		if(ballColor == BallColor.brown){
 			return 50;
 		}
 		return 0;

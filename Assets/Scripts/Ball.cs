@@ -16,6 +16,8 @@ public GameObject PlayerColorObject;
 public PlayerColorManager PlayerColorManager;
 public BoxCollider2D BoxCollider2D;
 public Rigidbody2D Rigidbody2D;
+public GameObject GameBoard;
+public GameBoard GameBoardObject;
 private Color32 OldBallColor;
 private Color32 NewBallColor;
 public float TransitionTime;
@@ -24,12 +26,23 @@ public float TimeBetweenChecksTotal;
 private float TimeLeft;
 private bool TransitionColorCheck = false;
 private bool HasMoved;
+private bool DoOnce = false;
 
 	// Use this for initialization
 
 	void OnEnable () {
+
+		//print(Scale);
 		PlayerColorObject = GameObject.FindGameObjectWithTag("PlayerColor");
+		GameBoard = GameObject.FindGameObjectWithTag("ObjectPooler");
 		PlayerColorManager = PlayerColorObject.GetComponent<PlayerColorManager>();
+		GameBoardObject = GameBoard.GetComponent<GameBoard>();
+		GameBoardObject.Scale = 1f - GameBoardObject.Columns * 0.10f;
+		if(!DoOnce){
+			transform.localScale = new Vector2((transform.localScale.x * GameBoardObject.Scale /2), (transform.localScale.y * GameBoardObject.Scale) /2);
+			BoxCollider2D.size = new Vector2(15 * transform.localScale.x, 15 * transform.localScale.y);
+			DoOnce = true;
+		}
 		Detection = gameObject.GetComponent<Detection>();
 		SetupBall();
 	}
@@ -40,14 +53,6 @@ private bool HasMoved;
 			SpriteRenderer.color = Color.Lerp(SpriteRenderer.color, NewBallColor, Time.deltaTime / TimeLeft);
 			TimeLeft -= Time.deltaTime;
 		}
-		// if(TimeBetweenChecks > 0){
-		// 	TimeBetweenChecks -= Time.deltaTime;
-		// }
-		// else if(Rigidbody2D.velocity.magnitude == 0){
-		// 	Detection.CheckForMatches();
-		// 	TimeBetweenChecks = TimeBetweenChecksTotal;
-		// }
-		
 		if(Rigidbody2D.velocity.magnitude >= 0.5){
 			HasMoved = true;
 		}
@@ -60,11 +65,13 @@ private bool HasMoved;
 	void OnMouseDown()
 	{
 		ChangeBallColor(PlayerColorManager.ColorQueue[0]);
+		PlayerColorManager.UpdateColorQueue();
 	}
 
 	private void SetupBall(){
 		SpriteRenderer = GetComponent<SpriteRenderer>();
 		BoxCollider2D = GetComponent<BoxCollider2D>();
+		//gameObject.GetComponent<RectTransform>();
 		SpriteRenderer.sprite = Sprite;
 		DetermineColor();
 	}
@@ -150,14 +157,6 @@ private bool HasMoved;
 		NewBallColor = Constants.SetColor(BallColor);
 		TimeLeft = TransitionTime;
 		Detection.CheckForMatches();
-		PlayerColorObject.GetComponent<PlayerColorManager>().ColorQueue.Remove(PlayerColorManager.ColorQueue[0]);
-		if(PlayerColorManager.ColorQueue[0] == PlayerColorManager.ColorQueue[1]){
-			PlayerColorManager.ColorQueue.Add(Constants.GenerateNonConsecutiveColor(PlayerColorManager.ColorQueue[0]));
-		}
-		else{
-			PlayerColorManager.ColorQueue.Add(Constants.GeneratePlayerColor());
-		}
-		//PlayerColorObject.GetComponent<PlayerColorManager>().ColorQueue.Add(Constants.GeneratePlayerColorManager());
 	}
 
 }
