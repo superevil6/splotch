@@ -41,6 +41,8 @@ private bool DoOnce = false;
 		if(!DoOnce){
 			transform.localScale = new Vector2((transform.localScale.x * GameBoardObject.Scale /2), (transform.localScale.y * GameBoardObject.Scale) /2);
 			BoxCollider2D.size = new Vector2(15 * transform.localScale.x, 15 * transform.localScale.y);
+			//transform.localScale = new Vector3((GameBoardObject.GameboardWidth / GameBoardObject.Columns) * 0.1f, ((GameBoardObject.GameboardHeight/2) / GameBoardObject.Columns) * 0.1f, 0);
+			//BoxCollider2D.size = new Vector2((GameBoardObject.GameboardWidth / GameBoardObject.Columns) * 0.1f, ((GameBoardObject.GameboardHeight/2) / GameBoardObject.Columns) * 0.1f);
 			DoOnce = true;
 		}
 		Detection = gameObject.GetComponent<Detection>();

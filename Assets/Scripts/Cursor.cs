@@ -79,26 +79,25 @@ public class Cursor : MonoBehaviour
                 }
                 WaitTimer = 0.15f;
             }
-            if(Input.GetButton("Fire1")){
-                CurrentBall = Physics2D.Raycast(transform.position, Vector2.zero, 0.1f);
-                if(CurrentBall && CurrentBall.transform.gameObject.tag == "Ball"){
-                    CurrentBall.transform.gameObject.GetComponent<Ball>().ChangeBallColor(playerColorManager.ColorQueue[0]);
-                    playerColorManager.UpdateColorQueue();
-                }
-                WaitTimer = 0.15f;
+   
+        }
+        if(Input.GetButtonDown("Fire1")){
+            CurrentBall = Physics2D.Raycast(transform.position, Vector2.zero, 0.1f);
+            if(CurrentBall && CurrentBall.transform.gameObject.tag == "Ball"){
+                CurrentBall.transform.gameObject.GetComponent<Ball>().ChangeBallColor(playerColorManager.ColorQueue[0]);
+                playerColorManager.UpdateColorQueue();
             }
-            if(Input.GetButton("Fire2")){
-                print("Remove Color");
-                CurrentBall = Physics2D.Raycast(transform.position, Vector2.zero, 0.1f);
-                if(CurrentBall && CurrentBall.transform.gameObject.tag == "Ball"){
-                    if(CurrentBall.transform.gameObject.GetComponent<Ball>().BallColor != BallColor.white && 
-                    RemoveColor.Uses > 0){
-                        RemoveColor.UseRemoveColor(CurrentBall.transform.gameObject.GetComponent<Ball>());
-                        StartCoroutine(RemoveColor.RegenerateRemoveColor(RemoveColor.RegenTime));
-                    }
+        }
+        if(Input.GetButtonDown("Fire2")){
+            CurrentBall = Physics2D.Raycast(transform.position, Vector2.zero, 0.1f);
+            if(CurrentBall && CurrentBall.transform.gameObject.tag == "Ball"){
+                if(CurrentBall.transform.gameObject.GetComponent<Ball>().BallColor != BallColor.white && 
+                RemoveColor.Uses > 0){
+                    RemoveColor.UseRemoveColor(CurrentBall.transform.gameObject.GetComponent<Ball>());
+                    StartCoroutine(RemoveColor.RegenerateRemoveColor(RemoveColor.RegenTime));
                 }
-                WaitTimer = 0.15f;
-            }        }
+            }
+        }     
         if(WaitTimer > 0){
             WaitTimer -= Time.deltaTime;
         }
