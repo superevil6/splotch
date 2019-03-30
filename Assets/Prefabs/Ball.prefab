@@ -105,12 +105,11 @@ MonoBehaviour:
   Type: 0
   SpriteRenderer: {fileID: 212478847813018770}
   Sprite: {fileID: 21300000, guid: f1227688a3db344198aa19ee64ffb760, type: 3}
-  PlayerColorObject: {fileID: 0}
-  PlayerColorManager: {fileID: 0}
+  PlayerManager: {fileID: 0}
   BoxCollider2D: {fileID: 61898284635218806}
   Rigidbody2D: {fileID: 50413992120349606}
   GameBoard: {fileID: 0}
-  GameBoardObject: {fileID: 0}
+  ColorToIgnore: 0
   TransitionTime: 0.5
   TimeBetweenChecksTotal: 1
 --- !u!114 &114108338342639858
@@ -165,12 +164,12 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.56, y: 2.56}
+    oldSize: {x: 2, y: 2}
     newSize: {x: 1.28, y: 1.28}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.8, y: 0.8}
+  m_Size: {x: 1.25, y: 2}
   m_EdgeRadius: 0

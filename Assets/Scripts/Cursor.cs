@@ -23,7 +23,7 @@ public class Cursor : MonoBehaviour
     {
         Ballsize = Constants.FindOffset(Ball.gameObject);
         Sprite = GetComponent<SpriteRenderer>();
-        this.transform.position = new Vector3(0, 0, 0);
+        transform.position = new Vector3(0, 0, 0);
         playerColorManager = GameObject.FindGameObjectWithTag("PlayerColor").GetComponent<PlayerColorManager>();
     }
 
@@ -31,7 +31,7 @@ public class Cursor : MonoBehaviour
     void Update()
     {
         if(playerColorManager.ColorQueue.Count > 1){
-            Sprite.color = Constants.SetColor(playerColorManager.ColorQueue[0]);
+            Sprite.color = playerColorManager.SetColor(playerColorManager.ColorQueue[0]);
         }
         if(WaitTimer <= 0){
             //Up

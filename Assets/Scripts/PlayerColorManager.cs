@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Enums;
+using System;
 
 public class PlayerColorManager : MonoBehaviour {
 public List<PlayerColor> ColorQueue;
@@ -21,22 +22,52 @@ public Image ThirdColorPanel;
 	// Update is called once per frame
 	void Update () {
 		if(ColorQueue.Count < 3){
-			ColorQueue.Add(Constants.GeneratePlayerColor());
+			ColorQueue.Add(GeneratePlayerColor(PlayerColor.red));
 		}
 
 		else{
-			FirstColorPanel.color = Constants.SetColor(ColorQueue[0]);
-			SecondColorPanel.color = Constants.SetColor(ColorQueue[1]);
-			ThirdColorPanel.color = Constants.SetColor(ColorQueue[2]);
+			FirstColorPanel.color = SetColor(ColorQueue[0]);
+			SecondColorPanel.color = SetColor(ColorQueue[1]);
+			ThirdColorPanel.color = SetColor(ColorQueue[2]);
 		}
+	}
+	public PlayerColor GeneratePlayerColor(){
+		Array Colors = Enum.GetValues(typeof(PlayerColor));
+		return (PlayerColor)Colors.GetValue(UnityEngine.Random.Range(0, Colors.Length));
+	}
+	public PlayerColor GeneratePlayerColor(PlayerColor ColorToIgnore){
+		Array Colors = Enum.GetValues(typeof(PlayerColor));
+		PlayerColor ColorToReturn = ColorToIgnore;
+		while(ColorToReturn == ColorToIgnore){
+			ColorToReturn = (PlayerColor)Colors.GetValue(UnityEngine.Random.Range(0, Colors.Length));
+		}
+		return ColorToReturn;
 	}
 		public void UpdateColorQueue(){
 		ColorQueue.Remove(ColorQueue[0]);
 		if(ColorQueue[0] == ColorQueue[1]){
-			ColorQueue.Add(Constants.GenerateNonConsecutiveColor(ColorQueue[0]));
+			ColorQueue.Add(GenerateNonConsecutiveColor(ColorQueue[0]));
 		}
 		else{
-			ColorQueue.Add(Constants.GeneratePlayerColor());
+			ColorQueue.Add(GeneratePlayerColor(PlayerColor.red));
 		}
+	}
+		public Color32 SetColor(PlayerColor PlayerColor){
+			switch(PlayerColor){
+				case PlayerColor.red : 
+					return Color.red;
+				case PlayerColor.blue : 
+					return Color.blue;
+				case PlayerColor.yellow : 
+					return Color.yellow;
+		}
+		return Color.grey;
+	}
+		public PlayerColor GenerateNonConsecutiveColor(PlayerColor AlreadyUsedColor){
+		PlayerColor ChosenColor = GeneratePlayerColor(PlayerColor.red);
+		while(ChosenColor == AlreadyUsedColor){
+			ChosenColor = GeneratePlayerColor(PlayerColor.red);
+		}
+		return ChosenColor;
 	}
 }

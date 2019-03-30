@@ -22,6 +22,7 @@ namespace Enums{
 	}
 	public enum BallType {
 		normal,
+		powerup,
 		rainbow
 	}
 	public enum PlayerNumber{
@@ -39,5 +40,12 @@ namespace Enums{
 		down,
 		left,
 		right
+	}
+	public enum Difficulty{
+		VeryEasy,
+		Easy,
+		Normal,
+		Hard,
+		VeryHard
 	}
 }

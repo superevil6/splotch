@@ -12,14 +12,13 @@ private BallColor NewColor;
 public BallType Type;
 public SpriteRenderer SpriteRenderer;
 public Sprite Sprite;
-public GameObject PlayerColorObject;
-public PlayerColorManager PlayerColorManager;
+public PlayerManager PlayerManager;
 public BoxCollider2D BoxCollider2D;
 public Rigidbody2D Rigidbody2D;
-public GameObject GameBoard;
-public GameBoard GameBoardObject;
+public GameBoard GameBoard;
 private Color32 OldBallColor;
 private Color32 NewBallColor;
+public BallColor ColorToIgnore;
 public float TransitionTime;
 private float TimeBetweenChecks;
 public float TimeBetweenChecksTotal;
@@ -29,26 +28,22 @@ private bool HasMoved;
 private bool DoOnce = false;
 
 	// Use this for initialization
+	void Start () {
+		GameBoard = GetComponentInParent<GameBoard>();
+		PlayerManager = GetComponentInParent<PlayerManager>();
+		Detection = GetComponent<Detection>();
+		//GameBoard.Scale = 1f - GameBoard.Columns * 0.10f;
+		// transform.localScale = new Vector2((transform.localScale.x * GameBoard.Scale /2), (transform.localScale.y * GameBoard.Scale) /2);
+		// BoxCollider2D.size = new Vector2(15 * transform.localScale.x, 15 * transform.localScale.y);
+		transform.localScale = new Vector2((GameBoard.GameboardWidth / GameBoard.Columns) * 0.5f, ((GameBoard.GameboardHeight) / GameBoard.Columns) * 0.5f);
+		//BoxCollider2D.size = new Vector2((GameBoard.GameboardWidth / GameBoard.Columns) * 0.25f, ((GameBoard.GameboardHeight) / GameBoard.Columns) * 0.25f);
+		
+	}
 
 	void OnEnable () {
 
-		//print(Scale);
-		PlayerColorObject = GameObject.FindGameObjectWithTag("PlayerColor");
-		GameBoard = GameObject.FindGameObjectWithTag("ObjectPooler");
-		PlayerColorManager = PlayerColorObject.GetComponent<PlayerColorManager>();
-		GameBoardObject = GameBoard.GetComponent<GameBoard>();
-		GameBoardObject.Scale = 1f - GameBoardObject.Columns * 0.10f;
-		if(!DoOnce){
-			transform.localScale = new Vector2((transform.localScale.x * GameBoardObject.Scale /2), (transform.localScale.y * GameBoardObject.Scale) /2);
-			BoxCollider2D.size = new Vector2(15 * transform.localScale.x, 15 * transform.localScale.y);
-			//transform.localScale = new Vector3((GameBoardObject.GameboardWidth / GameBoardObject.Columns) * 0.1f, ((GameBoardObject.GameboardHeight/2) / GameBoardObject.Columns) * 0.1f, 0);
-			//BoxCollider2D.size = new Vector2((GameBoardObject.GameboardWidth / GameBoardObject.Columns) * 0.1f, ((GameBoardObject.GameboardHeight/2) / GameBoardObject.Columns) * 0.1f);
-			DoOnce = true;
-		}
-		Detection = gameObject.GetComponent<Detection>();
 		SetupBall();
 	}
-	
 	// Update is called once per frame
 	void Update () {
 		if(TimeLeft > 0){
@@ -66,10 +61,55 @@ private bool DoOnce = false;
 
 	void OnMouseDown()
 	{
-		ChangeBallColor(PlayerColorManager.ColorQueue[0]);
-		PlayerColorManager.UpdateColorQueue();
+		ChangeBallColor(PlayerManager.PlayerColorManager.ColorQueue[0]);
+		PlayerManager.PlayerColorManager.UpdateColorQueue();
 	}
-
+	public static BallColor GenerateColor(){
+		Array Colors = Enum.GetValues(typeof(BallColor));
+		return (BallColor)Colors.GetValue(UnityEngine.Random.Range(0, Colors.Length));
+	}
+	public BallColor GenerateColor(BallColor ColorToIgnore){
+		Array Colors = Enum.GetValues(typeof(PlayerColor));
+		BallColor ColorToReturn = ColorToIgnore;
+		while(ColorToReturn == ColorToIgnore){
+			ColorToReturn = (BallColor)Colors.GetValue(UnityEngine.Random.Range(0, Colors.Length));
+		}
+		return ColorToReturn;
+	}
+	public static BallColor WeightedGenerateColor(int[] WeightedValues){
+		Array Colors = Enum.GetValues(typeof(BallColor));
+		for(int i = 0; i < WeightedValues.Length; i++){
+			int RNG = UnityEngine.Random.Range(0, 100);
+			if(RNG < WeightedValues[i]){
+				return (BallColor)Colors.GetValue(i + 1);
+			}
+			continue;
+		}
+		return BallColor.white;
+	}
+		public static Color32 SetColor(BallColor BallColor){
+			switch(BallColor){
+				case BallColor.white : 
+					return Color.white;
+				case BallColor.red : 
+					return Color.red;
+				case BallColor.blue : 
+					return Color.blue;
+				case BallColor.yellow : 
+					return Color.yellow;
+				case BallColor.green : 
+					return Color.green;
+				case BallColor.orange : 
+					return new Color32(255,165,0,255);
+				case BallColor.purple : 
+					return new Color32(128,0,128,255);
+				case BallColor.brown : 
+					return new Color32(128,80,0,255);
+				case BallColor.black : 
+					return Color.black;
+		}
+		return Color.grey;
+	}
 	private void SetupBall(){
 		SpriteRenderer = GetComponent<SpriteRenderer>();
 		BoxCollider2D = GetComponent<BoxCollider2D>();
@@ -79,8 +119,9 @@ private bool DoOnce = false;
 	}
 
 	public void DetermineColor(){
-		BallColor = Constants.WeightedGenerateColor(Constants.DefaultColorWeights);
-		SpriteRenderer.color = Constants.SetColor(BallColor);
+		BallColor = WeightedGenerateColor(Constants.DefaultColorWeights);
+		//BallColor = GenerateColor(ColorToIgnore);
+		SpriteRenderer.color = SetColor(BallColor);
 	}
 
 	public void ChangeBallColor(PlayerColor PlayerColor){
@@ -102,10 +143,10 @@ private bool DoOnce = false;
 					SetNewBallColor(BallColor.brown);
 					break;
 				}
-				else if(BallColor.Equals(BallColor.brown)){
-					SetNewBallColor(BallColor.black);
-					break;
-				}
+				// else if(BallColor.Equals(BallColor.brown)){
+				// 	SetNewBallColor(BallColor.black);
+				// 	break;
+				// }
 			break;
 			case (PlayerColor.yellow) :
 				if(BallColor.Equals(BallColor.white)){
@@ -154,9 +195,9 @@ private bool DoOnce = false;
 		} 
 	}
 	public void SetNewBallColor(BallColor InputBallColor){
-		OldBallColor = Constants.SetColor(BallColor);
+		OldBallColor = SetColor(BallColor);
 		BallColor = InputBallColor;
-		NewBallColor = Constants.SetColor(BallColor);
+		NewBallColor = SetColor(BallColor);
 		TimeLeft = TransitionTime;
 		Detection.CheckForMatches();
 	}

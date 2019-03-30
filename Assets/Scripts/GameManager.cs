@@ -28,16 +28,16 @@ public class GameManager : MonoBehaviour
         PlayerManager playerManager = newPlayer.GetComponent<PlayerManager>();
         switch(playerNumber){
             case 0 :
-            playerManager.playerNumber = PlayerNumber.one;
+            playerManager.PlayerNumber = PlayerNumber.one;
             break;
             case 1:
-            playerManager.playerNumber = PlayerNumber.two;
+            playerManager.PlayerNumber = PlayerNumber.two;
             break;
             case 2:
-            playerManager.playerNumber = PlayerNumber.three;
+            playerManager.PlayerNumber = PlayerNumber.three;
             break;
             case 3: 
-            playerManager.playerNumber = PlayerNumber.four;
+            playerManager.PlayerNumber = PlayerNumber.four;
             break;
         }
          

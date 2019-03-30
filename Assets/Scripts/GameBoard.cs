@@ -38,9 +38,9 @@ public float GameboardHeight;
 	public void SetUpGameBoard(int Columns, int Rows){
 		int AmountOfObjects = (Columns * Rows);
 		ObjectPooler.InstantiateObjects(AmountOfObjects);
-		SpawnGameObjects();
+		StartCoroutine(SpawnGameObjects());
 	}
-	public void SpawnGameObjects(){
+	public IEnumerator SpawnGameObjects(){
 		List<Vector2> Locations =  new List<Vector2>();
 		foreach(GameObject obj in ObjectPooler.PooledItems){
 			if(!obj.activeInHierarchy){
@@ -55,9 +55,9 @@ public float GameboardHeight;
 			}
 		}
 		for(int i = 0; i <= InitialBallCount; i++){
+			yield return new WaitForSeconds(0.025f);
 			ObjectPooler.PooledItems[i].transform.localPosition = Locations[i];
 			ObjectPooler.PooledItems[i].SetActive(true);
 		}
 	}
-
 }
