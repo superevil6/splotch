@@ -48,4 +48,10 @@ namespace Enums{
 		Hard,
 		VeryHard
 	}
+	public enum Powerups{
+		RainbowOut,
+		MegaWhiteOut,
+		ColorBomb,
+		BlackBomb
+	}
 }

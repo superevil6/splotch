@@ -6,6 +6,7 @@ using Enums;
 using System;
 
 public class PlayerColorManager : MonoBehaviour {
+public PlayerManager PlayerManager;
 public List<PlayerColor> ColorQueue;
 public Image FirstColorPanel; 
 public Image SecondColorPanel; 
@@ -22,7 +23,7 @@ public Image ThirdColorPanel;
 	// Update is called once per frame
 	void Update () {
 		if(ColorQueue.Count < 3){
-			ColorQueue.Add(GeneratePlayerColor(PlayerColor.red));
+			AddColorToQueue();
 		}
 
 		else{
@@ -49,7 +50,7 @@ public Image ThirdColorPanel;
 			ColorQueue.Add(GenerateNonConsecutiveColor(ColorQueue[0]));
 		}
 		else{
-			ColorQueue.Add(GeneratePlayerColor(PlayerColor.red));
+			AddColorToQueue();
 		}
 	}
 		public Color32 SetColor(PlayerColor PlayerColor){
@@ -64,10 +65,18 @@ public Image ThirdColorPanel;
 		return Color.grey;
 	}
 		public PlayerColor GenerateNonConsecutiveColor(PlayerColor AlreadyUsedColor){
-		PlayerColor ChosenColor = GeneratePlayerColor(PlayerColor.red);
+		PlayerColor ChosenColor = GeneratePlayerColor(PlayerManager.IgnoredPlayerColor);
 		while(ChosenColor == AlreadyUsedColor){
-			ChosenColor = GeneratePlayerColor(PlayerColor.red);
+			ChosenColor = GeneratePlayerColor(PlayerManager.IgnoredPlayerColor);
 		}
 		return ChosenColor;
+	}
+	public void AddColorToQueue(){
+		if(PlayerManager.Difficulty == Difficulty.VeryEasy || PlayerManager.Difficulty == Difficulty.Easy){
+			ColorQueue.Add(GeneratePlayerColor(PlayerManager.IgnoredPlayerColor));
+		}
+		else{
+			ColorQueue.Add(GeneratePlayerColor());
+		}
 	}
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour {
+public PlayerManager PlayerManager;
 public Text ScoreText;
 
 
@@ -14,13 +15,13 @@ public Text ScoreText;
 	
 	// Update is called once per frame
 	void Update () {
-		ScoreText.text = Constants.Score.ToString();
-		if(Constants.RensaTime > 0){
-			Constants.RensaTime -= Time.deltaTime;
+		ScoreText.text = PlayerManager.Score.ToString();
+		if(PlayerManager.RensaTime > 0){
+			PlayerManager.RensaTime -= Time.deltaTime;
 		}
 		else{
-			print("Times up, multiplier was: " + Constants.ScoreMultiplier);
-			Constants.ScoreMultiplier = 1;
+			print("Times up, multiplier was: " + PlayerManager.ScoreMultiplier);
+			PlayerManager.ScoreMultiplier = 1;
 		}
 	}
 }

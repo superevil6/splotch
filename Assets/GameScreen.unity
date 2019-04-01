@@ -355,6 +355,32 @@ MonoBehaviour:
     state: 3
     show: 0
     deleteQuestion: 0
+--- !u!1 &1107620882 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7604532532690821479, guid: f6edc78711b57d94795de27b25e2c25a,
+    type: 3}
+  m_PrefabInstance: {fileID: 7604532532260016103}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1107620884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1107620882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b65681feac2174579819cef4ab4b932a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerManager: {fileID: 1462322039}
+  ScoreText: {fileID: 1570581498}
+--- !u!1 &1173772282 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7901652290025056018, guid: f6edc78711b57d94795de27b25e2c25a,
+    type: 3}
+  m_PrefabInstance: {fileID: 7604532532260016103}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1214722880 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6309547230445666601, guid: f6edc78711b57d94795de27b25e2c25a,
@@ -454,10 +480,16 @@ MonoBehaviour:
   gameBoard: {fileID: 710305542}
   objectPooler: {fileID: 710305541}
   detectorManager: {fileID: 710305540}
+  ScoreManager: {fileID: 0}
   PlayerColorManager: {fileID: 1874269397}
   PlayerNumber: 0
-  Difficulty: 4
-  IgnoredColor: 0
+  Difficulty: 2
+  IgnoredPlayerColor: 3
+  IgnoredBallColor: 1
+  GameOverPanel: {fileID: 1173772282}
+  WeightedBallColorPool: 
+  DefaultColorWeights: 0a000000010000000f0000001400000014000000140000001e0000001e0000001e000000
+  PlayerColorPool: 
   DropSpeed: 1
   DropSpeedIncrease: 5
   GameOver: 0
@@ -467,6 +499,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 7604532532260016103}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1570581498 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7604532531746189486, guid: f6edc78711b57d94795de27b25e2c25a,
+    type: 3}
+  m_PrefabInstance: {fileID: 7604532532260016103}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1665337299 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6534035908330118878, guid: f6edc78711b57d94795de27b25e2c25a,
@@ -666,12 +710,22 @@ PrefabInstance:
     - target: {fileID: 7604532531917387857, guid: f6edc78711b57d94795de27b25e2c25a,
         type: 3}
       propertyPath: InitialBallCount
-      value: 40
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7604532531917387857, guid: f6edc78711b57d94795de27b25e2c25a,
         type: 3}
       propertyPath: Columns
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7604532531917387857, guid: f6edc78711b57d94795de27b25e2c25a,
+        type: 3}
+      propertyPath: Rows
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 7901652290025056018, guid: f6edc78711b57d94795de27b25e2c25a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7604532533473166492, guid: f6edc78711b57d94795de27b25e2c25a,
         type: 3}
@@ -778,6 +832,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 7604532533410780451, guid: f6edc78711b57d94795de27b25e2c25a,
+        type: 3}
+      propertyPath: PlayerManager
+      value: 
+      objectReference: {fileID: 1462322039}
     - target: {fileID: 3133417409140420805, guid: f6edc78711b57d94795de27b25e2c25a,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -786,7 +845,7 @@ PrefabInstance:
     - target: {fileID: 5009545307292936001, guid: f6edc78711b57d94795de27b25e2c25a,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -233.11
+      value: -233.10999
       objectReference: {fileID: 0}
     - target: {fileID: 5009545307292936001, guid: f6edc78711b57d94795de27b25e2c25a,
         type: 3}
@@ -814,15 +873,30 @@ PrefabInstance:
       propertyPath: RemoveColor
       value: 
       objectReference: {fileID: 1665337304}
+    - target: {fileID: 686213791545937986, guid: f6edc78711b57d94795de27b25e2c25a,
+        type: 3}
+      propertyPath: PlayerManager
+      value: 
+      objectReference: {fileID: 1462322039}
+    - target: {fileID: 686213791545937986, guid: f6edc78711b57d94795de27b25e2c25a,
+        type: 3}
+      propertyPath: playerColorManager
+      value: 
+      objectReference: {fileID: 1874269397}
+    - target: {fileID: 686213791545937986, guid: f6edc78711b57d94795de27b25e2c25a,
+        type: 3}
+      propertyPath: StartWait
+      value: 2.52
+      objectReference: {fileID: 0}
     - target: {fileID: 6027358515609113310, guid: f6edc78711b57d94795de27b25e2c25a,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -599
+      value: -337.4
       objectReference: {fileID: 0}
     - target: {fileID: 6027358515609113310, guid: f6edc78711b57d94795de27b25e2c25a,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -100
+      value: -397.4
       objectReference: {fileID: 0}
     - target: {fileID: 7604532533182775622, guid: f6edc78711b57d94795de27b25e2c25a,
         type: 3}
@@ -843,6 +917,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RootOrder
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8379984083398436885, guid: f6edc78711b57d94795de27b25e2c25a,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7604532531715692257, guid: f6edc78711b57d94795de27b25e2c25a,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6edc78711b57d94795de27b25e2c25a, type: 3}

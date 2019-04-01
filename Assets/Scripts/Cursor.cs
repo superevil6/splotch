@@ -7,6 +7,7 @@ public class Cursor : MonoBehaviour
 {
     //public PlayerColor playerColor;
     public PlayerColorManager playerColorManager;
+    public PlayerManager PlayerManager;
     public RemoveColor RemoveColor;
     public SpriteRenderer Sprite;
     public Rigidbody2D Rigidbody2D;
@@ -18,13 +19,14 @@ public class Cursor : MonoBehaviour
     private RaycastHit2D[] HitRight;
     private RaycastHit2D CurrentBall;
     private float WaitTimer;
+    public float StartWait;
     // Start is called before the first frame update
     void Start()
     {
         Ballsize = Constants.FindOffset(Ball.gameObject);
         Sprite = GetComponent<SpriteRenderer>();
-        transform.position = new Vector3(0, 0, 0);
-        playerColorManager = GameObject.FindGameObjectWithTag("PlayerColor").GetComponent<PlayerColorManager>();
+        StartCoroutine(FindFirstBall(StartWait));
+        //transform.position = new Vector3(0, 0, 0);
     }
 
     // Update is called once per frame
@@ -33,7 +35,7 @@ public class Cursor : MonoBehaviour
         if(playerColorManager.ColorQueue.Count > 1){
             Sprite.color = playerColorManager.SetColor(playerColorManager.ColorQueue[0]);
         }
-        if(WaitTimer <= 0){
+        if(WaitTimer <= 0 && !PlayerManager.GameOver){
             //Up
             if(Input.GetAxis("Vertical") ==  -1f){
                 HitUp = Physics2D.RaycastAll(transform.position, Vector2.up, Ballsize.y * 2);
@@ -101,7 +103,15 @@ public class Cursor : MonoBehaviour
         if(WaitTimer > 0){
             WaitTimer -= Time.deltaTime;
         }
-
     }
-
+    public IEnumerator FindFirstBall(float startTime){
+        yield return new WaitForSeconds(startTime);
+        HitRight = Physics2D.RaycastAll(transform.position, Vector2.right, Ballsize.x * 3);
+        if(HitRight.Length > 1 && HitRight[1].transform.gameObject.tag == "Ball"){
+            transform.position = HitRight[1].transform.position;
+        }
+        else if(HitRight.Length == 1 && HitRight[0].transform.gameObject.tag == "Ball"){
+            transform.position = HitRight[0].transform.position;
+        }
+    }
 }

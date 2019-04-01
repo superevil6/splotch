@@ -7,6 +7,8 @@ using Enums;
 
 public class Ball : MonoBehaviour {
 public BallColor BallColor;
+//public BallColor IgnoredColor;
+public int[] WeightedBallColorPool;
 public Detection Detection;
 private BallColor NewColor;
 public BallType Type;
@@ -18,7 +20,6 @@ public Rigidbody2D Rigidbody2D;
 public GameBoard GameBoard;
 private Color32 OldBallColor;
 private Color32 NewBallColor;
-public BallColor ColorToIgnore;
 public float TransitionTime;
 private float TimeBetweenChecks;
 public float TimeBetweenChecksTotal;
@@ -31,17 +32,19 @@ private bool DoOnce = false;
 	void Start () {
 		GameBoard = GetComponentInParent<GameBoard>();
 		PlayerManager = GetComponentInParent<PlayerManager>();
+		WeightedBallColorPool = PlayerManager.WeightedBallColorPool;
 		Detection = GetComponent<Detection>();
+		//IgnoredColor = (BallColor)PlayerManager.IgnoredColor;
 		//GameBoard.Scale = 1f - GameBoard.Columns * 0.10f;
 		// transform.localScale = new Vector2((transform.localScale.x * GameBoard.Scale /2), (transform.localScale.y * GameBoard.Scale) /2);
 		// BoxCollider2D.size = new Vector2(15 * transform.localScale.x, 15 * transform.localScale.y);
 		transform.localScale = new Vector2((GameBoard.GameboardWidth / GameBoard.Columns) * 0.5f, ((GameBoard.GameboardHeight) / GameBoard.Columns) * 0.5f);
+		SetupBall();
 		//BoxCollider2D.size = new Vector2((GameBoard.GameboardWidth / GameBoard.Columns) * 0.25f, ((GameBoard.GameboardHeight) / GameBoard.Columns) * 0.25f);
 		
 	}
 
 	void OnEnable () {
-
 		SetupBall();
 	}
 	// Update is called once per frame
@@ -56,6 +59,9 @@ private bool DoOnce = false;
 		if(Rigidbody2D.velocity.magnitude <= 1 && HasMoved){
 			Detection.CheckForMatches();
 			HasMoved = false;
+		}
+		if(PlayerManager.GameOver){
+			SetNewBallColor(BallColor.black);
 		}
 	}
 
@@ -76,12 +82,12 @@ private bool DoOnce = false;
 		}
 		return ColorToReturn;
 	}
-	public static BallColor WeightedGenerateColor(int[] WeightedValues){
+	public BallColor WeightedGenerateColor(){ //(int[] WeightedValues){
 		Array Colors = Enum.GetValues(typeof(BallColor));
-		for(int i = 0; i < WeightedValues.Length; i++){
+		for(int i = 0; i < WeightedBallColorPool.Length; i++){
 			int RNG = UnityEngine.Random.Range(0, 100);
-			if(RNG < WeightedValues[i]){
-				return (BallColor)Colors.GetValue(i + 1);
+			if(RNG < WeightedBallColorPool[i]){
+				return (BallColor)Colors.GetValue(i);
 			}
 			continue;
 		}
@@ -113,14 +119,15 @@ private bool DoOnce = false;
 	private void SetupBall(){
 		SpriteRenderer = GetComponent<SpriteRenderer>();
 		BoxCollider2D = GetComponent<BoxCollider2D>();
-		//gameObject.GetComponent<RectTransform>();
+		SpecialBallCheck(false);
 		SpriteRenderer.sprite = Sprite;
-		DetermineColor();
+		if(Type != BallType.rainbow){
+			DetermineColor();
+		}
 	}
 
 	public void DetermineColor(){
-		BallColor = WeightedGenerateColor(Constants.DefaultColorWeights);
-		//BallColor = GenerateColor(ColorToIgnore);
+		BallColor = WeightedGenerateColor();
 		SpriteRenderer.color = SetColor(BallColor);
 	}
 
@@ -201,5 +208,15 @@ private bool DoOnce = false;
 		TimeLeft = TransitionTime;
 		Detection.CheckForMatches();
 	}
-
+	public BallType SpecialBallCheck(bool BattleItems){
+		int RNG = UnityEngine.Random.Range(0, 100);
+		if(RNG < 1){
+			return BallType.rainbow;
+		}
+		RNG = UnityEngine.Random.Range(0, 100);
+		if(BattleItems && RNG < 1){
+			return BallType.powerup;
+		}
+		return BallType.normal;
+	}
 }

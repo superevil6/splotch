@@ -4,10 +4,12 @@ using UnityEngine;
 using Enums;
 
 public class Detection : MonoBehaviour {
+public PlayerManager PlayerManager;
 public Ball Ball;
 private Vector2 BallSize;
 //public ObjectPooler ObjectPooler;
 public Rigidbody2D Rigidbody2D;
+public ParticleSystem ParticleSystem;
 private RaycastHit2D[] HitUp;
 private RaycastHit2D[] HitDown;
 private RaycastHit2D[] HitLeft;
@@ -77,10 +79,11 @@ private BallColor BallColor;
 
 	private void DeactivateHits(List<GameObject> Hits){
 		if(Hits.Count >= 3){
+			ParticleSystem.Emit(5);
 			int scoreValue = PointValue(Hits[0].GetComponent<Ball>().BallColor);
-			Constants.Score += Constants.ScoreMultiplier * scoreValue * Hits.Count;
-			Constants.ScoreMultiplier += 1;
-			Constants.RensaTime = Constants.AllotedRensaTime;
+			PlayerManager.Score += PlayerManager.ScoreMultiplier * scoreValue * Hits.Count;
+			PlayerManager.ScoreMultiplier += 1;
+			PlayerManager.RensaTime = PlayerManager.AllotedRensaTime;
 			foreach(GameObject Hit in Hits){
 			//Constants.RensaCheck = true;
 			Hit.SetActive(false);
@@ -105,7 +108,7 @@ private BallColor BallColor;
 		if(ballColor == BallColor.red || ballColor == BallColor.blue || ballColor == BallColor.yellow){
 			return 100;
 		}
-		if(ballColor == BallColor.purple || ballColor == BallColor.green || ballColor == BallColor.orange){
+		if(ballColor == BallColor.purple || ballColor == BallColor.green || ballColor == BallColor.orange || Ball.Type == BallType.rainbow){
 			return 200;
 		}
 		if(ballColor == BallColor.brown){
