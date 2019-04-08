@@ -22,6 +22,8 @@ private BallColor BallColor;
 	// Use this for initialization
 	void Start () {
 		BallColor = Ball.BallColor;
+		// var PartMain = ParticleSystem.main; 
+		// PartMain.startColor = Ball.SetColor(Ball.BallColor);
 		BallSize = Constants.FindOffset(Ball.gameObject);
 		//BallSize = new Vector2(BallSize.x - Ball.GameBoardObject.Scale , BallSize.y - Ball.GameBoardObject.Scale);
 		//ObjectPooler = GameObject.FindGameObjectWithTag("ObjectPooler").GetComponent<ObjectPooler>();
@@ -79,7 +81,7 @@ private BallColor BallColor;
 
 	private void DeactivateHits(List<GameObject> Hits){
 		if(Hits.Count >= 3){
-			ParticleSystem.Emit(5);
+			// ParticleSystem.Emit(5);
 			int scoreValue = PointValue(Hits[0].GetComponent<Ball>().BallColor);
 			PlayerManager.Score += PlayerManager.ScoreMultiplier * scoreValue * Hits.Count;
 			PlayerManager.ScoreMultiplier += 1;

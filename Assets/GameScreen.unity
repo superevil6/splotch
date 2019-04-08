@@ -112,6 +112,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &15742392 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6678742338074265267, guid: f6edc78711b57d94795de27b25e2c25a,
+    type: 3}
+  m_PrefabInstance: {fileID: 7604532532260016103}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &489779390 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3994845635099718352, guid: f6edc78711b57d94795de27b25e2c25a,
@@ -375,6 +381,106 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerManager: {fileID: 1462322039}
   ScoreText: {fileID: 1570581498}
+  ComboText: {fileID: 15742392}
+  Cursor: {fileID: 1665337299}
+  BallPopSound: {fileID: 8300000, guid: b68cf2a38728ab44d95f731288d157c0, type: 3}
+  AudioSource: {fileID: 1107620887}
+--- !u!82 &1107620887
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1107620882}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1173772282 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7901652290025056018, guid: f6edc78711b57d94795de27b25e2c25a,
@@ -490,7 +596,7 @@ MonoBehaviour:
   WeightedBallColorPool: 
   DefaultColorWeights: 0a000000010000000f0000001400000014000000140000001e0000001e0000001e000000
   PlayerColorPool: 
-  DropSpeed: 1
+  DropSpeed: 0.5
   DropSpeedIncrease: 5
   GameOver: 0
 --- !u!224 &1490242427 stripped
@@ -710,17 +816,17 @@ PrefabInstance:
     - target: {fileID: 7604532531917387857, guid: f6edc78711b57d94795de27b25e2c25a,
         type: 3}
       propertyPath: InitialBallCount
-      value: 30
+      value: 27
       objectReference: {fileID: 0}
     - target: {fileID: 7604532531917387857, guid: f6edc78711b57d94795de27b25e2c25a,
         type: 3}
       propertyPath: Columns
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7604532531917387857, guid: f6edc78711b57d94795de27b25e2c25a,
         type: 3}
       propertyPath: Rows
-      value: 14
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 7901652290025056018, guid: f6edc78711b57d94795de27b25e2c25a,
         type: 3}
@@ -855,14 +961,8 @@ PrefabInstance:
     - target: {fileID: 1021630001999376167, guid: f6edc78711b57d94795de27b25e2c25a,
         type: 3}
       propertyPath: m_SortingOrder
-      value: 10
+      value: 110
       objectReference: {fileID: 0}
-    - target: {fileID: 686213791545937986, guid: f6edc78711b57d94795de27b25e2c25a,
-        type: 3}
-      propertyPath: Ball
-      value: 
-      objectReference: {fileID: 114911392157144544, guid: 79ae8dd76bb384c328c25239630fa4a4,
-        type: 3}
     - target: {fileID: 686213791545937986, guid: f6edc78711b57d94795de27b25e2c25a,
         type: 3}
       propertyPath: Rigidbody2D
@@ -878,11 +978,6 @@ PrefabInstance:
       propertyPath: PlayerManager
       value: 
       objectReference: {fileID: 1462322039}
-    - target: {fileID: 686213791545937986, guid: f6edc78711b57d94795de27b25e2c25a,
-        type: 3}
-      propertyPath: playerColorManager
-      value: 
-      objectReference: {fileID: 1874269397}
     - target: {fileID: 686213791545937986, guid: f6edc78711b57d94795de27b25e2c25a,
         type: 3}
       propertyPath: StartWait
@@ -926,6 +1021,26 @@ PrefabInstance:
     - target: {fileID: 7604532531715692257, guid: f6edc78711b57d94795de27b25e2c25a,
         type: 3}
       propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7604532531917387856, guid: f6edc78711b57d94795de27b25e2c25a,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7604532531917387856, guid: f6edc78711b57d94795de27b25e2c25a,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.13432837
+      objectReference: {fileID: 0}
+    - target: {fileID: 7604532531917387856, guid: f6edc78711b57d94795de27b25e2c25a,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7604532531917387856, guid: f6edc78711b57d94795de27b25e2c25a,
+        type: 3}
+      propertyPath: m_Color.a
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -39,7 +39,7 @@ private bool DoOnce = false;
 		// transform.localScale = new Vector2((transform.localScale.x * GameBoard.Scale /2), (transform.localScale.y * GameBoard.Scale) /2);
 		// BoxCollider2D.size = new Vector2(15 * transform.localScale.x, 15 * transform.localScale.y);
 		transform.localScale = new Vector2((GameBoard.GameboardWidth / GameBoard.Columns) * 0.5f, ((GameBoard.GameboardHeight) / GameBoard.Columns) * 0.5f);
-		SetupBall();
+		//SetupBall();
 		//BoxCollider2D.size = new Vector2((GameBoard.GameboardWidth / GameBoard.Columns) * 0.25f, ((GameBoard.GameboardHeight) / GameBoard.Columns) * 0.25f);
 		
 	}
@@ -82,7 +82,7 @@ private bool DoOnce = false;
 		}
 		return ColorToReturn;
 	}
-	public BallColor WeightedGenerateColor(){ //(int[] WeightedValues){
+	public BallColor WeightedGenerateColor(){
 		Array Colors = Enum.GetValues(typeof(BallColor));
 		for(int i = 0; i < WeightedBallColorPool.Length; i++){
 			int RNG = UnityEngine.Random.Range(0, 100);

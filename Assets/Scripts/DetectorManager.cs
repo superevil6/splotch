@@ -13,15 +13,19 @@ public GameObject Ball;
 //Gameboard so it knows where to place the initial detector.
 public GameBoard GameBoard;
 public float InitialY;
+private bool StartGeneration = false;
 
 	// Use this for initialization
 	void Start () {
-		GenerateDetectors(GameBoard.Rows, GameBoard.Columns);
+		StartCoroutine("GameStartDelay");
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if(StartGeneration){
+			GenerateDetectors(GameBoard.Rows, GameBoard.Columns);
+			StartGeneration = false;
+		}
 	}
 
 	public void GenerateDetectors(int rows, int columns){
@@ -54,5 +58,10 @@ public float InitialY;
 	}
 	public void PlaceDetector(Vector2 Location){
 
+	}
+	public IEnumerator GameStartDelay(){
+		print("starting");
+		yield return new WaitForSeconds(2);
+		StartGeneration = true;
 	}
 }

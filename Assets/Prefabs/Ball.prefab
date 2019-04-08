@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 114108338342639858}
   - component: {fileID: 50413992120349606}
   - component: {fileID: 61898284635218806}
-  - component: {fileID: 8242508828219763993}
-  - component: {fileID: 946963954001307935}
+  - component: {fileID: 5222473110633894283}
+  - component: {fileID: 349145314790587619}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Ball
@@ -129,7 +129,7 @@ MonoBehaviour:
   PlayerManager: {fileID: 0}
   Ball: {fileID: 114911392157144544}
   Rigidbody2D: {fileID: 50413992120349606}
-  ParticleSystem: {fileID: 8242508828219763993}
+  ParticleSystem: {fileID: 5222473110633894283}
 --- !u!50 &50413992120349606
 Rigidbody2D:
   serializedVersion: 4
@@ -177,7 +177,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.25, y: 2}
   m_EdgeRadius: 0
---- !u!198 &8242508828219763993
+--- !u!198 &5222473110633894283
 ParticleSystem:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -185,15 +185,15 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1254343284260142}
   serializedVersion: 6
-  lengthInSec: 5
-  simulationSpeed: 1
+  lengthInSec: 1
+  simulationSpeed: 2
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
@@ -252,7 +252,7 @@ ParticleSystem:
       m_RotationOrder: 4
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
-  scalingMode: 1
+  scalingMode: 0
   randomSeed: 0
   InitialModule:
     serializedVersion: 3
@@ -260,7 +260,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 1
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -745,7 +745,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 1000
+    maxNumParticles: 5
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -4781,7 +4781,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!199 &946963954001307935
+--- !u!199 &349145314790587619
 ParticleSystemRenderer:
   serializedVersion: 6
   m_ObjectHideFlags: 2
@@ -4799,7 +4799,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10308, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
   - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
