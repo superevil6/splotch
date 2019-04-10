@@ -26,7 +26,7 @@ private int TempScoreMultiplier = 1;
 				AudioSource.Play();
 				TempScoreMultiplier = PlayerManager.ScoreMultiplier;
 			}
-			if(PlayerManager.ScoreMultiplier > 1){
+			if(PlayerManager.ScoreMultiplier > 2){
 				StopCoroutine("DisplayComboText");
 				StartCoroutine("DisplayComboText");
 			}

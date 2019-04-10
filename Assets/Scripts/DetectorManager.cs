@@ -39,7 +39,7 @@ private bool StartGeneration = false;
 			obj.transform.SetParent(GameBoard.transform);
 			obj.transform.localScale = new Vector2((ObjectDimensions.x / columns) * 10, 10);
 			obj.transform.localPosition = new Vector2(
-				((GameboardWidth/columns) * i) + ((GameboardWidth/columns)/2), GameboardHeight);
+				((GameboardWidth/columns) * i) + ((GameboardWidth/columns)/2), GameboardHeight + 200);
 
 		}
 	}

@@ -34,17 +34,12 @@ private bool DoOnce = false;
 		PlayerManager = GetComponentInParent<PlayerManager>();
 		WeightedBallColorPool = PlayerManager.WeightedBallColorPool;
 		Detection = GetComponent<Detection>();
-		//IgnoredColor = (BallColor)PlayerManager.IgnoredColor;
-		//GameBoard.Scale = 1f - GameBoard.Columns * 0.10f;
-		// transform.localScale = new Vector2((transform.localScale.x * GameBoard.Scale /2), (transform.localScale.y * GameBoard.Scale) /2);
-		// BoxCollider2D.size = new Vector2(15 * transform.localScale.x, 15 * transform.localScale.y);
 		transform.localScale = new Vector2((GameBoard.GameboardWidth / GameBoard.Columns) * 0.5f, ((GameBoard.GameboardHeight) / GameBoard.Columns) * 0.5f);
-		//SetupBall();
-		//BoxCollider2D.size = new Vector2((GameBoard.GameboardWidth / GameBoard.Columns) * 0.25f, ((GameBoard.GameboardHeight) / GameBoard.Columns) * 0.25f);
-		
+		SetupBall();		
 	}
 
 	void OnEnable () {
+		TimeLeft = 0;
 		SetupBall();
 	}
 	// Update is called once per frame
@@ -65,12 +60,12 @@ private bool DoOnce = false;
 		}
 	}
 
-	void OnMouseDown()
-	{
-		ChangeBallColor(PlayerManager.PlayerColorManager.ColorQueue[0]);
-		PlayerManager.PlayerColorManager.UpdateColorQueue();
-	}
-	public static BallColor GenerateColor(){
+	// void OnMouseDown()
+	// {
+	// 	ChangeBallColor(PlayerManager.PlayerColorManager.ColorQueue[0]);
+	// 	PlayerManager.PlayerColorManager.UpdateColorQueue();
+	// }
+	public BallColor GenerateColor(){
 		Array Colors = Enum.GetValues(typeof(BallColor));
 		return (BallColor)Colors.GetValue(UnityEngine.Random.Range(0, Colors.Length));
 	}
@@ -122,12 +117,15 @@ private bool DoOnce = false;
 		SpecialBallCheck(false);
 		SpriteRenderer.sprite = Sprite;
 		if(Type != BallType.rainbow){
+			//This is a temp fix if you can't fix the issue that lets you click brown balls.
+			//NewBallColor = OldBallColor;
 			DetermineColor();
 		}
 	}
 
 	public void DetermineColor(){
 		BallColor = WeightedGenerateColor();
+		NewColor = BallColor;
 		SpriteRenderer.color = SetColor(BallColor);
 	}
 

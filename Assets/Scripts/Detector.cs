@@ -44,7 +44,7 @@ public int RandomRange;
 
 	public void CheckColumnsForMatches(){
 		Hits = Physics2D.RaycastAll(transform.position, -Vector2.up, GameBoard.GameboardHeight / 2);
-		if(Hits.Length + 1 > GameBoard.Rows){
+		if(Hits.Length > GameBoard.Rows){
 			PlayerManager.GameOver = true;
 		}
 	}
