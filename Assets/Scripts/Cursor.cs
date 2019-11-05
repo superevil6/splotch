@@ -10,7 +10,8 @@ public class Cursor : MonoBehaviour
     public PlayerManager PlayerManager;
     public GameBoard Gameboard;
     public RemoveColor RemoveColor;
-    public SpriteRenderer Sprite;
+    public SpriteRenderer SpriteRenderer;
+    public Sprite Sprite;
     public Rigidbody2D Rigidbody2D;
     public Ball Ball;
     public Vector2 Ballsize;
@@ -21,11 +22,21 @@ public class Cursor : MonoBehaviour
     private RaycastHit2D CurrentBall;
     private float WaitTimer;
     public float StartWait;
+    public string PlayerPrefix;
     // Start is called before the first frame update
     void Start()
     {
+        switch(PlayerManager.PlayerNumber){
+            case PlayerNumber.one:
+            PlayerPrefix = "P1";
+            break;
+            case PlayerNumber.two:
+            PlayerPrefix = "P2";
+            break;
+        }
         Ballsize = Constants.FindOffset(Ball.gameObject);
-        Sprite = GetComponent<SpriteRenderer>();
+        SpriteRenderer = GetComponent<SpriteRenderer>();
+        SpriteRenderer.sprite = null;
         StartCoroutine(FindFirstBall(StartWait));
         //transform.position = new Vector3(0, 0, 0);
     }
@@ -34,11 +45,11 @@ public class Cursor : MonoBehaviour
     void Update()
     {
         if(playerColorManager.ColorQueue.Count > 1){
-            Sprite.color = playerColorManager.SetColor(playerColorManager.ColorQueue[0]);
+            SpriteRenderer.color = playerColorManager.SetColor(playerColorManager.ColorQueue[0]);
         }
         if(WaitTimer <= 0 && !PlayerManager.GameOver){
             //Up
-            if(Input.GetAxis("Vertical") ==  -1f){
+            if(Input.GetAxis(PlayerPrefix + "Vertical") ==  -1f){
                 HitUp = Physics2D.RaycastAll(transform.position, Vector2.up, Ballsize.y * 2);
                 if(HitUp.Length > 1 && HitUp[1].transform.gameObject.tag == "Ball"){
                     transform.position = HitUp[1].transform.position;
@@ -46,7 +57,7 @@ public class Cursor : MonoBehaviour
                 WaitTimer = 0.15f;
             }
             //Down
-            if(Input.GetAxis("Vertical") == 1f){
+            if(Input.GetAxis(PlayerPrefix + "Vertical") == 1f){
                 HitDown = Physics2D.RaycastAll(transform.position, -Vector2.up, Ballsize.y * Gameboard.Rows);
                 if(HitDown.Length >= 1 && HitDown[0].transform.gameObject.tag == "Ball"){
                     if(transform.position.y - HitDown[0].transform.position.y >= Ballsize.y / 4){
@@ -60,7 +71,7 @@ public class Cursor : MonoBehaviour
 
             }
             //Left
-            if(Input.GetAxis("Horizontal") == -1f){
+            if(Input.GetAxis(PlayerPrefix + "Horizontal") == -1f){
                 HitLeft = Physics2D.RaycastAll(transform.position, -Vector2.right, Ballsize.x * Gameboard.Columns);
                 
                 if(HitLeft.Length >= 1 && HitLeft[0].transform.gameObject.tag == "Ball"){
@@ -74,7 +85,7 @@ public class Cursor : MonoBehaviour
                 WaitTimer = 0.15f;
             }
             //Right
-            if(Input.GetAxis("Horizontal") == 1f){
+            if(Input.GetAxis(PlayerPrefix + "Horizontal") == 1f){
                 HitRight = Physics2D.RaycastAll(transform.position, Vector2.right, Ballsize.x * Gameboard.Columns);
                 if(HitRight.Length >= 1 && HitRight[0].transform.gameObject.tag == "Ball"){
                     if(transform.position.x - HitRight[0].transform.position.x >= Ballsize.x / 4){
@@ -88,14 +99,14 @@ public class Cursor : MonoBehaviour
             }
    
         }
-        if(Input.GetButtonDown("Fire1")){
+        if(Input.GetButtonDown(PlayerPrefix + "Fire1")){
             CurrentBall = Physics2D.Raycast(transform.position, Vector2.zero, 0.1f);
             if(CurrentBall && CurrentBall.transform.gameObject.tag == "Ball" && LegalMoveCheck(CurrentBall.transform.GetComponent<Ball>().BallColor, playerColorManager.ColorQueue[0])){
                 CurrentBall.transform.gameObject.GetComponent<Ball>().ChangeBallColor(playerColorManager.ColorQueue[0]);
                 playerColorManager.UpdateColorQueue();
             }
         }
-        if(Input.GetButtonDown("Fire2")){
+        if(Input.GetButtonDown(PlayerPrefix + "Fire2")){
             CurrentBall = Physics2D.Raycast(transform.position, Vector2.zero, 0.1f);
             if(CurrentBall && CurrentBall.transform.gameObject.tag == "Ball"){
                 if(CurrentBall.transform.gameObject.GetComponent<Ball>().BallColor != BallColor.white && 
@@ -111,6 +122,9 @@ public class Cursor : MonoBehaviour
     }
     public IEnumerator FindFirstBall(float startTime){
         yield return new WaitForSeconds(startTime);
+        SpriteRenderer.sprite = Sprite;
+        transform.localPosition = new Vector2(Gameboard.transform.localPosition.x, -Gameboard.GameboardHeight + 10);
+        print(-Gameboard.GameboardHeight * 2);
         HitRight = Physics2D.RaycastAll(transform.position, Vector2.right, Ballsize.x * 3);
         if(HitRight.Length > 1 && HitRight[1].transform.gameObject.tag == "Ball"){
             transform.position = HitRight[1].transform.position;

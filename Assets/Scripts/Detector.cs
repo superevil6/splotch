@@ -5,8 +5,9 @@ using UnityEngine.UI;
 using Enums;
 
 public class Detector : MonoBehaviour {
-public Image Image;
 public Orientation Orientation;
+public SpriteRenderer SpriteRenderer;
+public Sprite Sprite;
 public GameObject Ball;
 public GameBoard GameBoard;
 public PlayerManager PlayerManager;
@@ -19,6 +20,8 @@ public int RandomRange;
 	// Use this for initialization
 	void Start () {
 		GameBoard = GameObject.FindGameObjectWithTag("ObjectPooler").GetComponent<GameBoard>();
+		SpriteRenderer = GetComponent<SpriteRenderer>();
+		SpriteRenderer.sprite = Sprite;
 		ObjectPooler = GameBoard.GetComponent<ObjectPooler>();
 		PlayerManager = GameBoard.GetComponentInParent<PlayerManager>();
 		//ObjectPooler = GameObject.FindGameObjectWithTag("ObjectPooler").GetComponent<ObjectPooler>();

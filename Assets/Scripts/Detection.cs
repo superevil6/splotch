@@ -14,9 +14,17 @@ private RaycastHit2D[] HitUp;
 private RaycastHit2D[] HitDown;
 private RaycastHit2D[] HitLeft;
 private RaycastHit2D[] HitRight;
+private RaycastHit2D[] HitUpLeft;
+private RaycastHit2D[] HitUpRight;
+private RaycastHit2D[] HitDownLeft;
+private RaycastHit2D[] HitDownRight;
+
 private List<GameObject> Hits;
 private List<GameObject> VerticalHits;
 private List<GameObject> HorizontalHits;
+private List<GameObject> DiagonalHitsULDR; //from upleft to downright
+private List<GameObject> DiagonalHitsURDL; //from upright to downleft
+
 private BallColor BallColor;
 //Rework this so Columns is in a more accessible area, so I don't have repeate variables.
 	// Use this for initialization
@@ -30,6 +38,9 @@ private BallColor BallColor;
 		Hits = new List<GameObject>();
 		VerticalHits = new List<GameObject>();
 		HorizontalHits = new List<GameObject>();
+		DiagonalHitsULDR = new List<GameObject>(); 
+		DiagonalHitsURDL = new List<GameObject>(); 
+
 	}
 	
 	// Update is called once per frame
@@ -40,6 +51,8 @@ private BallColor BallColor;
 		Hits.Clear();
 		VerticalHits.Clear();
 		HorizontalHits.Clear();
+		DiagonalHitsULDR.Clear();
+		DiagonalHitsURDL.Clear();
 		BallColor = Ball.BallColor;
 		/* HitUp will check for as many balls that spawn in a column, that way if bottom ball detects the max
 		number of balls, it knows the game is over. Kind of hacky, I might redo this. */
@@ -47,10 +60,20 @@ private BallColor BallColor;
 		HitDown = Physics2D.RaycastAll(transform.position, -Vector2.up, BallSize.x * 2);
 		HitLeft = Physics2D.RaycastAll(transform.position, -Vector2.right, BallSize.y * 2);
 		HitRight = Physics2D.RaycastAll(transform.position, Vector2.right, BallSize.y * 2);
+		HitUpLeft = Physics2D.RaycastAll(transform.position, new Vector2(-1, 1), (BallSize.x * BallSize.y) * 2);
+		HitUpRight = Physics2D.RaycastAll(transform.position, new Vector2(1, 1), (BallSize.x * BallSize.y) * 2);
+		HitDownLeft = Physics2D.RaycastAll(transform.position, new Vector2(-1, -1), (BallSize.x * BallSize.y) * 2);
+		HitDownRight = Physics2D.RaycastAll(transform.position, new Vector2(1, -1), (BallSize.x * BallSize.y) * 2);
+
 		CheckDirection(VerticalHits, HitUp);
 		CheckDirection(VerticalHits, HitDown);
 		CheckDirection(HorizontalHits, HitLeft);
 		CheckDirection(HorizontalHits, HitRight);
+		CheckDirection(DiagonalHitsULDR, HitUpLeft);
+		CheckDirection(DiagonalHitsULDR, HitDownRight);
+		CheckDirection(DiagonalHitsURDL, HitUpRight);
+		CheckDirection(DiagonalHitsURDL, HitDownLeft);
+
 		StartCoroutine(WaitForColorChange(Ball.TransitionTime));
 		
 	}
@@ -96,6 +119,9 @@ private BallColor BallColor;
 		yield return new WaitForSeconds(ChangeTime);
 		DeactivateHits(HorizontalHits);
 		DeactivateHits(VerticalHits);
+		DeactivateHits(DiagonalHitsULDR);
+		DeactivateHits(DiagonalHitsURDL);
+
 	}
 
 	private bool CheckForBlackAndWhite(GameObject Ball){
