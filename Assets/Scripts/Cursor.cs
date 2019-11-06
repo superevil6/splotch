@@ -22,18 +22,12 @@ public class Cursor : MonoBehaviour
     private RaycastHit2D CurrentBall;
     private float WaitTimer;
     public float StartWait;
-    public string PlayerPrefix;
+    public PlayerNumberManager PlayerNumberManager;
+    private string PlayerPrefix;
     // Start is called before the first frame update
     void Start()
     {
-        switch(PlayerManager.PlayerNumber){
-            case PlayerNumber.one:
-            PlayerPrefix = "P1";
-            break;
-            case PlayerNumber.two:
-            PlayerPrefix = "P2";
-            break;
-        }
+        PlayerPrefix = PlayerNumberManager.PlayerPrefix;
         Ballsize = Constants.FindOffset(Ball.gameObject);
         SpriteRenderer = GetComponent<SpriteRenderer>();
         SpriteRenderer.sprite = null;

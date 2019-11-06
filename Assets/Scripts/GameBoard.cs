@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameBoard : MonoBehaviour {
+public PlayerManager PlayerManager;
 public ObjectPooler ObjectPooler;
 public int Columns;
 public int Rows;

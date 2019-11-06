@@ -29,6 +29,7 @@ private BallColor BallColor;
 //Rework this so Columns is in a more accessible area, so I don't have repeate variables.
 	// Use this for initialization
 	void Start () {
+		PlayerManager = GetComponentInParent<PlayerManager>();
 		BallColor = Ball.BallColor;
 		// var PartMain = ParticleSystem.main; 
 		// PartMain.startColor = Ball.SetColor(Ball.BallColor);

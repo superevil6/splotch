@@ -29,7 +29,11 @@ namespace Enums{
 		one,
 		two,
 		three,
-		four
+		four,
+		cpuOne,
+		cpuTwo,
+		cpuThree,
+		cpuFour
 	}
 	public enum Orientation {
 		Horizontal,
@@ -42,6 +46,13 @@ namespace Enums{
 		right
 	}
 	public enum Difficulty{
+		VeryEasy,
+		Easy,
+		Normal,
+		Hard,
+		VeryHard
+	}
+	public enum cpuDifficulty{
 		VeryEasy,
 		Easy,
 		Normal,

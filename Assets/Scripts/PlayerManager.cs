@@ -23,16 +23,19 @@ public class PlayerManager : MonoBehaviour
     public float DropSpeed;
     public float DropSpeedIncrease;
     public bool GameOver = false;
-    public static int Score;
-	public static float Time;
-	public static int ScoreMultiplier;
+    public int Score;
+	public float Time;
+	public int ScoreMultiplier;
 	//This is the amount of time you have to continue your rensa.
-	public static float AllotedRensaTime = 1.5f;
-	public static float RensaTime;
-	public static bool RensaCheck = false;
+	public float AllotedRensaTime = 1.5f;
+	public float RensaTime;
+	public bool RensaCheck = false;
+    public PlayerNumberManager PlayerNumberManager;
+    private string PlayerPrefix;
     // Start is called before the first frame update
     void Start()
     {
+        PlayerPrefix = PlayerNumberManager.PlayerPrefix;
         GameOverPanel.SetActive(false);
         
         switch(Difficulty){
@@ -67,10 +70,10 @@ public class PlayerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButtonDown("Fire3")){
+        if(Input.GetButtonDown(PlayerPrefix + "Fire3")){
             DropSpeed += DropSpeedIncrease;
         }
-        if(Input.GetButtonUp("Fire3")){
+        if(Input.GetButtonUp(PlayerPrefix + "Fire3")){
             DropSpeed -= DropSpeedIncrease;
         }
         if(GameOver){
