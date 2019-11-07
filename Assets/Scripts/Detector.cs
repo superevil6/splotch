@@ -19,12 +19,11 @@ public int RandomRange;
 
 	// Use this for initialization
 	void Start () {
-		GameBoard = GameObject.FindGameObjectWithTag("ObjectPooler").GetComponent<GameBoard>();
+		GameBoard = transform.GetComponentInParent<GameBoard>();
 		SpriteRenderer = GetComponent<SpriteRenderer>();
 		SpriteRenderer.sprite = Sprite;
 		ObjectPooler = GameBoard.GetComponent<ObjectPooler>();
 		PlayerManager = GameBoard.GetComponentInParent<PlayerManager>();
-		//ObjectPooler = GameObject.FindGameObjectWithTag("ObjectPooler").GetComponent<ObjectPooler>();
 	}
 	
 	// Update is called once per frame
