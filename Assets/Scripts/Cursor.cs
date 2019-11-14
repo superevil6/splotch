@@ -30,8 +30,14 @@ public class Cursor : MonoBehaviour
         PlayerPrefix = PlayerNumberManager.PlayerPrefix;
         Ballsize = Constants.FindOffset(Ball.gameObject);
         SpriteRenderer = GetComponent<SpriteRenderer>();
-        SpriteRenderer.sprite = null;
-        StartCoroutine(FindFirstBall(StartWait));
+        SpriteRenderer.sprite = Sprite;
+        //transform.localPosition = new Vector2(Gameboard.transform.localPosition.x + Ballsize.x, -Gameboard.GameboardHeight + 10 + Ballsize.y);
+        foreach(GameObject go in Gameboard.ObjectPooler.PooledItems){
+            if(go.activeInHierarchy && go.tag == "Ball"){
+                transform.position = go.transform.position;
+            }
+        }
+        //StartCoroutine(FindFirstBall(StartWait));
         //transform.position = new Vector3(0, 0, 0);
     }
 
@@ -117,7 +123,7 @@ public class Cursor : MonoBehaviour
     public IEnumerator FindFirstBall(float startTime){
         yield return new WaitForSeconds(startTime);
         SpriteRenderer.sprite = Sprite;
-        transform.localPosition = new Vector2(Gameboard.transform.localPosition.x, -Gameboard.GameboardHeight + 10);
+        transform.localPosition = new Vector2(Gameboard.transform.localPosition.x + Ballsize.x, -Gameboard.GameboardHeight + 10 + Ballsize.y);
         print(-Gameboard.GameboardHeight * 2);
         HitRight = Physics2D.RaycastAll(transform.position, Vector2.right, Ballsize.x * 3);
         if(HitRight.Length > 1 && HitRight[1].transform.gameObject.tag == "Ball"){

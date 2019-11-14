@@ -59,6 +59,14 @@ namespace Enums{
 		Hard,
 		VeryHard
 	}
+	public enum CPUActions{
+		Move,
+		FindBall,
+		ChangeColor,
+		WhiteOut,
+		MakeBrown,
+		Nothing
+	}
 	public enum Powerups{
 		RainbowOut,
 		MegaWhiteOut,

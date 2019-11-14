@@ -370,8 +370,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Gameplay Elements
   textList:
-  - s: Controller Support
-    state: 0
+  - s: 'CPU: If player color is red, and there are no reds, needs something to do'
+    state: 3
     show: 0
     deleteQuestion: 0
   - s: Sound Effects
@@ -386,26 +386,17 @@ MonoBehaviour:
     state: 0
     show: 0
     deleteQuestion: 0
-  - s: 'BUG: Three red blocks on the rightmost side vertically didn''t pop.'
+  - s: CPU makes brown pieces in full columns
     state: 1
     show: 0
     deleteQuestion: 0
-  - s: 'BUG: You can keep clicking colors on a black ball'
+  - s: CPU can't go left or right if up or down is valid
     state: 1
     show: 0
     deleteQuestion: 0
-  - s: 'BUG: Down Cursor goes down two spaces instead of 3 if it''s not currently
-      on a ball.'
+  - s: 'CPU: Can use whiteout'
     state: 3
-    show: 0
-    deleteQuestion: 0
-  - s: Selection Cursor
-    state: 3
-    show: 0
-    deleteQuestion: 0
-  - s: Whitening Blocks
-    state: 3
-    show: 0
+    show: 1
     deleteQuestion: 0
 --- !u!1 &1054786478 stripped
 GameObject:
@@ -718,13 +709,13 @@ MonoBehaviour:
   detectorManager: {fileID: 1475633590}
   ScoreManager: {fileID: 1054786479}
   PlayerColorManager: {fileID: 1345949267}
-  PlayerNumber: 0
+  PlayerNumber: 1
   Difficulty: 2
   IgnoredPlayerColor: 3
   IgnoredBallColor: 1
   GameOverPanel: {fileID: 114006696}
   WeightedBallColorPool: 
-  DefaultColorWeights: 320000000100000000000000050000000500000005000000140000001400000014000000
+  DefaultColorWeights: 010000003200000000000000050000000500000005000000140000001400000014000000
   PlayerColorPool: 
   DropSpeed: 4
   DropSpeedIncrease: 5
@@ -897,7 +888,7 @@ MonoBehaviour:
   WeightedBallColorPool: 
   DefaultColorWeights: 320000000100000000000000050000000500000005000000140000001400000014000000
   PlayerColorPool: 
-  DropSpeed: 4
+  DropSpeed: 2
   DropSpeedIncrease: 5
   GameOver: 0
   Score: 0
@@ -1220,7 +1211,7 @@ PrefabInstance:
     - target: {fileID: 7604532533473166492, guid: f6edc78711b57d94795de27b25e2c25a,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -59
+      value: 519
       objectReference: {fileID: 0}
     - target: {fileID: 7604532533473166492, guid: f6edc78711b57d94795de27b25e2c25a,
         type: 3}
@@ -1979,7 +1970,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2103091898}
   m_BodyType: 1
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
@@ -2012,8 +2003,8 @@ MonoBehaviour:
   PlayerManager: {fileID: 1416347127}
   PlayerColorManager: {fileID: 1345949267}
   Cursor: {fileID: 2103091900}
-  cpuDifficulty: 0
-  Ballsize: {x: 0, y: 0}
+  cpuDifficulty: 4
+  BallSize: {x: 1, y: 1}
   Gameboard: {fileID: 1475633592}
 --- !u!1001 &7604532532260016103
 PrefabInstance:
