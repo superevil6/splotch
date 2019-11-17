@@ -7,34 +7,40 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     public GameBoard gameBoard;
+    private GameManager GameManager;
     public ObjectPooler objectPooler;
     public DetectorManager detectorManager;
     public ScoreManager ScoreManager;
+    public PunishmentManager PunishmentManager;
     public PlayerColorManager PlayerColorManager;
     public PlayerNumber PlayerNumber;
     public Difficulty Difficulty;
     public PlayerColor IgnoredPlayerColor;
     public BallColor IgnoredBallColor;
     public GameObject GameOverPanel;
+    public PlayerNumberManager PlayerNumberManager;
     public int[] WeightedBallColorPool;
     //Weighted Values are processed in this order, White, BLACK BROWN GREEN PURPLE ORANGE RED BLUE YELLOW
     public int[] DefaultColorWeights = {0, 0, 10, 10, 10, 10, 30, 30, 30};
     public List<PlayerColor> PlayerColorPool;
     public float DropSpeed;
     public float DropSpeedIncrease;
+    private bool BeingPunished;
     public bool GameOver = false;
     public int Score;
 	public float Time;
 	public int ScoreMultiplier;
 	//This is the amount of time you have to continue your rensa.
+    public int NumberOfBallsBeingCleared;
+    public float NumberOfSecondsForPunishment;
 	public float AllotedRensaTime = 1.5f;
 	public float RensaTime;
 	public bool RensaCheck = false;
-    public PlayerNumberManager PlayerNumberManager;
     private string PlayerPrefix;
     // Start is called before the first frame update
     void Start()
     {
+        GameManager = GetComponentInParent<GameManager>();
         PlayerPrefix = PlayerNumberManager.PlayerPrefix;
         GameOverPanel.SetActive(false);
         
@@ -64,7 +70,6 @@ public class PlayerManager : MonoBehaviour
             break;
         }
         DetermineColorPool();
-
     }
 
     // Update is called once per frame

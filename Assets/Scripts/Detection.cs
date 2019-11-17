@@ -26,10 +26,12 @@ private List<GameObject> DiagonalHitsULDR; //from upleft to downright
 private List<GameObject> DiagonalHitsURDL; //from upright to downleft
 
 private BallColor BallColor;
+private string PlayerPrefix;
 //Rework this so Columns is in a more accessible area, so I don't have repeate variables.
 	// Use this for initialization
 	void Start () {
 		PlayerManager = GetComponentInParent<PlayerManager>();
+		PlayerPrefix = PlayerManager.PlayerNumberManager.PlayerPrefix;
 		BallColor = Ball.BallColor;
 		// var PartMain = ParticleSystem.main; 
 		// PartMain.startColor = Ball.SetColor(Ball.BallColor);
@@ -57,14 +59,14 @@ private BallColor BallColor;
 		BallColor = Ball.BallColor;
 		/* HitUp will check for as many balls that spawn in a column, that way if bottom ball detects the max
 		number of balls, it knows the game is over. Kind of hacky, I might redo this. */
-		HitUp = Physics2D.RaycastAll(transform.position, Vector2.up, BallSize.x * 2);
-		HitDown = Physics2D.RaycastAll(transform.position, -Vector2.up, BallSize.x * 2);
-		HitLeft = Physics2D.RaycastAll(transform.position, -Vector2.right, BallSize.y * 2);
-		HitRight = Physics2D.RaycastAll(transform.position, Vector2.right, BallSize.y * 2);
-		HitUpLeft = Physics2D.RaycastAll(transform.position, new Vector2(-1, 1), (BallSize.x * BallSize.y) * 2);
-		HitUpRight = Physics2D.RaycastAll(transform.position, new Vector2(1, 1), (BallSize.x * BallSize.y) * 2);
-		HitDownLeft = Physics2D.RaycastAll(transform.position, new Vector2(-1, -1), (BallSize.x * BallSize.y) * 2);
-		HitDownRight = Physics2D.RaycastAll(transform.position, new Vector2(1, -1), (BallSize.x * BallSize.y) * 2);
+		HitUp = Physics2D.RaycastAll(transform.position, Vector2.up, BallSize.x * 2, 1 << 8);
+		HitDown = Physics2D.RaycastAll(transform.position, -Vector2.up, BallSize.x * 2, 1 << 8);
+		HitLeft = Physics2D.RaycastAll(transform.position, -Vector2.right, BallSize.y * 2, 1 << 8);
+		HitRight = Physics2D.RaycastAll(transform.position, Vector2.right, BallSize.y * 2, 1 << 8);
+		HitUpLeft = Physics2D.RaycastAll(transform.position, new Vector2(-1, 1), (BallSize.x * BallSize.y) * 2, 1 << 8);
+		HitUpRight = Physics2D.RaycastAll(transform.position, new Vector2(1, 1), (BallSize.x * BallSize.y) * 2, 1 << 8);
+		HitDownLeft = Physics2D.RaycastAll(transform.position, new Vector2(-1, -1), (BallSize.x * BallSize.y) * 2, 1 << 8);
+		HitDownRight = Physics2D.RaycastAll(transform.position, new Vector2(1, -1), (BallSize.x * BallSize.y) * 2, 1 << 8);
 
 		CheckDirection(VerticalHits, HitUp);
 		CheckDirection(VerticalHits, HitDown);
@@ -80,7 +82,7 @@ private BallColor BallColor;
 	}
 	private List<GameObject> CheckDirection(List<GameObject> Hits, RaycastHit2D[] Direction){
 		if(Direction.Length > 1){
-			if(Direction[1].transform.gameObject.tag == "Ball" && Direction[1].transform.GetComponent<Ball>().BallColor == BallColor){
+			if(Direction[0].transform.gameObject.tag == "Ball" + PlayerPrefix && Direction[1].transform.GetComponent<Ball>().BallColor == BallColor){
 				GameObject Hit = Direction[0].transform.gameObject;
 				if(CheckForBlackAndWhite(Hit)){
 					Hits.Add(Hit);
@@ -90,8 +92,8 @@ private BallColor BallColor;
 					Hits.Add(Hit);
 				}
 				if(Direction.Length > 2){
-					if(Direction[2].transform.gameObject.tag == "Ball" && Direction[2].collider.gameObject.GetComponent<Ball>().BallColor == BallColor){
-						Hit = Direction[2].transform.gameObject;
+					if(Direction[1].transform.gameObject.tag == "Ball" + PlayerPrefix && Direction[2].collider.gameObject.GetComponent<Ball>().BallColor == BallColor){
+						Hit = Direction[1].transform.gameObject;
 						if(CheckForBlackAndWhite(Hit)){
 							Hits.Add(Hit);
 						}
@@ -110,9 +112,9 @@ private BallColor BallColor;
 			PlayerManager.Score += PlayerManager.ScoreMultiplier * scoreValue * Hits.Count;
 			PlayerManager.ScoreMultiplier += 1;
 			PlayerManager.RensaTime = PlayerManager.AllotedRensaTime;
+			PlayerManager.NumberOfBallsBeingCleared += Hits.Count;
 			foreach(GameObject Hit in Hits){
-			//Constants.RensaCheck = true;
-			Hit.SetActive(false);
+				Hit.SetActive(false);
 			}
 		}
 	}

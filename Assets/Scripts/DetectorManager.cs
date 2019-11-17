@@ -8,23 +8,33 @@ public List<Detector> HorizontalDetectors;
 public List<Detector> Detectors;
 public Detector Detector;
 public int RandomRange;
+private int numberOfDetectors;
 //For measurements, this will grab the prefab.
 public GameObject Ball;
 //Gameboard so it knows where to place the initial detector.
 public GameBoard GameBoard;
+private PlayerManager PlayerManager;
+public float TimeBetweenChecks;
+private float TimeBetweenChecksRemaining;
 public float InitialY;
 private bool StartGeneration = false;
 
 	// Use this for initialization
 	void Start () {
+		PlayerManager = GetComponentInParent<PlayerManager>();
+		TimeBetweenChecksRemaining = 5;
 		StartCoroutine("GameStartDelay");
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(StartGeneration){
-			GenerateDetectors(GameBoard.Rows, GameBoard.Columns);
-			StartGeneration = false;
+		if(TimeBetweenChecksRemaining <= 0){
+			DropBall(numberOfDetectors);
+			TimeBetweenChecksRemaining = TimeBetweenChecks;
+		}
+		else{
+			TimeBetweenChecksRemaining -= Time.deltaTime * PlayerManager.DropSpeed;
 		}
 	}
 
@@ -56,12 +66,13 @@ private bool StartGeneration = false;
 		Detectors.Add(obj);
 		
 	}
-	public void PlaceDetector(Vector2 Location){
-
+	public void DropBall(int numberOfDetectors){
+		int chosenBallDropper = Random.Range(0, numberOfDetectors);
+		VerticalDetectors[chosenBallDropper].CheckColumnForEmptySpots();
 	}
 	public IEnumerator GameStartDelay(){
-		print("starting");
 		yield return new WaitForSeconds(2);
-		StartGeneration = true;
+		GenerateDetectors(GameBoard.Rows, GameBoard.Columns);
+		numberOfDetectors = VerticalDetectors.Count;
 	}
 }

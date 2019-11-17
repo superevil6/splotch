@@ -66,10 +66,12 @@
      <Compile Include="Assets\Scripts\FloorManager.cs" />
      <Compile Include="Assets\Scripts\GameBoard.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
+     <Compile Include="Assets\Scripts\GameOptions.cs" />
      <Compile Include="Assets\Scripts\ObjectPooler.cs" />
      <Compile Include="Assets\Scripts\PlayerColorManager.cs" />
      <Compile Include="Assets\Scripts\PlayerManager.cs" />
      <Compile Include="Assets\Scripts\PlayerNumberManager.cs" />
+     <Compile Include="Assets\Scripts\PunishmentManager.cs" />
      <Compile Include="Assets\Scripts\RemoveColor.cs" />
      <Compile Include="Assets\Scripts\ScoreManager.cs" />
      <Compile Include="Assets\TheTopicbirdTools\ToDoList\ToDoList.cs" />

@@ -35,6 +35,7 @@ private bool DoOnce = false;
 		WeightedBallColorPool = PlayerManager.WeightedBallColorPool;
 		Detection = GetComponent<Detection>();
 		transform.localScale = new Vector2((GameBoard.GameboardWidth / GameBoard.Columns) * 0.5f, ((GameBoard.GameboardHeight) / GameBoard.Columns) * 0.5f);
+		gameObject.layer = 8;
 		SetupBall();		
 	}
 

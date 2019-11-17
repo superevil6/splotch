@@ -25,6 +25,14 @@ namespace Enums{
 		powerup,
 		rainbow
 	}
+	public enum GameMode{
+		Marathon,
+		Arcade,
+		Puzzle,
+		Story,
+		VS,
+		Battle
+	}
 	public enum PlayerNumber{
 		one,
 		two,

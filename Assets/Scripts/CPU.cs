@@ -12,10 +12,6 @@ public class CPU : MonoBehaviour
     private float cursorMovementSpeed;
     private float coolDownTime;
     public Vector2 BallSize;
-    // private RaycastHit2D[] HitUp;
-    // private RaycastHit2D[] HitDown;
-    // private RaycastHit2D[] HitLeft;
-    // private RaycastHit2D[] HitRight;
     private RaycastHit2D CurrentBall;
     private List<Ball> UsableBalls = new List<Ball>();
     private List<Ball> CurrentBalls = new List<Ball>();
@@ -25,12 +21,17 @@ public class CPU : MonoBehaviour
     private List<GameObject> MultipleMatchingNeighbors = new List<GameObject>();
     public GameBoard Gameboard;
     private List<GameObject> Hits;
+    private string PlayerPrefix;
     // Start is called before the first frame update
     void Start()
     {
-        BallSize = Constants.FindOffset(Cursor.Ball.gameObject);
+        //BallSize = Constants.FindOffset(Cursor.Ball.gameObject);
         Gameboard = Cursor.Gameboard;
+        PlayerPrefix = PlayerManager.PlayerNumberManager.PlayerPrefix;
         SetMovementSpeed(cpuDifficulty);
+        if(Gameboard.ObjectPooler.PooledItems.Count > 0){
+            BallSize = Gameboard.ObjectPooler.PooledItems[0].transform.localScale;
+        }
         action = CPUActions.FindBall;
         coolDownTime = 3f;
     }
@@ -46,7 +47,9 @@ public class CPU : MonoBehaviour
                 chosenBall = PickBallToGoTo(MultipleMatchingNeighbors, SingleMatchingNeighbors);
                 SingleMatchingNeighbors.Clear();
                 MultipleMatchingNeighbors.Clear();
-                action = CPUActions.Move;
+                if(chosenBall != null){
+                    action = CPUActions.Move;
+                }
                 coolDownTime = cursorMovementSpeed;
                 break;
 
@@ -62,7 +65,6 @@ public class CPU : MonoBehaviour
                 MoveStepTowardsDestination(destX, destY);
                 if(Mathf.Round(transform.position.x) == destX && Mathf.Round(transform.position.y) == destY){
                     if(chosenBall.GetComponent<Ball>().BallColor == BallColor.black){
-                        print("It's a black ball");
                         action = CPUActions.WhiteOut;
                     }
                     else{
@@ -110,42 +112,60 @@ public class CPU : MonoBehaviour
     #region movement methods
     private void MoveStepTowardsDestination(float x, float y){
         bool moveSucceeded = false;
-        if(Mathf.Round(x) > Mathf.Round(transform.position.x)){
-            moveSucceeded = MoveRight();
-            print(moveSucceeded);
-        }
-        if(Mathf.Round(x) < Mathf.Round(transform.position.x) && !moveSucceeded){
-            moveSucceeded = MoveLeft();
-            print(moveSucceeded);
-        }
-        if(Mathf.Round(y) > Mathf.Round(transform.position.y) && !moveSucceeded){
+        if(Mathf.Round(y) > Mathf.Round(transform.position.y)){
            moveSucceeded = MoveUp();
-           print(moveSucceeded);
+           if(!moveSucceeded){
+                if(Mathf.Round(x) > Mathf.Round(transform.position.x) && !moveSucceeded){
+                    moveSucceeded = MoveRight();
+                }
+                else{
+                    moveSucceeded = MoveLeft();
+                }
+           }
         }
         if(Mathf.Round(y) < Mathf.Round(transform.position.y) && !moveSucceeded){
             moveSucceeded = MoveDown();
-            print(moveSucceeded);
         }
-
-
+        if(Mathf.Round(x) > Mathf.Round(transform.position.x) && !moveSucceeded){
+            moveSucceeded = MoveRight();
+            if(!moveSucceeded){
+                    if(Mathf.Round(x) > Mathf.Round(transform.position.x) && !moveSucceeded){
+                        moveSucceeded = MoveDown();
+                    }
+                    else{
+                        moveSucceeded = MoveUp();
+                    }
+            }
+        }
+        if(Mathf.Round(x) < Mathf.Round(transform.position.x) && !moveSucceeded){
+            moveSucceeded = MoveLeft();
+            if(!moveSucceeded){
+                    if(Mathf.Round(x) > Mathf.Round(transform.position.x) && !moveSucceeded){
+                        moveSucceeded = MoveDown();
+                    }
+                    else{
+                        moveSucceeded = MoveUp();
+                    }
+            }
+        }
         coolDownTime = cursorMovementSpeed;
     }
     private bool MoveUp(){
-        RaycastHit2D[] HitUp = Physics2D.RaycastAll(transform.position, Vector2.up, BallSize.y * 2);
-        if(HitUp.Length > 1 && HitUp[1].transform.gameObject.tag == "Ball"){
+        RaycastHit2D[] HitUp = Physics2D.RaycastAll(transform.position, Vector2.up, BallSize.y * 2, 1 << 8);
+        if(HitUp.Length > 1 && HitUp[1].transform.gameObject.tag == "Ball" + PlayerPrefix){
             transform.position = HitUp[1].transform.position;
             return true;
         }
         return false;
     }
     private bool MoveDown(){
-        RaycastHit2D[] HitDown = Physics2D.RaycastAll(transform.position, -Vector2.up, BallSize.y * Gameboard.Rows);
-        if(HitDown.Length >= 1 && HitDown[0].transform.gameObject.tag == "Ball"){
+        RaycastHit2D[] HitDown = Physics2D.RaycastAll(transform.position, -Vector2.up, BallSize.y * 2, 1 << 8); // Gameboard.Rows);
+        if(HitDown.Length >= 1 && HitDown[0].transform.gameObject.tag == "Ball" + PlayerPrefix){
             if(transform.position.y - HitDown[0].transform.position.y >= BallSize.y / 4){
                 transform.position = HitDown[0].transform.position;
                 return true;
             }
-            if(HitDown.Length >= 2 && HitDown[1] && HitDown[1].transform.gameObject.tag == "Ball"){
+            if(HitDown.Length >= 2 && HitDown[1] && HitDown[1].transform.gameObject.tag == "Ball" + PlayerPrefix){
                 transform.position = HitDown[1].transform.position;
                 return true;
             }
@@ -153,13 +173,13 @@ public class CPU : MonoBehaviour
         return false;
     }
     private bool MoveLeft(){
-        RaycastHit2D[] HitLeft = Physics2D.RaycastAll(transform.position, -Vector2.right, BallSize.x * Gameboard.Columns);
-        if(HitLeft.Length >= 1 && HitLeft[0].transform.gameObject.tag == "Ball"){
+        RaycastHit2D[] HitLeft = Physics2D.RaycastAll(transform.position, -Vector2.right, BallSize.x * 2, 1 << 8); // Gameboard.Columns);
+        if(HitLeft.Length >= 1 && HitLeft[0].transform.gameObject.tag == "Ball" + PlayerPrefix){
             if(transform.position.x - HitLeft[0].transform.position.x >= BallSize.x / 4){
                 transform.position = HitLeft[0].transform.position;
                 return true;
             }
-            if(HitLeft.Length >= 2 && HitLeft[1] && HitLeft[1].transform.gameObject.tag == "Ball"){
+            if(HitLeft.Length >= 2 && HitLeft[1] && HitLeft[1].transform.gameObject.tag == "Ball" + PlayerPrefix){
                 transform.position = HitLeft[1].transform.position;
                 return true;
             }
@@ -167,13 +187,13 @@ public class CPU : MonoBehaviour
         return false;
     }
     private bool MoveRight(){
-        RaycastHit2D[] HitRight = Physics2D.RaycastAll(transform.position, Vector2.right, BallSize.x * Gameboard.Columns);
-        if(HitRight.Length >= 1 && HitRight[0].transform.gameObject.tag == "Ball"){
+        RaycastHit2D[] HitRight = Physics2D.RaycastAll(transform.position, Vector2.right, BallSize.x * 2, 1 << 8); // Gameboard.Columns);
+        if(HitRight.Length >= 1 && HitRight[0].transform.gameObject.tag == "Ball" + PlayerPrefix){
             if(transform.position.x - HitRight[0].transform.position.x >= BallSize.x / 4){
                 transform.position = HitRight[0].transform.position;
                 return true;
             }
-            if(HitRight.Length >= 2 && HitRight[1] && HitRight[1].transform.gameObject.tag == "Ball"){
+            if(HitRight.Length >= 2 && HitRight[1] && HitRight[1].transform.gameObject.tag == "Ball" + PlayerPrefix){
                 transform.position = HitRight[1].transform.position;
                 return true;
             }
@@ -184,7 +204,7 @@ public class CPU : MonoBehaviour
     #region action regions 
     private void ChangeColor(Ball CurrentBall){
         //CurrentBall = Physics2D.Raycast(transform.position, Vector2.zero, 0.1f);
-        if(CurrentBall && CurrentBall.tag == "Ball" && Cursor.LegalMoveCheck(CurrentBall.BallColor, PlayerColorManager.ColorQueue[0])){
+        if(CurrentBall && CurrentBall.tag == "Ball" + PlayerPrefix && Cursor.LegalMoveCheck(CurrentBall.BallColor, PlayerColorManager.ColorQueue[0])){
             CurrentBall.ChangeBallColor(PlayerColorManager.ColorQueue[0]);
             PlayerColorManager.UpdateColorQueue();
         }
@@ -196,18 +216,15 @@ public class CPU : MonoBehaviour
         }
     }
     private GameObject PickBallToGoTo(List<GameObject> MultipleMatchingNeighbors, List<GameObject> SingleMatchingNeighbors){
-        //print(MultipleMatchingNeighbors.Count + " = multimatching");
-        //print(SingleMatchingNeighbors.Count + " = singlematching");
         int singleOrMultiple = Random.Range(0, 1);
         GameObject ball = null;
         if(SingleMatchingNeighbors != null && MultipleMatchingNeighbors != null){
-            if(singleOrMultiple == 0){
+            if(singleOrMultiple == 0 && SingleMatchingNeighbors.Count > 1){
                 ball = SingleMatchingNeighbors[Random.Range(0, SingleMatchingNeighbors.Count)]; 
             }
-            else{
+            else if(singleOrMultiple == 1 && MultipleMatchingNeighbors.Count > 1){
                 ball = MultipleMatchingNeighbors[Random.Range(0, MultipleMatchingNeighbors.Count)];
             }
-
         }
         else if(SingleMatchingNeighbors.Count > 0 && MultipleMatchingNeighbors == null){
             ball = SingleMatchingNeighbors[Random.Range(0, SingleMatchingNeighbors.Count)]; 
@@ -275,14 +292,14 @@ public class CPU : MonoBehaviour
         }
     }
     public void CheckForMatches(Ball ball){
-		RaycastHit2D[] HitUp = Physics2D.RaycastAll(ball.transform.position, Vector2.up, BallSize.x * 2);
-		RaycastHit2D[] HitDown = Physics2D.RaycastAll(ball.transform.position, -Vector2.up, BallSize.x * 2);
-		RaycastHit2D[] HitLeft = Physics2D.RaycastAll(ball.transform.position, -Vector2.right, BallSize.y * 2);
-		RaycastHit2D[] HitRight = Physics2D.RaycastAll(ball.transform.position, Vector2.right, BallSize.y * 2);
-		RaycastHit2D[] HitUpLeft = Physics2D.RaycastAll(ball.transform.position, new Vector2(-1, 1), (BallSize.x * BallSize.y) * 2);
-		RaycastHit2D[] HitUpRight = Physics2D.RaycastAll(ball.transform.position, new Vector2(1, 1), (BallSize.x * BallSize.y) * 2);
-		RaycastHit2D[] HitDownLeft = Physics2D.RaycastAll(ball.transform.position, new Vector2(-1, -1), (BallSize.x * BallSize.y) * 2);
-		RaycastHit2D[] HitDownRight = Physics2D.RaycastAll(ball.transform.position, new Vector2(1, -1), (BallSize.x * BallSize.y) * 2);
+		RaycastHit2D[] HitUp = Physics2D.RaycastAll(ball.transform.position, Vector2.up, BallSize.x * 2, 1 << 8);
+		RaycastHit2D[] HitDown = Physics2D.RaycastAll(ball.transform.position, -Vector2.up, BallSize.x * 2, 1 << 8);
+		RaycastHit2D[] HitLeft = Physics2D.RaycastAll(ball.transform.position, -Vector2.right, BallSize.y * 2, 1 << 8);
+		RaycastHit2D[] HitRight = Physics2D.RaycastAll(ball.transform.position, Vector2.right, BallSize.y * 2, 1 << 8);
+		RaycastHit2D[] HitUpLeft = Physics2D.RaycastAll(ball.transform.position, new Vector2(-1, 1), (BallSize.x * BallSize.y) * 2, 1 << 8);
+		RaycastHit2D[] HitUpRight = Physics2D.RaycastAll(ball.transform.position, new Vector2(1, 1), (BallSize.x * BallSize.y) * 2, 1 << 8);
+		RaycastHit2D[] HitDownLeft = Physics2D.RaycastAll(ball.transform.position, new Vector2(-1, -1), (BallSize.x * BallSize.y) * 2, 1 << 8);
+		RaycastHit2D[] HitDownRight = Physics2D.RaycastAll(ball.transform.position, new Vector2(1, -1), (BallSize.x * BallSize.y) * 2, 1 << 8);
         CheckForMatchingNeighbors(ball, HitUp);
         CheckForMatchingNeighbors(ball, HitDown);
         CheckForMatchingNeighbors(ball, HitLeft);
@@ -321,14 +338,14 @@ public class CPU : MonoBehaviour
                 break;
             }
             //print("First Check " + primaryBallColor.ToString() + secondaryBallColor.ToString() + tertiaryBallColor.ToString());
-            if(secondBall && secondBall.tag == "Ball" && secondBall.BallColor == ball.BallColor || secondBall.BallColor == primaryBallColor || secondBall.BallColor == secondaryBallColor || secondBall.BallColor == tertiaryBallColor){
+            if(secondBall  && secondBall.BallColor == ball.BallColor || secondBall.BallColor == primaryBallColor || secondBall.BallColor == secondaryBallColor || secondBall.BallColor == tertiaryBallColor){
                 if(secondBall.BallColor == ball.BallColor){
                     sameBallColor += 1;
                 }
                 Hits.Add(secondBall.transform.gameObject);
             }
             //print("Second Check " + primaryBallColor.ToString() + secondaryBallColor.ToString() + tertiaryBallColor.ToString());
-            if(thirdBall && thirdBall.tag == "Ball" && thirdBall.BallColor == ball.BallColor || thirdBall.BallColor == primaryBallColor || thirdBall.BallColor == secondaryBallColor || thirdBall.BallColor == tertiaryBallColor){
+            if(thirdBall && thirdBall.BallColor == ball.BallColor || thirdBall.BallColor == primaryBallColor || thirdBall.BallColor == secondaryBallColor || thirdBall.BallColor == tertiaryBallColor){
                 if(thirdBall.BallColor == ball.BallColor){
                     sameBallColor += 1;
                 }
@@ -351,6 +368,12 @@ public class CPU : MonoBehaviour
                 }
             }
             sameBallColor = 0;
+        }
+    }
+
+    private void FindFullColumns(){
+        foreach(Detector detector in PlayerManager.detectorManager.Detectors){
+            print("hi");
         }
     }
     #endregion

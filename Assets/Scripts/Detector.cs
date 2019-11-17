@@ -20,10 +20,11 @@ public int RandomRange;
 	// Use this for initialization
 	void Start () {
 		GameBoard = transform.GetComponentInParent<GameBoard>();
-		SpriteRenderer = GetComponent<SpriteRenderer>();
-		SpriteRenderer.sprite = Sprite;
+		//SpriteRenderer = GetComponent<SpriteRenderer>();
+		//SpriteRenderer.sprite = Sprite;
 		ObjectPooler = GameBoard.GetComponent<ObjectPooler>();
 		PlayerManager = GameBoard.GetComponentInParent<PlayerManager>();
+		transform.localScale = Ball.transform.localScale;
 	}
 	
 	// Update is called once per frame
@@ -34,34 +35,31 @@ public int RandomRange;
 		else{
 			if(Orientation == Orientation.Vertical){
 				CheckColumnsForMatches();
-				CheckColumnForEmptySpots();
 			}
 			TimeBetweenChecksRemaining += TimeBetweenChecks;
 		}
 	}
 
 	public void CheckRowsForMatches(){
-		Hits = Physics2D.RaycastAll(transform.position, -Vector2.up, GameBoard.GameboardHeight / 2);
+		Hits = Physics2D.RaycastAll(transform.position, -Vector2.up, GameBoard.GameboardHeight / 2, 1 << 8);
 	}
 
 	public void CheckColumnsForMatches(){
-		Hits = Physics2D.RaycastAll(transform.position, -Vector2.up, GameBoard.GameboardHeight / 2);
+		Hits = Physics2D.RaycastAll(transform.position, -Vector2.up, GameBoard.GameboardHeight / 2, 1 << 8);
 		if(Hits.Length > GameBoard.Rows){
 			PlayerManager.GameOver = true;
 		}
 	}
 	public void CheckColumnForEmptySpots(){
-		if(Random.Range(0, RandomRange) < 1){
-			Hits = Physics2D.RaycastAll(transform.position, -Vector2.up, 100);		
-			if(Hits.Length - 1 < GameBoard.Rows){
-				foreach(GameObject GO in ObjectPooler.PooledItems){
-					if(!GO.activeInHierarchy){
-						GO.transform.position = this.transform.position;
-						Ball Ball = GO.GetComponent<Ball>();
-						Ball.DetermineColor();
-						GO.SetActive(true);
-						break;
-					}
+		Hits = Physics2D.RaycastAll(transform.position, -Vector2.up, 100, 1 << 8);		
+		if(Hits.Length - 1 < GameBoard.Rows){
+			foreach(GameObject GO in ObjectPooler.PooledItems){
+				if(!GO.activeInHierarchy){
+					GO.transform.position = this.transform.position;
+					Ball Ball = GO.GetComponent<Ball>();
+					Ball.DetermineColor();
+					GO.SetActive(true);
+					break;
 				}
 			}
 		}

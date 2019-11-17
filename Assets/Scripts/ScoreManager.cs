@@ -10,17 +10,21 @@ public GameObject ComboText;
 public GameObject Cursor;
 public AudioClip BallPopSound;
 public AudioSource AudioSource;
+private PunishmentManager PunishmentManager;
+private bool RensaOver = false;
 private int TempScoreMultiplier = 1;
 	// Use this for initialization
 	void Start () {
 		ComboText.SetActive(false);
 		AudioSource.clip = BallPopSound;
+		PunishmentManager = PlayerManager.PunishmentManager;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		ScoreText.text = PlayerManager.Score.ToString();
-		if(PlayerManager.RensaTime > 0){
+		if(PlayerManager.RensaTime >= 0){
+			RensaOver = false;
 			if(!AudioSource.isPlaying && PlayerManager.ScoreMultiplier > TempScoreMultiplier){
 				AudioSource.pitch = 0.5f * PlayerManager.ScoreMultiplier;
 				AudioSource.Play();
@@ -31,11 +35,14 @@ private int TempScoreMultiplier = 1;
 				StartCoroutine("DisplayComboText");
 			}
 			PlayerManager.RensaTime -= Time.deltaTime;
-		}
-		else{
-			PlayerManager.ScoreMultiplier = 1;
-			TempScoreMultiplier = PlayerManager.ScoreMultiplier;			
-			AudioSource.pitch = 1f;
+			if(PlayerManager.RensaTime <= 0 && !RensaOver){
+				if(PlayerManager.ScoreMultiplier > 2 && !PunishmentManager.ShouldPunish){
+					PunishmentManager.ShouldPunish = true;
+				}
+				print("Rensa being set to over.");
+				ResetMultiplierValues();
+				RensaOver = true;
+			}
 		}
 	}
 	public IEnumerator DisplayComboText(){
@@ -49,5 +56,11 @@ private int TempScoreMultiplier = 1;
 	public IEnumerator PlaySound(AudioClip clip){
 		AudioSource.Play();
 		yield return new WaitForSeconds(clip.length);
+	}
+	public void ResetMultiplierValues(){
+		PunishmentManager.PunishOtherPlayer(PunishmentManager.PickPlayerToPunish(), PlayerManager.ScoreMultiplier, PlayerManager.NumberOfBallsBeingCleared);
+		PlayerManager.ScoreMultiplier = 1;
+		TempScoreMultiplier = PlayerManager.ScoreMultiplier;			
+		AudioSource.pitch = 1f;
 	}
 }
