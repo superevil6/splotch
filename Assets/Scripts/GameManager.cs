@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public List<GameObject> Players;
     public GameObject PlayerPrefab;
+    public List<Theme> Themes = new List<Theme>();
     public int NumberOfPlayers;
     // Start is called before the first frame update
     void Start()

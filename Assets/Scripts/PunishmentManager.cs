@@ -24,7 +24,6 @@ public class PunishmentManager : MonoBehaviour
     void Update()
     {
         if(ShouldPunish){
-            print("PUnishing");
             PunishOtherPlayer(PickPlayerToPunish(), PlayerManager.NumberOfSecondsForPunishment, PlayerManager.NumberOfBallsBeingCleared);
             PlayerManager.NumberOfSecondsForPunishment = 0;
             PlayerManager.NumberOfBallsBeingCleared = 0;
@@ -32,19 +31,15 @@ public class PunishmentManager : MonoBehaviour
         }
     }
 	public IEnumerator PunishThisPlayer(float time, float speed){
-        //print("time" + time + "speed: " + speed);
 		float originalSpeed = PlayerManager.DropSpeed;
-        //print("original speed: " + originalSpeed);
 		PlayerManager.DropSpeed += (4*speed)/10;
-        //print("Drop speed = " + PlayerManager.DropSpeed);
 		yield return new WaitForSeconds(time);
 		PlayerManager.DropSpeed = originalSpeed;
-        //print("Returning to original drop speed: " + PlayerManager.DropSpeed);
 	}
     public PlayerManager PickPlayerToPunish(){
-        print("picking player to punish");
         if(Players.Count > 0){
             int chosenPlayer = UnityEngine.Random.Range(0, Players.Count);
+            print(PlayerManager.PlayerNumber + " is Punishing player " + Players[chosenPlayer].PlayerNumber);
             return Players[chosenPlayer];
         }
         return null;

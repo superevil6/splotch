@@ -29,9 +29,9 @@ public class Cursor : MonoBehaviour
     {
         PlayerPrefix = PlayerNumberManager.PlayerPrefix;
         Ballsize = Constants.FindOffset(Ball.gameObject);
-        transform.localScale = Ballsize;
+        transform.localScale = new Vector2(128, 128);
         SpriteRenderer = GetComponent<SpriteRenderer>();
-        SpriteRenderer.sprite = Sprite;
+        SpriteRenderer.sprite = PlayerManager.Theme.CursorSprite;
         //transform.localPosition = new Vector2(Gameboard.transform.localPosition.x + Ballsize.x, -Gameboard.GameboardHeight + 10 + Ballsize.y);
         // foreach(GameObject go in Gameboard.ObjectPooler.PooledItems){
         //     if(go.activeInHierarchy && go.tag == "Ball" + PlayerPrefix){
@@ -100,14 +100,14 @@ public class Cursor : MonoBehaviour
    
         }
         if(Input.GetButtonDown(PlayerPrefix + "Fire1")){
-            CurrentBall = Physics2D.Raycast(transform.position, Vector2.zero, 0.1f, 8);
+            CurrentBall = Physics2D.Raycast(transform.position, Vector2.zero, 0.1f, 1 << 8);
             if(CurrentBall && CurrentBall.transform.gameObject.tag == "Ball" + PlayerPrefix && LegalMoveCheck(CurrentBall.transform.GetComponent<Ball>().BallColor, playerColorManager.ColorQueue[0])){
                 CurrentBall.transform.gameObject.GetComponent<Ball>().ChangeBallColor(playerColorManager.ColorQueue[0]);
                 playerColorManager.UpdateColorQueue();
             }
         }
         if(Input.GetButtonDown(PlayerPrefix + "Fire2")){
-            CurrentBall = Physics2D.Raycast(transform.position, Vector2.zero, 0.1f, 8);
+            CurrentBall = Physics2D.Raycast(transform.position, Vector2.zero, 0.1f, 1 << 8);
             if(CurrentBall && CurrentBall.transform.gameObject.tag == "Ball" + PlayerPrefix){
                 if(CurrentBall.transform.gameObject.GetComponent<Ball>().BallColor != BallColor.white && 
                 RemoveColor.Uses > 0){

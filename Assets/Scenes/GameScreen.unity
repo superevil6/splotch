@@ -267,7 +267,9 @@ MonoBehaviour:
   Players: []
   PlayerPrefab: {fileID: 2358953631067472851, guid: db526e228141727429b0bb95428206a2,
     type: 3}
-  NumberOfPlayers: 4
+  Themes:
+  - {fileID: 0}
+  NumberOfPlayers: 2
 --- !u!114 &840179339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,7 +282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 948c6eac03994cd49bad23b71ceeec7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: Gameplay Elements
+  title: 
   textList:
   - s: Sound Effects
     state: 0
@@ -302,12 +304,12 @@ MonoBehaviour:
     state: 1
     show: 0
     deleteQuestion: 0
-  - s: 'CPU: If player color is red, and there are no reds, needs something to do'
+  - s: Balls aren't disappearing at the correct frequency since punish added
     state: 3
     show: 0
     deleteQuestion: 0
-  - s: 'CPU: Can use whiteout'
-    state: 3
+  - s: Player is punishing itself
+    state: 1
     show: 0
     deleteQuestion: 0
 --- !u!114 &840179340
@@ -351,7 +353,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: -1
   m_TargetDisplay: 0
 --- !u!114 &840179342
 MonoBehaviour:

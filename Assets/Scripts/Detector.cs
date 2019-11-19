@@ -33,9 +33,7 @@ public int RandomRange;
 			TimeBetweenChecksRemaining -= Time.deltaTime * PlayerManager.DropSpeed;
 		}
 		else{
-			if(Orientation == Orientation.Vertical){
-				CheckColumnsForMatches();
-			}
+			CheckColumnsForMatches();
 			TimeBetweenChecksRemaining += TimeBetweenChecks;
 		}
 	}

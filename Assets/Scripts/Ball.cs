@@ -13,7 +13,6 @@ public Detection Detection;
 private BallColor NewColor;
 public BallType Type;
 public SpriteRenderer SpriteRenderer;
-public Sprite Sprite;
 public PlayerManager PlayerManager;
 public BoxCollider2D BoxCollider2D;
 public Rigidbody2D Rigidbody2D;
@@ -36,7 +35,9 @@ private bool DoOnce = false;
 		Detection = GetComponent<Detection>();
 		transform.localScale = new Vector2((GameBoard.GameboardWidth / GameBoard.Columns) * 0.5f, ((GameBoard.GameboardHeight) / GameBoard.Columns) * 0.5f);
 		gameObject.layer = 8;
-		SetupBall();		
+		SetupBall();
+		SpriteRenderer.sprite = PlayerManager.Theme.BallSprite;
+		
 	}
 
 	void OnEnable () {
@@ -60,12 +61,6 @@ private bool DoOnce = false;
 			SetNewBallColor(BallColor.black);
 		}
 	}
-
-	// void OnMouseDown()
-	// {
-	// 	ChangeBallColor(PlayerManager.PlayerColorManager.ColorQueue[0]);
-	// 	PlayerManager.PlayerColorManager.UpdateColorQueue();
-	// }
 	public BallColor GenerateColor(){
 		Array Colors = Enum.GetValues(typeof(BallColor));
 		return (BallColor)Colors.GetValue(UnityEngine.Random.Range(0, Colors.Length));
@@ -116,7 +111,6 @@ private bool DoOnce = false;
 		SpriteRenderer = GetComponent<SpriteRenderer>();
 		BoxCollider2D = GetComponent<BoxCollider2D>();
 		SpecialBallCheck(false);
-		SpriteRenderer.sprite = Sprite;
 		if(Type != BallType.rainbow){
 			//This is a temp fix if you can't fix the issue that lets you click brown balls.
 			//NewBallColor = OldBallColor;

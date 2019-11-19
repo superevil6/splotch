@@ -11,7 +11,7 @@ public GameObject Cursor;
 public AudioClip BallPopSound;
 public AudioSource AudioSource;
 private PunishmentManager PunishmentManager;
-private bool RensaOver = false;
+private bool RensaOver = true;
 private int TempScoreMultiplier = 1;
 	// Use this for initialization
 	void Start () {

@@ -300,14 +300,30 @@ public class CPU : MonoBehaviour
 		RaycastHit2D[] HitUpRight = Physics2D.RaycastAll(ball.transform.position, new Vector2(1, 1), (BallSize.x * BallSize.y) * 2, 1 << 8);
 		RaycastHit2D[] HitDownLeft = Physics2D.RaycastAll(ball.transform.position, new Vector2(-1, -1), (BallSize.x * BallSize.y) * 2, 1 << 8);
 		RaycastHit2D[] HitDownRight = Physics2D.RaycastAll(ball.transform.position, new Vector2(1, -1), (BallSize.x * BallSize.y) * 2, 1 << 8);
-        CheckForMatchingNeighbors(ball, HitUp);
-        CheckForMatchingNeighbors(ball, HitDown);
-        CheckForMatchingNeighbors(ball, HitLeft);
-        CheckForMatchingNeighbors(ball, HitRight);
-        CheckForMatchingNeighbors(ball, HitUpLeft);
-        CheckForMatchingNeighbors(ball, HitDownRight);
-        CheckForMatchingNeighbors(ball, HitUpRight);
-        CheckForMatchingNeighbors(ball, HitDownLeft);
+        if(HitUp.Length > 0){
+            CheckForMatchingNeighbors(ball, HitUp);
+        }
+        if(HitDown.Length > 0){
+            CheckForMatchingNeighbors(ball, HitDown);
+        }
+        if(HitLeft.Length > 0){
+            CheckForMatchingNeighbors(ball, HitLeft);
+        }
+        if(HitRight.Length > 0){
+            CheckForMatchingNeighbors(ball, HitRight);
+        }
+        if(HitUpLeft.Length > 0){
+            CheckForMatchingNeighbors(ball, HitUpLeft);
+        }
+        if(HitUpRight.Length > 0){
+            CheckForMatchingNeighbors(ball, HitUpRight);
+        }
+        if(HitDownRight.Length > 0){
+            CheckForMatchingNeighbors(ball, HitDownRight);
+        }
+        if(HitDownLeft.Length > 0){
+            CheckForMatchingNeighbors(ball, HitDownLeft);
+        }
 	}
     private void CheckForMatchingNeighbors(Ball ball, RaycastHit2D[] Direction){
         List<GameObject> Hits = new List<GameObject>();

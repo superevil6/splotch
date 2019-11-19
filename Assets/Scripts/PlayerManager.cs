@@ -19,13 +19,14 @@ public class PlayerManager : MonoBehaviour
     public BallColor IgnoredBallColor;
     public GameObject GameOverPanel;
     public PlayerNumberManager PlayerNumberManager;
+    public Theme Theme;
     public int[] WeightedBallColorPool;
     //Weighted Values are processed in this order, White, BLACK BROWN GREEN PURPLE ORANGE RED BLUE YELLOW
     public int[] DefaultColorWeights = {0, 0, 10, 10, 10, 10, 30, 30, 30};
     public List<PlayerColor> PlayerColorPool;
     public float DropSpeed;
     public float DropSpeedIncrease;
-    private bool BeingPunished;
+    public bool BeingPunished;
     public bool GameOver = false;
     public int Score;
 	public float Time;

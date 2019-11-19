@@ -22,7 +22,6 @@ public GameObject ItemToPool;
 		for(int i = 0; i <= Amount; i++){
 			GameObject obj = (GameObject)Instantiate(ItemToPool);
 			obj.tag = "Ball" + PlayerManager.PlayerNumberManager.PlayerPrefix;
-			//obj.layer = 8; //Ball Layer
 			obj.transform.SetParent(ParentTransform);
 			obj.SetActive(false);
 			PooledItems.Add(obj);

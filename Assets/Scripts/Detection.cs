@@ -59,14 +59,14 @@ private string PlayerPrefix;
 		BallColor = Ball.BallColor;
 		/* HitUp will check for as many balls that spawn in a column, that way if bottom ball detects the max
 		number of balls, it knows the game is over. Kind of hacky, I might redo this. */
-		HitUp = Physics2D.RaycastAll(transform.position, Vector2.up, BallSize.x * 2, 1 << 8);
-		HitDown = Physics2D.RaycastAll(transform.position, -Vector2.up, BallSize.x * 2, 1 << 8);
-		HitLeft = Physics2D.RaycastAll(transform.position, -Vector2.right, BallSize.y * 2, 1 << 8);
-		HitRight = Physics2D.RaycastAll(transform.position, Vector2.right, BallSize.y * 2, 1 << 8);
-		HitUpLeft = Physics2D.RaycastAll(transform.position, new Vector2(-1, 1), (BallSize.x * BallSize.y) * 2, 1 << 8);
-		HitUpRight = Physics2D.RaycastAll(transform.position, new Vector2(1, 1), (BallSize.x * BallSize.y) * 2, 1 << 8);
-		HitDownLeft = Physics2D.RaycastAll(transform.position, new Vector2(-1, -1), (BallSize.x * BallSize.y) * 2, 1 << 8);
-		HitDownRight = Physics2D.RaycastAll(transform.position, new Vector2(1, -1), (BallSize.x * BallSize.y) * 2, 1 << 8);
+		HitUp = Physics2D.RaycastAll(transform.position, Vector2.up, BallSize.y * 12, 1 << 8);
+		HitDown = Physics2D.RaycastAll(transform.position, -Vector2.up, BallSize.y * 12, 1 << 8);
+		HitLeft = Physics2D.RaycastAll(transform.position, -Vector2.right, BallSize.x * 12, 1 << 8);
+		HitRight = Physics2D.RaycastAll(transform.position, Vector2.right, BallSize.x * 12, 1 << 8);
+		HitUpLeft = Physics2D.RaycastAll(transform.position, new Vector2(-1, 1), (BallSize.x * BallSize.y) * 12, 1 << 8);
+		HitUpRight = Physics2D.RaycastAll(transform.position, new Vector2(1, 1), (BallSize.x * BallSize.y) * 12, 1 << 8);
+		HitDownLeft = Physics2D.RaycastAll(transform.position, new Vector2(-1, -1), (BallSize.x * BallSize.y) * 12, 1 << 8);
+		HitDownRight = Physics2D.RaycastAll(transform.position, new Vector2(1, -1), (BallSize.x * BallSize.y) * 12, 1 << 8);
 
 		CheckDirection(VerticalHits, HitUp);
 		CheckDirection(VerticalHits, HitDown);
@@ -82,7 +82,7 @@ private string PlayerPrefix;
 	}
 	private List<GameObject> CheckDirection(List<GameObject> Hits, RaycastHit2D[] Direction){
 		if(Direction.Length > 1){
-			if(Direction[0].transform.gameObject.tag == "Ball" + PlayerPrefix && Direction[1].transform.GetComponent<Ball>().BallColor == BallColor){
+			if(Direction[1].transform.gameObject.tag == "Ball" + PlayerPrefix && Direction[1].transform.GetComponent<Ball>().BallColor == BallColor){
 				GameObject Hit = Direction[0].transform.gameObject;
 				if(CheckForBlackAndWhite(Hit)){
 					Hits.Add(Hit);
@@ -92,8 +92,8 @@ private string PlayerPrefix;
 					Hits.Add(Hit);
 				}
 				if(Direction.Length > 2){
-					if(Direction[1].transform.gameObject.tag == "Ball" + PlayerPrefix && Direction[2].collider.gameObject.GetComponent<Ball>().BallColor == BallColor){
-						Hit = Direction[1].transform.gameObject;
+					if(Direction[2].transform.gameObject.tag == "Ball" + PlayerPrefix && Direction[2].collider.gameObject.GetComponent<Ball>().BallColor == BallColor){
+						Hit = Direction[2].transform.gameObject;
 						if(CheckForBlackAndWhite(Hit)){
 							Hits.Add(Hit);
 						}

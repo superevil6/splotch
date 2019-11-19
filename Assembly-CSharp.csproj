@@ -74,6 +74,7 @@
      <Compile Include="Assets\Scripts\PunishmentManager.cs" />
      <Compile Include="Assets\Scripts\RemoveColor.cs" />
      <Compile Include="Assets\Scripts\ScoreManager.cs" />
+     <Compile Include="Assets\Scripts\Theme.cs" />
      <Compile Include="Assets\TheTopicbirdTools\ToDoList\ToDoList.cs" />
      <None Include="Assets\TheTopicbirdTools\ToDoList\readme.txt" />
  <Reference Include="Unity.Timeline.Editor">

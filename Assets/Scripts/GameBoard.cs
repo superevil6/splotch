@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameBoard : MonoBehaviour {
 public PlayerManager PlayerManager;
 public ObjectPooler ObjectPooler;
+public Image Background;
 public int Columns;
 public int Rows;
 public float Scale;
@@ -19,9 +21,11 @@ public float GameboardHeight;
 	void Start () {
 		GameboardWidth = GetComponentInParent<RectTransform>().rect.width;
 		GameboardHeight = GetComponentInParent<RectTransform>().rect.height / 2;
-		// print(GameboardWidth);
+		//transform.localScale = new Vector3(1, 1, 1); 
 		Scale = 1f - (Columns * 0.2f);
 		ObjectPooler = GetComponent<ObjectPooler>();
+		print(GetComponentInParent<PlayerManager>().Theme.Background.name);
+		Background.sprite = GetComponentInParent<PlayerManager>().Theme.Background;
 		// ObjectOffset = Constants.FindOffset(GO);
 		// ObjectOffset = new Vector2(ObjectOffset.x - Scale, ObjectOffset.y - Scale);
 		
@@ -32,7 +36,6 @@ public float GameboardHeight;
 	void Update () {
 		if(PlayerManager.RensaCheck){
 			StartCoroutine(ObjectPooler.RensaCheck());
-			print("Thjisfas");
 			PlayerManager.RensaCheck = false;
 		}
 	}
