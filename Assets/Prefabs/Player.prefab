@@ -1077,6 +1077,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b7f0e53c62b1c94b90bc962c9d34b95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ColorScheme: {fileID: 11400000, guid: 9382ca2cc3e75fd40b3de66cd0569581, type: 2}
+  Theme: {fileID: 11400000, guid: 7b9c6e2ad3a62d1449d8705adc2be9c5, type: 2}
   gameBoard: {fileID: 2358953631999700111}
   objectPooler: {fileID: 2358953631999700108}
   detectorManager: {fileID: 2358953631999700106}
@@ -1089,7 +1091,6 @@ MonoBehaviour:
   IgnoredBallColor: 1
   GameOverPanel: {fileID: 2358953631450610229}
   PlayerNumberManager: {fileID: 2358953631067472858}
-  Theme: {fileID: 11400000, guid: 3c929a43944ae344790c75be391a01e7, type: 2}
   WeightedBallColorPool: 
   DefaultColorWeights: 320000000100000000000000050000000500000005000000140000001400000014000000
   PlayerColorPool: 
@@ -1731,6 +1732,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b65681feac2174579819cef4ab4b932a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GameManager: {fileID: 0}
   PlayerManager: {fileID: 2358953631067472861}
   ScoreText: {fileID: 2358953630463783125}
   ComboText: {fileID: 2358953631875048957}
@@ -2348,7 +2350,7 @@ MonoBehaviour:
   InitialColumnPosition: {x: 0, y: 0}
   ObjectOffset: {x: 0, y: 0}
   GO: {fileID: 1254343284260142, guid: 79ae8dd76bb384c328c25239630fa4a4, type: 3}
-  InitialBallCount: 27
+  InitialBallCount: 40
   GameboardWidth: 0
   GameboardHeight: 0
 --- !u!114 &2358953631999700108
@@ -2388,7 +2390,7 @@ MonoBehaviour:
   Ball: {fileID: 1254343284260142, guid: 79ae8dd76bb384c328c25239630fa4a4, type: 3}
   GameBoard: {fileID: 2358953631999700111}
   TimeBetweenChecks: 4
-  InitialY: 9
+  InitialY: 10.44
 --- !u!114 &2846498298074260240
 MonoBehaviour:
   m_ObjectHideFlags: 0

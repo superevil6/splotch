@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour {
+public GameManager GameManager;
 public PlayerManager PlayerManager;
 public Text ScoreText;
 public GameObject ComboText;
@@ -15,6 +16,7 @@ private bool RensaOver = true;
 private int TempScoreMultiplier = 1;
 	// Use this for initialization
 	void Start () {
+		GameManager = GetComponentInParent<GameManager>();
 		ComboText.SetActive(false);
 		AudioSource.clip = BallPopSound;
 		PunishmentManager = PlayerManager.PunishmentManager;
@@ -36,10 +38,9 @@ private int TempScoreMultiplier = 1;
 			}
 			PlayerManager.RensaTime -= Time.deltaTime;
 			if(PlayerManager.RensaTime <= 0 && !RensaOver){
-				if(PlayerManager.ScoreMultiplier > 2 && !PunishmentManager.ShouldPunish){
+				if(GameManager.NumberOfPlayers > 1 && PlayerManager.ScoreMultiplier > 2 && !PunishmentManager.ShouldPunish){
 					PunishmentManager.ShouldPunish = true;
 				}
-				print("Rensa being set to over.");
 				ResetMultiplierValues();
 				RensaOver = true;
 			}
@@ -58,7 +59,9 @@ private int TempScoreMultiplier = 1;
 		yield return new WaitForSeconds(clip.length);
 	}
 	public void ResetMultiplierValues(){
-		PunishmentManager.PunishOtherPlayer(PunishmentManager.PickPlayerToPunish(), PlayerManager.ScoreMultiplier, PlayerManager.NumberOfBallsBeingCleared);
+		if(GameManager.NumberOfPlayers > 1){
+			PunishmentManager.PunishOtherPlayer(PunishmentManager.PickPlayerToPunish(), PlayerManager.ScoreMultiplier, PlayerManager.NumberOfBallsBeingCleared);
+		}
 		PlayerManager.ScoreMultiplier = 1;
 		TempScoreMultiplier = PlayerManager.ScoreMultiplier;			
 		AudioSource.pitch = 1f;

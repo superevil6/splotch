@@ -7,6 +7,7 @@ using System;
 
 public class PlayerColorManager : MonoBehaviour {
 public PlayerManager PlayerManager;
+private ColorScheme ColorScheme;
 public List<PlayerColor> ColorQueue;
 public Image FirstColorPanel; 
 public Image SecondColorPanel; 
@@ -14,6 +15,7 @@ public Image ThirdColorPanel;
 
 	// Use this for initialization
 	void Start () {
+		ColorScheme = PlayerManager.ColorScheme;
 		ColorQueue = new List<PlayerColor>();
 		FirstColorPanel = FirstColorPanel.GetComponent<Image>();
 		SecondColorPanel = SecondColorPanel.GetComponent<Image>();
@@ -53,18 +55,18 @@ public Image ThirdColorPanel;
 			AddColorToQueue();
 		}
 	}
-		public Color32 SetColor(PlayerColor PlayerColor){
-			switch(PlayerColor){
-				case PlayerColor.red : 
-					return Color.red;
-				case PlayerColor.blue : 
-					return Color.blue;
-				case PlayerColor.yellow : 
-					return Color.yellow;
+	public Color32 SetColor(PlayerColor playerColor){
+		switch(playerColor){
+			case PlayerColor.red : 
+				return ColorScheme.Red;
+			case PlayerColor.blue : 
+				return ColorScheme.Blue;
+			case PlayerColor.yellow : 
+				return ColorScheme.Yellow;
 		}
 		return Color.grey;
 	}
-		public PlayerColor GenerateNonConsecutiveColor(PlayerColor AlreadyUsedColor){
+	public PlayerColor GenerateNonConsecutiveColor(PlayerColor AlreadyUsedColor){
 		PlayerColor ChosenColor = GeneratePlayerColor(PlayerManager.IgnoredPlayerColor);
 		while(ChosenColor == AlreadyUsedColor){
 			ChosenColor = GeneratePlayerColor(PlayerManager.IgnoredPlayerColor);

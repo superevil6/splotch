@@ -13,9 +13,11 @@ public class PunishmentManager : MonoBehaviour
     {
         GameManager = GetComponentInParent<GameManager>();
         PlayerManager = GetComponentInParent<PlayerManager>();
-        foreach(GameObject player in GameManager.Players){
-            if(player.GetComponent<PlayerManager>().PlayerNumber != PlayerManager.PlayerNumber){
-                Players.Add(player.GetComponent<PlayerManager>());
+        if(GameManager.NumberOfPlayers > 1){
+            foreach(GameObject player in GameManager.Players){
+                if(player.GetComponent<PlayerManager>().PlayerNumber != PlayerManager.PlayerNumber){
+                    Players.Add(player.GetComponent<PlayerManager>());
+                }
             }
         }
     }
@@ -23,7 +25,7 @@ public class PunishmentManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(ShouldPunish){
+        if(GameManager.NumberOfPlayers > 1 && ShouldPunish){
             PunishOtherPlayer(PickPlayerToPunish(), PlayerManager.NumberOfSecondsForPunishment, PlayerManager.NumberOfBallsBeingCleared);
             PlayerManager.NumberOfSecondsForPunishment = 0;
             PlayerManager.NumberOfBallsBeingCleared = 0;

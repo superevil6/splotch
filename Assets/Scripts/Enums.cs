@@ -72,6 +72,7 @@ namespace Enums{
 		FindBall,
 		ChangeColor,
 		WhiteOut,
+		CheckColumns,
 		MakeBrown,
 		Nothing
 	}

@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: f1227688a3db344198aa19ee64ffb760, type: 3}
-  m_Color: {r: 0.5019608, g: 0, b: 0.5019608, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -103,11 +103,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BallColor: 0
   WeightedBallColorPool: 
+  PlayerManager: {fileID: 0}
+  ColorScheme: {fileID: 11400000, guid: 39e4b2cfac07e6d47b152bfccc8cf4f4, type: 2}
   Detection: {fileID: 114108338342639858}
   Type: 0
   SpriteRenderer: {fileID: 212478847813018770}
-  Sprite: {fileID: 21300000, guid: f1227688a3db344198aa19ee64ffb760, type: 3}
-  PlayerManager: {fileID: 0}
   BoxCollider2D: {fileID: 61898284635218806}
   Rigidbody2D: {fileID: 50413992120349606}
   GameBoard: {fileID: 0}

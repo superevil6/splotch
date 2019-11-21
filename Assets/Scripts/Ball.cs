@@ -9,11 +9,12 @@ public class Ball : MonoBehaviour {
 public BallColor BallColor;
 //public BallColor IgnoredColor;
 public int[] WeightedBallColorPool;
+public PlayerManager PlayerManager;
+public ColorScheme ColorScheme;
 public Detection Detection;
 private BallColor NewColor;
 public BallType Type;
 public SpriteRenderer SpriteRenderer;
-public PlayerManager PlayerManager;
 public BoxCollider2D BoxCollider2D;
 public Rigidbody2D Rigidbody2D;
 public GameBoard GameBoard;
@@ -31,12 +32,13 @@ private bool DoOnce = false;
 	void Start () {
 		GameBoard = GetComponentInParent<GameBoard>();
 		PlayerManager = GetComponentInParent<PlayerManager>();
+		ColorScheme = PlayerManager.ColorScheme;
 		WeightedBallColorPool = PlayerManager.WeightedBallColorPool;
 		Detection = GetComponent<Detection>();
 		transform.localScale = new Vector2((GameBoard.GameboardWidth / GameBoard.Columns) * 0.5f, ((GameBoard.GameboardHeight) / GameBoard.Columns) * 0.5f);
 		gameObject.layer = 8;
 		SetupBall();
-		SpriteRenderer.sprite = PlayerManager.Theme.BallSprite;
+		SpriteRenderer.sprite = PickSprite(PlayerManager.Theme.BallSprite);
 		
 	}
 
@@ -84,28 +86,28 @@ private bool DoOnce = false;
 		}
 		return BallColor.white;
 	}
-		public static Color32 SetColor(BallColor BallColor){
-			switch(BallColor){
-				case BallColor.white : 
-					return Color.white;
-				case BallColor.red : 
-					return Color.red;
-				case BallColor.blue : 
-					return Color.blue;
-				case BallColor.yellow : 
-					return Color.yellow;
-				case BallColor.green : 
-					return Color.green;
-				case BallColor.orange : 
-					return new Color32(255,165,0,255);
-				case BallColor.purple : 
-					return new Color32(128,0,128,255);
-				case BallColor.brown : 
-					return new Color32(128,80,0,255);
-				case BallColor.black : 
-					return Color.black;
+	public Color SetColor(BallColor ballColor){
+		switch(ballColor){
+			case BallColor.white : 
+				return ColorScheme.White;
+			case BallColor.red : 
+				return ColorScheme.Red;
+			case BallColor.blue : 
+				return ColorScheme.Blue;
+			case BallColor.yellow : 
+				return ColorScheme.Yellow;
+			case BallColor.green : 
+				return ColorScheme.Green;
+			case BallColor.orange : 
+				return ColorScheme.Orange;
+			case BallColor.purple : 
+				return ColorScheme.Purple;
+			case BallColor.brown : 
+				return ColorScheme.Brown;
+			case BallColor.black : 
+				return ColorScheme.Black;
 		}
-		return Color.grey;
+		return Color.white;
 	}
 	private void SetupBall(){
 		SpriteRenderer = GetComponent<SpriteRenderer>();
@@ -212,4 +214,19 @@ private bool DoOnce = false;
 		}
 		return BallType.normal;
 	}
+	public Sprite PickSprite(Sprite[] sprites){
+		int chosenSprite = UnityEngine.Random.Range(0, sprites.Length);
+		return sprites[chosenSprite];
+	}
 }
+
+/*
+Coroutine couldn't be started because the the game object 'Ball(Clone)' is inactive!
+UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
+Detection:CheckForMatches() (at Assets/Scripts/Detection.cs:80)
+Ball:SetNewBallColor(BallColor) (at Assets/Scripts/Ball.cs:202)
+Ball:ChangeBallColor(PlayerColor) (at Assets/Scripts/Ball.cs:161)
+CPU:ChangeColor(Ball) (at Assets/Scripts/CPU.cs:225)
+CPU:Update() (at Assets/Scripts/CPU.cs:95)
+
+*/

@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ThemeName: Test Theme 2
   Background: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
-  BallSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  BallSprite:
+  - {fileID: 21300000, guid: f1227688a3db344198aa19ee64ffb760, type: 3}
+  - {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   CursorSprite: {fileID: 21300000, guid: 795d30990e327d445bf280ed5af03c08, type: 3}

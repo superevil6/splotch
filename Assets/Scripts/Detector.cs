@@ -20,8 +20,6 @@ public int RandomRange;
 	// Use this for initialization
 	void Start () {
 		GameBoard = transform.GetComponentInParent<GameBoard>();
-		//SpriteRenderer = GetComponent<SpriteRenderer>();
-		//SpriteRenderer.sprite = Sprite;
 		ObjectPooler = GameBoard.GetComponent<ObjectPooler>();
 		PlayerManager = GameBoard.GetComponentInParent<PlayerManager>();
 		transform.localScale = Ball.transform.localScale;
@@ -62,4 +60,14 @@ public int RandomRange;
 			}
 		}
 	}
+	public bool BallCount(){
+		Hits = Physics2D.RaycastAll(transform.position, -Vector2.up, 10000 , 1 << 8);
+		if(Hits.Length > GameBoard.Rows - 3){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
 }

@@ -7,6 +7,6 @@ public class Theme : ScriptableObject
 {
     public string ThemeName;
     public Sprite Background;
-    public Sprite BallSprite;
+    public Sprite[] BallSprite;
     public Sprite CursorSprite;
 }

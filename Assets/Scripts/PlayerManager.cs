@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
+    public ColorScheme ColorScheme;
+    public Theme Theme;
     public GameBoard gameBoard;
     private GameManager GameManager;
     public ObjectPooler objectPooler;
@@ -19,7 +21,6 @@ public class PlayerManager : MonoBehaviour
     public BallColor IgnoredBallColor;
     public GameObject GameOverPanel;
     public PlayerNumberManager PlayerNumberManager;
-    public Theme Theme;
     public int[] WeightedBallColorPool;
     //Weighted Values are processed in this order, White, BLACK BROWN GREEN PURPLE ORANGE RED BLUE YELLOW
     public int[] DefaultColorWeights = {0, 0, 10, 10, 10, 10, 30, 30, 30};

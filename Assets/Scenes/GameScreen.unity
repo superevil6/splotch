@@ -269,7 +269,7 @@ MonoBehaviour:
     type: 3}
   Themes:
   - {fileID: 0}
-  NumberOfPlayers: 2
+  NumberOfPlayers: 1
 --- !u!114 &840179339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -309,6 +309,10 @@ MonoBehaviour:
     show: 0
     deleteQuestion: 0
   - s: Player is punishing itself
+    state: 1
+    show: 0
+    deleteQuestion: 0
+  - s: Ball bug in ball.cs comment
     state: 1
     show: 0
     deleteQuestion: 0
