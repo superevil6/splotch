@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Gems
   m_EditorClassIdentifier: 
   ThemeName: 
-  Background: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  Background: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
   BallSprite:
   - {fileID: 21300000, guid: 37023e6f3aed3e14881800f0ad59c107, type: 3}
   - {fileID: 21300000, guid: 76d9503e880471a4fa280165735a509d, type: 3}

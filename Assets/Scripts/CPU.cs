@@ -27,6 +27,7 @@ public class CPU : MonoBehaviour
     void Start()
     {
         //BallSize = Constants.FindOffset(Cursor.Ball.gameObject);
+        BallSize = gameObject.transform.localScale;
         Gameboard = Cursor.Gameboard;
         Detectors = PlayerManager.detectorManager.VerticalDetectors;
         PlayerPrefix = PlayerManager.PlayerNumberManager.PlayerPrefix;
@@ -44,7 +45,7 @@ public class CPU : MonoBehaviour
         if(coolDownTime <= 0 && !PlayerManager.GameOver){
             switch(action){
                 case CPUActions.CheckColumns:
-                print("Checvking COlumns");
+                //print("Checvking COlumns");
                 foreach(Detector detector in Detectors){
                     if(detector.BallCount()){
                         print("Mkae brown");
@@ -52,8 +53,8 @@ public class CPU : MonoBehaviour
                         break;
                     }
                 }
-                print(action + " is the action");
-                //action = CPUActions.FindBall;
+                //print(action + " is the action");
+                action = CPUActions.FindBall;
                 break;
 
                 case CPUActions.FindBall:
@@ -178,7 +179,7 @@ public class CPU : MonoBehaviour
     }
     private bool MoveUp(){
         RaycastHit2D[] HitUp = Physics2D.RaycastAll(transform.position, Vector2.up, 100, 1 << 8);
-        if(HitUp.Length > 1 && HitUp[1].transform.gameObject.tag == "Ball" + PlayerPrefix){
+        if(HitUp.Length > 1 && HitUp[1].transform.gameObject.tag == "Ball" + PlayerPrefix && HitUp[1].transform.GetComponent<Rigidbody2D>().velocity.magnitude <= 1){
             transform.position = HitUp[1].transform.position;
             return true;
         }
@@ -448,8 +449,7 @@ public class CPU : MonoBehaviour
         return PickABrownBallInColumn(chosenDetector);
     }
 	public GameObject PickABrownBallInColumn(Detector detector){
-        print("Huh?");
-		RaycastHit2D[] ballsInColumn = Physics2D.RaycastAll(transform.position, -Vector2.up, 100, 1 << 8);
+ 		RaycastHit2D[] ballsInColumn = Physics2D.RaycastAll(transform.position, -Vector2.up, 100, 1 << 8);
         List<GameObject> eligibleBalls = new List<GameObject>();
         foreach(RaycastHit2D ball in ballsInColumn){
             BallColor ballColor = ball.transform.GetComponent<Ball>().BallColor;

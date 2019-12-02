@@ -32,7 +32,7 @@ public GameObject ItemToPool;
 		print("Rensa Check");
 		foreach(GameObject obj in PooledItems){
 			if(obj.activeInHierarchy){
-				obj.GetComponent<Detection>().CheckForMatches();
+				obj.GetComponent<Detection>().CheckForMatches(false);
 			}
 		}
 		yield return new WaitForSeconds(0.5f);

@@ -25,26 +25,35 @@ private int TempScoreMultiplier = 1;
 	// Update is called once per frame
 	void Update () {
 		ScoreText.text = PlayerManager.Score.ToString();
-		if(PlayerManager.RensaTime >= 0){
-			RensaOver = false;
-			if(!AudioSource.isPlaying && PlayerManager.ScoreMultiplier > TempScoreMultiplier){
-				AudioSource.pitch = 0.5f * PlayerManager.ScoreMultiplier;
-				AudioSource.Play();
-				TempScoreMultiplier = PlayerManager.ScoreMultiplier;
-			}
-			if(PlayerManager.ScoreMultiplier > 2){
-				StopCoroutine("DisplayComboText");
-				StartCoroutine("DisplayComboText");
-			}
-			PlayerManager.RensaTime -= Time.deltaTime;
-			if(PlayerManager.RensaTime <= 0 && !RensaOver){
-				if(GameManager.NumberOfPlayers > 1 && PlayerManager.ScoreMultiplier > 2 && !PunishmentManager.ShouldPunish){
-					PunishmentManager.ShouldPunish = true;
-				}
-				ResetMultiplierValues();
-				RensaOver = true;
-			}
-		}
+		// if(PlayerManager.RensaTime >= 0){
+		// 	RensaOver = false;
+		// 	if(!AudioSource.isPlaying && PlayerManager.ScoreMultiplier > TempScoreMultiplier){
+		// 		AudioSource.pitch = 0.5f * PlayerManager.ScoreMultiplier;
+		// 		AudioSource.Play();
+		// 		TempScoreMultiplier = PlayerManager.ScoreMultiplier;
+		// 	}
+		// 	if(PlayerManager.ScoreMultiplier > 2){
+		// 		StopCoroutine("DisplayComboText");
+		// 		StartCoroutine("DisplayComboText");
+		// 	}
+		// 	PlayerManager.RensaTime -= Time.deltaTime;
+		// 	if(PlayerManager.RensaTime <= 0 && !RensaOver){
+		// 		if(GameManager.NumberOfPlayers > 1 && PlayerManager.ScoreMultiplier > 2 && !PunishmentManager.ShouldPunish){
+		// 			PunishmentManager.ShouldPunish = true;
+		// 		}
+		// 		ResetMultiplierValues();
+		// 		RensaOver = true;
+		// 	}
+		// }
+		// if(!AudioSource.isPlaying && PlayerManager.ScoreMultiplier > TempScoreMultiplier){
+		// 	AudioSource.pitch = 0.5f * PlayerManager.ScoreMultiplier;
+		// 	AudioSource.Play();
+		// 	TempScoreMultiplier = PlayerManager.ScoreMultiplier;
+		// }
+		// if(PlayerManager.ScoreMultiplier > 2){
+		// 	StopCoroutine("DisplayComboText");
+		// 	StartCoroutine("DisplayComboText");
+		// }
 	}
 	public IEnumerator DisplayComboText(){
 		ComboText.GetComponent<Text>().text = "X" + (PlayerManager.ScoreMultiplier -1) + " Combo";

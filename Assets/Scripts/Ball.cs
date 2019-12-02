@@ -25,7 +25,7 @@ private float TimeBetweenChecks;
 public float TimeBetweenChecksTotal;
 private float TimeLeft;
 private bool TransitionColorCheck = false;
-private bool HasMoved;
+private bool HasMoved = false;
 private bool DoOnce = false;
 
 	// Use this for initialization
@@ -35,10 +35,12 @@ private bool DoOnce = false;
 		ColorScheme = PlayerManager.ColorScheme;
 		WeightedBallColorPool = PlayerManager.WeightedBallColorPool;
 		Detection = GetComponent<Detection>();
-		transform.localScale = new Vector2((GameBoard.GameboardWidth / GameBoard.Columns) * 0.5f, ((GameBoard.GameboardHeight) / GameBoard.Columns) * 0.5f);
+		transform.localScale = new Vector3((GameBoard.GameboardWidth / GameBoard.Columns) * 0.5f, ((GameBoard.GameboardHeight) / GameBoard.Columns) * 0.5f, 1);
 		gameObject.layer = 8;
-		SetupBall();
 		SpriteRenderer.sprite = PickSprite(PlayerManager.Theme.BallSprite);
+		SpriteRenderer.material = ColorScheme.Material;
+		SetupBall();
+
 		
 	}
 
@@ -52,11 +54,12 @@ private bool DoOnce = false;
 			SpriteRenderer.color = Color.Lerp(SpriteRenderer.color, NewBallColor, Time.deltaTime / TimeLeft);
 			TimeLeft -= Time.deltaTime;
 		}
-		if(Rigidbody2D.velocity.magnitude >= 0.5){
+		if(Rigidbody2D.velocity.magnitude >= 0.1){
 			HasMoved = true;
 		}
-		if(Rigidbody2D.velocity.magnitude <= 1 && HasMoved){
-			Detection.CheckForMatches();
+		if(Rigidbody2D.velocity.magnitude <= 0.1 && HasMoved){
+			//The true is because this is a rensa check
+			Detection.CheckForMatches(true);
 			HasMoved = false;
 		}
 		if(PlayerManager.GameOver){
@@ -124,6 +127,7 @@ private bool DoOnce = false;
 		BallColor = WeightedGenerateColor();
 		NewColor = BallColor;
 		SpriteRenderer.color = SetColor(BallColor);
+		SpriteRenderer.material.SetColor(BallColor.ToString(), SetColor(BallColor));
 	}
 
 	public void ChangeBallColor(PlayerColor PlayerColor){
@@ -145,10 +149,6 @@ private bool DoOnce = false;
 					SetNewBallColor(BallColor.brown);
 					break;
 				}
-				// else if(BallColor.Equals(BallColor.brown)){
-				// 	SetNewBallColor(BallColor.black);
-				// 	break;
-				// }
 			break;
 			case (PlayerColor.yellow) :
 				if(BallColor.Equals(BallColor.white)){
@@ -201,7 +201,8 @@ private bool DoOnce = false;
 		BallColor = InputBallColor;
 		NewBallColor = SetColor(BallColor);
 		TimeLeft = TransitionTime;
-		Detection.CheckForMatches();
+		//The ball is not falling, so the false is because it's not a rensa.
+		Detection.CheckForMatches(false);
 	}
 	public BallType SpecialBallCheck(bool BattleItems){
 		int RNG = UnityEngine.Random.Range(0, 100);

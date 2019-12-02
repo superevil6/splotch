@@ -77,7 +77,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: f1227688a3db344198aa19ee64ffb760, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -129,6 +129,7 @@ MonoBehaviour:
   Ball: {fileID: 114911392157144544}
   Rigidbody2D: {fileID: 50413992120349606}
   ParticleSystem: {fileID: 0}
+  RensaMultiplier: 0
 --- !u!50 &50413992120349606
 Rigidbody2D:
   serializedVersion: 4

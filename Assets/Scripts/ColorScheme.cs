@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ColorScheme", menuName = "ScriptableObjects/ColorScheme", order = 2)]
 public class ColorScheme : ScriptableObject
 {
+    public Material Material;
     public Color32 White;
     public Color32 Black;
     public Color32 Brown;

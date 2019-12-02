@@ -325,7 +325,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 466b7cb6613bf784f94a6d85432bf058, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -406,7 +406,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2358953630411914060}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07563356e09fc6d419762493293752db, type: 3}
   m_Name: 
@@ -1077,8 +1077,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b7f0e53c62b1c94b90bc962c9d34b95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ColorScheme: {fileID: 11400000, guid: 9382ca2cc3e75fd40b3de66cd0569581, type: 2}
-  Theme: {fileID: 11400000, guid: 7b9c6e2ad3a62d1449d8705adc2be9c5, type: 2}
+  ColorScheme: {fileID: 11400000, guid: d540aaf968706ce439b11e68f69439fa, type: 2}
+  Theme: {fileID: 11400000, guid: 3c929a43944ae344790c75be391a01e7, type: 2}
   gameBoard: {fileID: 2358953631999700111}
   objectPooler: {fileID: 2358953631999700108}
   detectorManager: {fileID: 2358953631999700106}
@@ -2462,7 +2462,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

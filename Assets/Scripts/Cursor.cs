@@ -28,10 +28,12 @@ public class Cursor : MonoBehaviour
     void Start()
     {
         PlayerPrefix = PlayerNumberManager.PlayerPrefix;
-        Ballsize = Constants.FindOffset(Ball.gameObject);
+        //Ballsize = Constants.FindOffset(Ball.gameObject);
+        Ballsize = gameObject.transform.localScale;
         transform.localScale = new Vector2(128, 128);
         SpriteRenderer = GetComponent<SpriteRenderer>();
         SpriteRenderer.sprite = PlayerManager.Theme.CursorSprite;
+        SpriteRenderer.sortingOrder = 3;
         //transform.localPosition = new Vector2(Gameboard.transform.localPosition.x + Ballsize.x, -Gameboard.GameboardHeight + 10 + Ballsize.y);
         // foreach(GameObject go in Gameboard.ObjectPooler.PooledItems){
         //     if(go.activeInHierarchy && go.tag == "Ball" + PlayerPrefix){

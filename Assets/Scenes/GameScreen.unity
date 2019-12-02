@@ -269,7 +269,7 @@ MonoBehaviour:
     type: 3}
   Themes:
   - {fileID: 0}
-  NumberOfPlayers: 1
+  NumberOfPlayers: 2
 --- !u!114 &840179339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,6 +316,10 @@ MonoBehaviour:
     state: 1
     show: 0
     deleteQuestion: 0
+  - s: Need to reimplement ball size for raycast/detection
+    state: 1
+    show: 0
+    deleteQuestion: 0
 --- !u!114 &840179340
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,7 +359,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: -1
   m_SortingLayerID: 0
   m_SortingOrder: -1
   m_TargetDisplay: 0

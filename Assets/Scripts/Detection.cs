@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Enums;
 
@@ -26,6 +27,8 @@ private List<GameObject> DiagonalHitsULDR; //from upleft to downright
 private List<GameObject> DiagonalHitsURDL; //from upright to downleft
 
 private BallColor BallColor;
+public int RensaMultiplier;
+private float RensaTime;
 private string PlayerPrefix;
 //Rework this so Columns is in a more accessible area, so I don't have repeate variables.
 	// Use this for initialization
@@ -33,11 +36,11 @@ private string PlayerPrefix;
 		PlayerManager = GetComponentInParent<PlayerManager>();
 		PlayerPrefix = PlayerManager.PlayerNumberManager.PlayerPrefix;
 		BallColor = Ball.BallColor;
+		BallSize = new Vector2(gameObject.transform.localScale.x, gameObject.transform.localScale.y);
+		//BallSize = transform.localScale;
 		// var PartMain = ParticleSystem.main; 
 		// PartMain.startColor = Ball.SetColor(Ball.BallColor);
-		BallSize = Constants.FindOffset(Ball.gameObject);
-		//BallSize = new Vector2(BallSize.x - Ball.GameBoardObject.Scale , BallSize.y - Ball.GameBoardObject.Scale);
-		//ObjectPooler = GameObject.FindGameObjectWithTag("ObjectPooler").GetComponent<ObjectPooler>();
+		//BallSize = Constants.FindOffset(Ball.gameObject);
 		Hits = new List<GameObject>();
 		VerticalHits = new List<GameObject>();
 		HorizontalHits = new List<GameObject>();
@@ -48,9 +51,15 @@ private string PlayerPrefix;
 	
 	// Update is called once per frame
 	void Update () {
-
+		if(RensaTime > 0){
+			RensaTime -= Time.deltaTime;
+		}
+		if(RensaTime <= 0 && RensaMultiplier > 1){
+			//print("rensa time expired.");
+			RensaMultiplier = 1;
+		}
 	}
-	public void CheckForMatches(){
+	public void CheckForMatches(bool renseChain){
 		Hits.Clear();
 		VerticalHits.Clear();
 		HorizontalHits.Clear();
@@ -59,72 +68,83 @@ private string PlayerPrefix;
 		BallColor = Ball.BallColor;
 		/* HitUp will check for as many balls that spawn in a column, that way if bottom ball detects the max
 		number of balls, it knows the game is over. Kind of hacky, I might redo this. */
-		HitUp = Physics2D.RaycastAll(transform.position, Vector2.up, BallSize.y * 12, 1 << 8);
-		HitDown = Physics2D.RaycastAll(transform.position, -Vector2.up, BallSize.y * 12, 1 << 8);
-		HitLeft = Physics2D.RaycastAll(transform.position, -Vector2.right, BallSize.x * 12, 1 << 8);
-		HitRight = Physics2D.RaycastAll(transform.position, Vector2.right, BallSize.x * 12, 1 << 8);
-		HitUpLeft = Physics2D.RaycastAll(transform.position, new Vector2(-1, 1), (BallSize.x * BallSize.y) * 12, 1 << 8);
-		HitUpRight = Physics2D.RaycastAll(transform.position, new Vector2(1, 1), (BallSize.x * BallSize.y) * 12, 1 << 8);
-		HitDownLeft = Physics2D.RaycastAll(transform.position, new Vector2(-1, -1), (BallSize.x * BallSize.y) * 12, 1 << 8);
-		HitDownRight = Physics2D.RaycastAll(transform.position, new Vector2(1, -1), (BallSize.x * BallSize.y) * 12, 1 << 8);
+		HitUp = Physics2D.RaycastAll(transform.position, Vector2.up, BallSize.y * 2, 1 << 8);
+		HitDown = Physics2D.RaycastAll(transform.position, -Vector2.up, BallSize.y * 2, 1 << 8);
+		HitLeft = Physics2D.RaycastAll(transform.position, -Vector2.right, BallSize.x * 2, 1 << 8);
+		HitRight = Physics2D.RaycastAll(transform.position, Vector2.right, BallSize.x * 2, 1 << 8);
+		Debug.DrawRay(transform.position, new Vector2(-transform.localScale.x, transform.localScale.y), Color.blue, 1);
+		HitUpLeft = Physics2D.RaycastAll(transform.position, new Vector2(-transform.localScale.x, transform.localScale.y), 100, 1 << 8);
+		HitUpRight = Physics2D.RaycastAll(transform.position, new Vector2(transform.localScale.x, transform.localScale.y), 100, 1 << 8);
+		HitDownLeft = Physics2D.RaycastAll(transform.position, new Vector2(-transform.localScale.x, -transform.localScale.y), 100, 1 << 8);
+		HitDownRight = Physics2D.RaycastAll(transform.position, new Vector2(transform.localScale.x, -transform.localScale.y), 100, 1 << 8);
 
-		CheckDirection(VerticalHits, HitUp);
-		CheckDirection(VerticalHits, HitDown);
-		CheckDirection(HorizontalHits, HitLeft);
-		CheckDirection(HorizontalHits, HitRight);
-		CheckDirection(DiagonalHitsULDR, HitUpLeft);
-		CheckDirection(DiagonalHitsULDR, HitDownRight);
-		CheckDirection(DiagonalHitsURDL, HitUpRight);
-		CheckDirection(DiagonalHitsURDL, HitDownLeft);
+		CheckDirection(HitUp, VerticalHits);
+		CheckDirection(HitDown, VerticalHits);
+		CheckDirection(HitLeft, HorizontalHits);
+		CheckDirection(HitRight, HorizontalHits);
+		CheckDirection(HitUpLeft, DiagonalHitsULDR);
+		CheckDirection(HitDownRight, DiagonalHitsULDR);
+		CheckDirection(HitUpRight, DiagonalHitsURDL);
+		CheckDirection(HitDownLeft, DiagonalHitsURDL);
 
-		StartCoroutine(WaitForColorChange(Ball.TransitionTime));
+		StartCoroutine(WaitForColorChange(Ball.TransitionTime, renseChain));
 		
 	}
-	private List<GameObject> CheckDirection(List<GameObject> Hits, RaycastHit2D[] Direction){
+
+	private void CheckDirection(RaycastHit2D[] Direction, List<GameObject> hits){
 		if(Direction.Length > 1){
 			if(Direction[1].transform.gameObject.tag == "Ball" + PlayerPrefix && Direction[1].transform.GetComponent<Ball>().BallColor == BallColor){
 				GameObject Hit = Direction[0].transform.gameObject;
 				if(CheckForBlackAndWhite(Hit)){
-					Hits.Add(Hit);
+					hits.Add(Hit);
 				}
 				Hit = Direction[1].transform.gameObject;
 				if(CheckForBlackAndWhite(Hit)){
-					Hits.Add(Hit);
+					hits.Add(Hit);
 				}
 				if(Direction.Length > 2){
 					if(Direction[2].transform.gameObject.tag == "Ball" + PlayerPrefix && Direction[2].collider.gameObject.GetComponent<Ball>().BallColor == BallColor){
 						Hit = Direction[2].transform.gameObject;
 						if(CheckForBlackAndWhite(Hit)){
-							Hits.Add(Hit);
+							hits.Add(Hit);
 						}
 					}
 				}
-				return Hits;
 			}
 		}
-		return Hits;
 	}
 
-	private void DeactivateHits(List<GameObject> Hits){
+	private void DeactivateHits(List<GameObject> Hits, bool rensaChain){
 		if(Hits.Count >= 3){
-			// ParticleSystem.Emit(5);
+			PassRensaMultiplier();
 			int scoreValue = PointValue(Hits[0].GetComponent<Ball>().BallColor);
-			PlayerManager.Score += PlayerManager.ScoreMultiplier * scoreValue * Hits.Count;
-			PlayerManager.ScoreMultiplier += 1;
-			PlayerManager.RensaTime = PlayerManager.AllotedRensaTime;
+			List<int> rensaValues = new List<int>();				
+			foreach(GameObject go in Hits){
+				rensaValues.Add(go.transform.GetComponent<Detection>().RensaMultiplier);
+			}
+			int highestRensa = rensaValues.Max();
+			PlayerManager.Score += highestRensa * scoreValue * Hits.Count;
 			PlayerManager.NumberOfBallsBeingCleared += Hits.Count;
 			foreach(GameObject Hit in Hits){
 				Hit.SetActive(false);
 			}
 		}
 	}
-	private IEnumerator WaitForColorChange(float ChangeTime){
+	private IEnumerator WaitForColorChange(float ChangeTime, bool rensaChain){
 		yield return new WaitForSeconds(ChangeTime);
-		DeactivateHits(HorizontalHits);
-		DeactivateHits(VerticalHits);
-		DeactivateHits(DiagonalHitsULDR);
-		DeactivateHits(DiagonalHitsURDL);
-
+		if(HorizontalHits.Count >= 3){
+			Hits.AddRange(HorizontalHits);
+		}
+		if(VerticalHits.Count >= 3){
+			Hits.AddRange(VerticalHits);
+		}
+		if(DiagonalHitsULDR.Count >= 3){
+			Hits.AddRange(DiagonalHitsULDR);
+		}
+		if(DiagonalHitsURDL.Count >= 3){
+			Hits.AddRange(DiagonalHitsURDL);
+		}
+		DeactivateHits(Hits, rensaChain);
 	}
 
 	private bool CheckForBlackAndWhite(GameObject Ball){
@@ -146,5 +166,15 @@ private string PlayerPrefix;
 			return 50;
 		}
 		return 0;
+	}
+
+	private void PassRensaMultiplier(){
+		RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, Vector2.up, 1000, 1 << 8);
+		foreach(RaycastHit2D hit in hits){
+			if(hit.transform.tag == "Ball" + PlayerManager.PlayerNumberManager.PlayerPrefix){
+				hit.transform.GetComponent<Detection>().RensaMultiplier += 1;
+				hit.transform.GetComponent<Detection>().RensaTime = 1f;
+			}
+		}
 	}
 }

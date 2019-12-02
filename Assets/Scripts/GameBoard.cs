@@ -34,10 +34,10 @@ public float GameboardHeight;
 	
 	// Update is called once per frame
 	void Update () {
-		if(PlayerManager.RensaCheck){
-			StartCoroutine(ObjectPooler.RensaCheck());
-			PlayerManager.RensaCheck = false;
-		}
+		// if(PlayerManager.RensaCheck){
+		// 	StartCoroutine(ObjectPooler.RensaCheck());
+		// 	PlayerManager.RensaCheck = false;
+		// }
 	}
 
 	public void SetUpGameBoard(int Columns, int Rows){
