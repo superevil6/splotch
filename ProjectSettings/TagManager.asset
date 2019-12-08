@@ -22,7 +22,7 @@ TagManager:
   - 
   - Ball Layer
   - Background
-  - 
+  - Gameover Panel
   - 
   - 
   - 
@@ -47,4 +47,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Ball Layer
+    uniqueID: 2901460813
     locked: 0

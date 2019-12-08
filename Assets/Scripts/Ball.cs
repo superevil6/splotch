@@ -20,6 +20,8 @@ public Rigidbody2D Rigidbody2D;
 public GameBoard GameBoard;
 private Color32 OldBallColor;
 private Color32 NewBallColor;
+public ParticleSystem ParticleSystem;
+public ParticleSystem.MainModule ParticleMain;
 public float TransitionTime;
 private float TimeBetweenChecks;
 public float TimeBetweenChecksTotal;
@@ -32,6 +34,7 @@ private bool DoOnce = false;
 	void Start () {
 		GameBoard = GetComponentInParent<GameBoard>();
 		PlayerManager = GetComponentInParent<PlayerManager>();
+		//ParticleMain = ParticleSystem.main;
 		ColorScheme = PlayerManager.ColorScheme;
 		WeightedBallColorPool = PlayerManager.WeightedBallColorPool;
 		Detection = GetComponent<Detection>();
@@ -90,6 +93,10 @@ private bool DoOnce = false;
 		return BallColor.white;
 	}
 	public Color SetColor(BallColor ballColor){
+		//ParticleSystem.Emit(transform.position, new Vector3(1, 1, 1), 0.01f, 1, Constants.FindColor(ballColor, PlayerManager.ColorScheme));
+		//Color color = Constants.FindColor(ballColor, PlayerManager.ColorScheme);
+		//ParticleMain.startColor = color; 
+		ParticleSystem.Play();
 		switch(ballColor){
 			case BallColor.white : 
 				return ColorScheme.White;
@@ -115,6 +122,7 @@ private bool DoOnce = false;
 	private void SetupBall(){
 		SpriteRenderer = GetComponent<SpriteRenderer>();
 		BoxCollider2D = GetComponent<BoxCollider2D>();
+		ParticleSystem = GetComponent<ParticleSystem>();
 		SpecialBallCheck(false);
 		if(Type != BallType.rainbow){
 			//This is a temp fix if you can't fix the issue that lets you click brown balls.

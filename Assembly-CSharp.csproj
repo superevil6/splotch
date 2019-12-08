@@ -68,6 +68,7 @@
      <Compile Include="Assets\Scripts\GameBoard.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\GameOptions.cs" />
+     <Compile Include="Assets\Scripts\MenuActions.cs" />
      <Compile Include="Assets\Scripts\ObjectPooler.cs" />
      <Compile Include="Assets\Scripts\PlayerColorManager.cs" />
      <Compile Include="Assets\Scripts\PlayerManager.cs" />

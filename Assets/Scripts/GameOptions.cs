@@ -5,6 +5,10 @@ using Enums;
 
 public static class GameOptions
 {
-    public static PlayerNumber PlayerNumber;
+    public static int PlayerNumber = 0;
     public static GameMode GameMode;
+    public static PlayerType PlayerOne;
+    public static PlayerType PlayerTwo;
+    public static PlayerType PlayerThree;
+    public static PlayerType PlayerFour;
 }

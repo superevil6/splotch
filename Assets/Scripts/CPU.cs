@@ -27,6 +27,9 @@ public class CPU : MonoBehaviour
     void Start()
     {
         //BallSize = Constants.FindOffset(Cursor.Ball.gameObject);
+        PlayerManager = GetComponentInParent<PlayerManager>();
+        PlayerColorManager = PlayerManager.PlayerColorManager;
+        Cursor = GetComponent<Cursor>();
         BallSize = gameObject.transform.localScale;
         Gameboard = Cursor.Gameboard;
         Detectors = PlayerManager.detectorManager.VerticalDetectors;

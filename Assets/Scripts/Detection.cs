@@ -72,7 +72,6 @@ private string PlayerPrefix;
 		HitDown = Physics2D.RaycastAll(transform.position, -Vector2.up, BallSize.y * 2, 1 << 8);
 		HitLeft = Physics2D.RaycastAll(transform.position, -Vector2.right, BallSize.x * 2, 1 << 8);
 		HitRight = Physics2D.RaycastAll(transform.position, Vector2.right, BallSize.x * 2, 1 << 8);
-		Debug.DrawRay(transform.position, new Vector2(-transform.localScale.x, transform.localScale.y), Color.blue, 1);
 		HitUpLeft = Physics2D.RaycastAll(transform.position, new Vector2(-transform.localScale.x, transform.localScale.y), 100, 1 << 8);
 		HitUpRight = Physics2D.RaycastAll(transform.position, new Vector2(transform.localScale.x, transform.localScale.y), 100, 1 << 8);
 		HitDownLeft = Physics2D.RaycastAll(transform.position, new Vector2(-transform.localScale.x, -transform.localScale.y), 100, 1 << 8);

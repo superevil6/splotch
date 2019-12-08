@@ -12,6 +12,11 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        NumberOfPlayers = GameOptions.PlayerNumber;
+        print(NumberOfPlayers);
+        if(NumberOfPlayers > 1){
+            //Run Setup for players
+        }
         InitializePlayers(NumberOfPlayers);
     }
 
@@ -43,15 +48,36 @@ public class GameManager : MonoBehaviour
         switch(playerNumber){
             case 0 :
             playerManager.PlayerNumber = PlayerNumber.one;
+            if(GameOptions.PlayerOne == PlayerType.CPU){
+                newPlayer.GetComponentInChildren<Cursor>().GetComponent<CPU>().enabled = true;
+                //newPlayer.AddComponent<CPU>();
+                //playerManager.GetComponentInChildren<Cursor>().gameObject.AddComponent<CPU>();
+                //CPU cpu = newPlayer GetComponentInChildren<Cursor>.AddComponent(typeof(CPU)) as CPU;
+            }
             break;
             case 1:
             playerManager.PlayerNumber = PlayerNumber.two;
+            if(GameOptions.PlayerTwo == PlayerType.CPU){
+                newPlayer.GetComponentInChildren<Cursor>().GetComponent<CPU>().enabled = true;
+
+                // CPU cpu = newPlayer.gameObject.AddComponent(typeof(CPU)) as CPU;
+            }
             break;
             case 2:
             playerManager.PlayerNumber = PlayerNumber.three;
+            if(GameOptions.PlayerThree == PlayerType.CPU){
+                newPlayer.GetComponentInChildren<Cursor>().GetComponent<CPU>().enabled = true;
+
+                // CPU cpu = newPlayer.gameObject.AddComponent(typeof(CPU)) as CPU;
+            }
             break;
             case 3: 
             playerManager.PlayerNumber = PlayerNumber.four;
+            if(GameOptions.PlayerFour == PlayerType.CPU){
+                newPlayer.GetComponentInChildren<Cursor>().GetComponent<CPU>().enabled = true;
+
+                // CPU cpu = newPlayer.gameObject.AddComponent(typeof(CPU)) as CPU;
+            }
             break;
         }
          

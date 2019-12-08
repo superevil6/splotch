@@ -43,6 +43,7 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         GameManager = GetComponentInParent<GameManager>();
+        //DeterminePlayerType(PlayerNumber);
         PlayerPrefix = PlayerNumberManager.PlayerPrefix;
         GameOverPanel.SetActive(false);
         
@@ -83,7 +84,7 @@ public class PlayerManager : MonoBehaviour
         if(Input.GetButtonUp(PlayerPrefix + "Fire3")){
             DropSpeed -= DropSpeedIncrease;
         }
-        if(GameOver){
+        if(GameOver && !GameOverPanel.activeInHierarchy){
             GameOverPanel.SetActive(true);
             DropSpeed = 0;
         }
@@ -130,6 +131,30 @@ public class PlayerManager : MonoBehaviour
             return BallColor.yellow;
             default:
             return BallColor.white;
+        }
+    }
+    public void DeterminePlayerType(PlayerNumber playerNumber){
+        switch(playerNumber){
+            case PlayerNumber.one: 
+            if(GameOptions.PlayerOne == PlayerType.CPU){
+                gameObject.AddComponent<CPU>();
+            }
+            break;
+            case PlayerNumber.two:
+            if(GameOptions.PlayerTwo == PlayerType.CPU){
+                gameObject.AddComponent<CPU>();
+            }
+            break;
+            case PlayerNumber.three: 
+            if(GameOptions.PlayerThree == PlayerType.CPU){
+                gameObject.AddComponent<CPU>();
+            }
+            break;
+            case PlayerNumber.four:
+            if(GameOptions.PlayerFour == PlayerType.CPU){
+                gameObject.AddComponent<CPU>();
+            }
+            break;
         }
     }
 }

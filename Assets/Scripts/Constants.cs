@@ -53,4 +53,38 @@ public static class Constants {
 		}
 		return gameObjects;
 	}
+	public static Color32 FindColor(BallColor color, ColorScheme colorScheme){
+		switch(color){
+			case BallColor.red:
+			return colorScheme.Red;
+			case BallColor.blue:
+			return colorScheme.Blue;
+			case BallColor.yellow:
+			return colorScheme.Yellow;
+			case BallColor.green:
+			return colorScheme.Green;
+			case BallColor.orange:
+			return colorScheme.Orange;
+			case BallColor.purple:
+			return colorScheme.Purple;
+			case BallColor.brown:
+			return colorScheme.Brown;
+			case BallColor.white:
+			return colorScheme.White;
+			case BallColor.black:
+			return colorScheme.Black;
+			default: return colorScheme.White;
+		}
+	}
+	public static Color32 FindColor(PlayerColor color, ColorScheme colorScheme){
+		switch(color){
+			case PlayerColor.red:
+			return colorScheme.Red;
+			case PlayerColor.blue:
+			return colorScheme.Blue;
+			case PlayerColor.yellow:
+			return colorScheme.Yellow;
+			default: return colorScheme.White;
+		}
+	}
 }

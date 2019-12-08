@@ -21,23 +21,16 @@ public float GameboardHeight;
 	void Start () {
 		GameboardWidth = GetComponentInParent<RectTransform>().rect.width;
 		GameboardHeight = GetComponentInParent<RectTransform>().rect.height / 2;
-		//transform.localScale = new Vector3(1, 1, 1); 
 		Scale = 1f - (Columns * 0.2f);
 		ObjectPooler = GetComponent<ObjectPooler>();
 		print(GetComponentInParent<PlayerManager>().Theme.Background.name);
 		Background.sprite = GetComponentInParent<PlayerManager>().Theme.Background;
-		// ObjectOffset = Constants.FindOffset(GO);
-		// ObjectOffset = new Vector2(ObjectOffset.x - Scale, ObjectOffset.y - Scale);
-		
 		SetUpGameBoard(Columns, Rows);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		// if(PlayerManager.RensaCheck){
-		// 	StartCoroutine(ObjectPooler.RensaCheck());
-		// 	PlayerManager.RensaCheck = false;
-		// }
+
 	}
 
 	public void SetUpGameBoard(int Columns, int Rows){

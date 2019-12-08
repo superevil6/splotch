@@ -82,4 +82,9 @@ namespace Enums{
 		ColorBomb,
 		BlackBomb
 	}
+	public enum PlayerType{
+		Human,
+		CPU,
+		None
+	}
 }

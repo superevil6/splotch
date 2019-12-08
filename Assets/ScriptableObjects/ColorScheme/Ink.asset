@@ -10,33 +10,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d12ffd1756dd4b94aa78ff1ae37f8c16, type: 3}
-  m_Name: Crystal
+  m_Name: Ink
   m_EditorClassIdentifier: 
-  Material: {fileID: 2100000, guid: bb63464d7cccaa1499e4774e7251ad75, type: 2}
+  Material: {fileID: 2100000, guid: c64adba302b93424c8ff2ca533c0fda3, type: 2}
   White:
     serializedVersion: 2
-    rgba: 2164260863
+    rgba: 4294967295
   Black:
     serializedVersion: 2
     rgba: 4278190080
   Brown:
     serializedVersion: 2
-    rgba: 2147505813
+    rgba: 4278212245
   Red:
     serializedVersion: 2
-    rgba: 2147483843
+    rgba: 4278190335
   Blue:
     serializedVersion: 2
-    rgba: 2158039552
+    rgba: 4294904320
   Yellow:
     serializedVersion: 2
-    rgba: 2147546623
+    rgba: 4278253055
   Purple:
     serializedVersion: 2
-    rgba: 2159018096
+    rgba: 4294901922
   Orange:
     serializedVersion: 2
-    rgba: 2147525119
+    rgba: 4278231551
   Green:
     serializedVersion: 2
-    rgba: 2148961291
+    rgba: 4279697152
