@@ -126,7 +126,6 @@ public class Cursor : MonoBehaviour
         yield return new WaitForSeconds(startTime);
         SpriteRenderer.sprite = Sprite;
         transform.localPosition = new Vector2(Gameboard.transform.localPosition.x + Ballsize.x, -Gameboard.GameboardHeight + 10 + Ballsize.y);
-        print(-Gameboard.GameboardHeight * 2);
         HitRight = Physics2D.RaycastAll(transform.position, Vector2.right, Ballsize.x * 3, 1 << 8);
         if(HitRight.Length > 1 && HitRight[1].transform.gameObject.tag == "Ball" + PlayerPrefix){
             transform.position = HitRight[1].transform.position;

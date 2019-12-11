@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Enums;
+using System.Linq;
 using System;
 
 public static class Constants {
@@ -53,7 +54,7 @@ public static class Constants {
 		}
 		return gameObjects;
 	}
-	public static Color32 FindColor(BallColor color, ColorScheme colorScheme){
+	public static Color FindColor(BallColor color, ColorScheme colorScheme){
 		switch(color){
 			case BallColor.red:
 			return colorScheme.Red;
@@ -76,7 +77,7 @@ public static class Constants {
 			default: return colorScheme.White;
 		}
 	}
-	public static Color32 FindColor(PlayerColor color, ColorScheme colorScheme){
+	public static Color FindColor(PlayerColor color, ColorScheme colorScheme){
 		switch(color){
 			case PlayerColor.red:
 			return colorScheme.Red;
@@ -86,5 +87,21 @@ public static class Constants {
 			return colorScheme.Yellow;
 			default: return colorScheme.White;
 		}
+	}
+	public static BallColor RandomBallColor(){
+		var Colors = Enum.GetValues(typeof(BallColor)); //.Cast<BallColor>().ToList();
+		int index = UnityEngine.Random.Range(0, Colors.Length);
+		return (BallColor)Colors.GetValue(index);
+	}
+	public static BallColor RandomWeightedBallColor(int[] WeightedBallColorPool){
+		Array Colors = Enum.GetValues(typeof(BallColor));
+		for(int i = 0; i < WeightedBallColorPool.Length; i++){
+			int RNG = UnityEngine.Random.Range(0, 100);
+			if(RNG < WeightedBallColorPool[i]){
+				return (BallColor)Colors.GetValue(i);
+			}
+			continue;
+		}
+		return BallColor.white;
 	}
 }

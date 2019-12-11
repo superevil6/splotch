@@ -21,6 +21,8 @@ public class PlayerManager : MonoBehaviour
     public BallColor IgnoredBallColor;
     public GameObject GameOverPanel;
     public PlayerNumberManager PlayerNumberManager;
+    public PlayerStats PlayerStats;
+    public GameObject MissionMode;
     public int[] WeightedBallColorPool;
     //Weighted Values are processed in this order, White, BLACK BROWN GREEN PURPLE ORANGE RED BLUE YELLOW
     public int[] DefaultColorWeights = {0, 0, 10, 10, 10, 10, 30, 30, 30};
@@ -42,6 +44,11 @@ public class PlayerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        switch(GameOptions.GameMode){
+            case GameMode.Mission:
+                MissionMode.SetActive(true);
+            break;
+        }
         GameManager = GetComponentInParent<GameManager>();
         //DeterminePlayerType(PlayerNumber);
         PlayerPrefix = PlayerNumberManager.PlayerPrefix;

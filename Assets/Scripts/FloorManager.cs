@@ -13,7 +13,6 @@ public class FloorManager : MonoBehaviour
         GameBoard = GetComponentInParent<GameBoard>();
         RectTransform = GetComponent<RectTransform>();
         BoxCollider2D = GetComponent<BoxCollider2D>();
-        print(GameBoard.GameboardWidth);
         Vector2 size = new Vector2(GameBoard.GameboardWidth, 1);
         RectTransform.sizeDelta = size;
         BoxCollider2D.size = size;

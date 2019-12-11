@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class ObjectPooler : MonoBehaviour {
 public List<GameObject> PooledItems;
+public List<GameObject> PooledParticleEmitters;
 public PunishmentManager PunishmentManager;
 public PlayerManager PlayerManager;
 public Transform ParentTransform;
 public GameObject ItemToPool;
+public GameObject ParticleObjectToPool;
 
 	// Use this for initialization
 	void Start () {
@@ -25,6 +27,14 @@ public GameObject ItemToPool;
 			obj.transform.SetParent(ParentTransform);
 			obj.SetActive(false);
 			PooledItems.Add(obj);
+		}
+	}
+	public void InstatinateParticleEmitters(int Amount){
+		for(int i = 0; i <= Amount; i++){
+			GameObject obj = (GameObject)Instantiate(ParticleObjectToPool);
+			obj.transform.SetParent(ParentTransform);
+			//obj.SetActive(false);
+			PooledParticleEmitters.Add(obj);
 		}
 	}
 	

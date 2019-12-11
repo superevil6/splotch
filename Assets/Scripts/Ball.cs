@@ -20,16 +20,13 @@ public Rigidbody2D Rigidbody2D;
 public GameBoard GameBoard;
 private Color32 OldBallColor;
 private Color32 NewBallColor;
-public ParticleSystem ParticleSystem;
-public ParticleSystem.MainModule ParticleMain;
 public float TransitionTime;
 private float TimeBetweenChecks;
 public float TimeBetweenChecksTotal;
 private float TimeLeft;
 private bool TransitionColorCheck = false;
 private bool HasMoved = false;
-private bool DoOnce = false;
-
+public bool InitialBall;
 	// Use this for initialization
 	void Start () {
 		GameBoard = GetComponentInParent<GameBoard>();
@@ -42,9 +39,7 @@ private bool DoOnce = false;
 		gameObject.layer = 8;
 		SpriteRenderer.sprite = PickSprite(PlayerManager.Theme.BallSprite);
 		SpriteRenderer.material = ColorScheme.Material;
-		SetupBall();
-
-		
+		SetupBall();		
 	}
 
 	void OnEnable () {
@@ -65,7 +60,7 @@ private bool DoOnce = false;
 			Detection.CheckForMatches(true);
 			HasMoved = false;
 		}
-		if(PlayerManager.GameOver){
+		if(PlayerManager.GameOver && BallColor != BallColor.black){
 			SetNewBallColor(BallColor.black);
 		}
 	}
@@ -93,10 +88,6 @@ private bool DoOnce = false;
 		return BallColor.white;
 	}
 	public Color SetColor(BallColor ballColor){
-		//ParticleSystem.Emit(transform.position, new Vector3(1, 1, 1), 0.01f, 1, Constants.FindColor(ballColor, PlayerManager.ColorScheme));
-		//Color color = Constants.FindColor(ballColor, PlayerManager.ColorScheme);
-		//ParticleMain.startColor = color; 
-		ParticleSystem.Play();
 		switch(ballColor){
 			case BallColor.white : 
 				return ColorScheme.White;
@@ -122,17 +113,24 @@ private bool DoOnce = false;
 	private void SetupBall(){
 		SpriteRenderer = GetComponent<SpriteRenderer>();
 		BoxCollider2D = GetComponent<BoxCollider2D>();
-		ParticleSystem = GetComponent<ParticleSystem>();
 		SpecialBallCheck(false);
 		if(Type != BallType.rainbow){
 			//This is a temp fix if you can't fix the issue that lets you click brown balls.
 			//NewBallColor = OldBallColor;
-			DetermineColor();
+			if(InitialBall){
+				DetermineColor(true);
+				InitialBall = false;
+			}
+			else{
+				DetermineColor(false);
+			}
 		}
 	}
 
-	public void DetermineColor(){
-		BallColor = WeightedGenerateColor();
+	public void DetermineColor(bool InitialDrop){
+		if(!InitialDrop){
+			BallColor = WeightedGenerateColor();
+		}
 		NewColor = BallColor;
 		SpriteRenderer.color = SetColor(BallColor);
 		SpriteRenderer.material.SetColor(BallColor.ToString(), SetColor(BallColor));
@@ -228,14 +226,3 @@ private bool DoOnce = false;
 		return sprites[chosenSprite];
 	}
 }
-
-/*
-Coroutine couldn't be started because the the game object 'Ball(Clone)' is inactive!
-UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator)
-Detection:CheckForMatches() (at Assets/Scripts/Detection.cs:80)
-Ball:SetNewBallColor(BallColor) (at Assets/Scripts/Ball.cs:202)
-Ball:ChangeBallColor(PlayerColor) (at Assets/Scripts/Ball.cs:161)
-CPU:ChangeColor(Ball) (at Assets/Scripts/CPU.cs:225)
-CPU:Update() (at Assets/Scripts/CPU.cs:95)
-
-*/

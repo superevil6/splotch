@@ -53,7 +53,7 @@ public int RandomRange;
 				if(!GO.activeInHierarchy){
 					GO.transform.position = this.transform.position;
 					Ball Ball = GO.GetComponent<Ball>();
-					Ball.DetermineColor();
+					Ball.DetermineColor(false);
 					GO.SetActive(true);
 					break;
 				}

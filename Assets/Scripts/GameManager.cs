@@ -8,16 +8,20 @@ public class GameManager : MonoBehaviour
     public List<GameObject> Players;
     public GameObject PlayerPrefab;
     public List<Theme> Themes = new List<Theme>();
+    public List<BallColor> TwoColorInitialBalls;
+    public List<BallColor> ThreeColorInitialBalls;
     public int NumberOfPlayers;
+    public int InitialBallCount;
+    public int[] WeightBallPool;
     // Start is called before the first frame update
     void Start()
     {
         NumberOfPlayers = GameOptions.PlayerNumber;
-        print(NumberOfPlayers);
-        if(NumberOfPlayers > 1){
-            //Run Setup for players
-        }
+
         InitializePlayers(NumberOfPlayers);
+		TwoColorInitialBalls = new List<BallColor>();
+		ThreeColorInitialBalls = new List<BallColor>();
+        GenerateInitialBallList(false);
     }
 
     // Update is called once per frame
@@ -84,4 +88,9 @@ public class GameManager : MonoBehaviour
         //Add in component connections!!
         return newPlayer;
     }
+	public void GenerateInitialBallList(bool threeColors){
+		for(int i = 0; i < InitialBallCount; i++){
+			ThreeColorInitialBalls.Add(Constants.RandomWeightedBallColor(WeightBallPool));
+		}
+	}
 }

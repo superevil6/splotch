@@ -22,6 +22,13 @@ public class MenuActions : MonoBehaviour
     public int PlayerFourIndex = 0;
     private int CurrentScene;
 
+    //Mission Mode Variables
+    public Mission[] Missions;
+    public Mission ChosenMission;
+    public GameObject MissionPanel;
+    public Button MissionButton;
+    public Text MissionDescription;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +36,8 @@ public class MenuActions : MonoBehaviour
         if(CurrentScene == 0){
             GameOptions.PlayerNumber = 0;
         }
+        GenerateMissions(Missions);
+
     }
 
     // Update is called once per frame
@@ -43,15 +52,23 @@ public class MenuActions : MonoBehaviour
     }
     //Unity is dumb and doesn't let you use enums as inputs in the editor, so I have to make all of the methods for game modes individually. 
     public void SetArcadeMode(){
+        GameOptions.PlayerNumber = 1;
         GameOptions.GameMode = GameMode.Arcade;
     }
+    public void SetMissionMode(){
+        GameOptions.PlayerNumber = 1;
+        GameOptions.GameMode = GameMode.Mission;
+    }
     public void SetMarathonMode(){
+        GameOptions.PlayerNumber = 1;
         GameOptions.GameMode = GameMode.Marathon;
     }
     public void SetPuzzleMode(){
+        GameOptions.PlayerNumber = 1;
         GameOptions.GameMode = GameMode.Puzzle;
     }
     public void SetStoryMode(){
+        GameOptions.PlayerNumber = 1;
         GameOptions.GameMode = GameMode.Story;
     }
     public void SetVSMode(){
@@ -140,4 +157,18 @@ public class MenuActions : MonoBehaviour
     public void SceneChange(int scene){
         SceneManager.LoadScene(scene);
     }
+
+    #region Mission Mode
+    private void GenerateMissions(Mission[] missions){
+        foreach(Mission mission in missions){
+            Button btn = (Button)Instantiate(MissionButton);
+            btn.GetComponent<MissionButton>().Mission = mission;
+            btn.transform.SetParent(MissionPanel.transform);
+        }
+    }
+
+    public void ChooseMission(){
+        GameOptions.Mission = gameObject.GetComponent<MissionButton>().Mission;
+    }
+    #endregion
 }

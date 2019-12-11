@@ -69,10 +69,14 @@
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\GameOptions.cs" />
      <Compile Include="Assets\Scripts\MenuActions.cs" />
+     <Compile Include="Assets\Scripts\Mission.cs" />
+     <Compile Include="Assets\Scripts\MissionButton.cs" />
+     <Compile Include="Assets\Scripts\MissionMode.cs" />
      <Compile Include="Assets\Scripts\ObjectPooler.cs" />
      <Compile Include="Assets\Scripts\PlayerColorManager.cs" />
      <Compile Include="Assets\Scripts\PlayerManager.cs" />
      <Compile Include="Assets\Scripts\PlayerNumberManager.cs" />
+     <Compile Include="Assets\Scripts\PlayerStats.cs" />
      <Compile Include="Assets\Scripts\PunishmentManager.cs" />
      <Compile Include="Assets\Scripts\RemoveColor.cs" />
      <Compile Include="Assets\Scripts\ScoreManager.cs" />

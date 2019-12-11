@@ -7,10 +7,12 @@ using Enums;
 public class Detection : MonoBehaviour {
 public PlayerManager PlayerManager;
 public Ball Ball;
+private GameBoard GameBoard;
+public ParticleSystem ParticleSystem;
+public GameObject ParticleObject;
 private Vector2 BallSize;
 //public ObjectPooler ObjectPooler;
 public Rigidbody2D Rigidbody2D;
-public ParticleSystem ParticleSystem;
 private RaycastHit2D[] HitUp;
 private RaycastHit2D[] HitDown;
 private RaycastHit2D[] HitLeft;
@@ -33,10 +35,13 @@ private string PlayerPrefix;
 //Rework this so Columns is in a more accessible area, so I don't have repeate variables.
 	// Use this for initialization
 	void Start () {
+		//ParticleMain = ParticleSystem.MainModule;
 		PlayerManager = GetComponentInParent<PlayerManager>();
 		PlayerPrefix = PlayerManager.PlayerNumberManager.PlayerPrefix;
 		BallColor = Ball.BallColor;
 		BallSize = new Vector2(gameObject.transform.localScale.x, gameObject.transform.localScale.y);
+		GameBoard = Ball.GameBoard;
+		ParticleSystem = ParticleObject.GetComponent<ParticleSystem>();
 		//BallSize = transform.localScale;
 		// var PartMain = ParticleSystem.main; 
 		// PartMain.startColor = Ball.SetColor(Ball.BallColor);
@@ -59,6 +64,7 @@ private string PlayerPrefix;
 			RensaMultiplier = 1;
 		}
 	}
+
 	public void CheckForMatches(bool renseChain){
 		Hits.Clear();
 		VerticalHits.Clear();
@@ -112,23 +118,6 @@ private string PlayerPrefix;
 			}
 		}
 	}
-
-	private void DeactivateHits(List<GameObject> Hits, bool rensaChain){
-		if(Hits.Count >= 3){
-			PassRensaMultiplier();
-			int scoreValue = PointValue(Hits[0].GetComponent<Ball>().BallColor);
-			List<int> rensaValues = new List<int>();				
-			foreach(GameObject go in Hits){
-				rensaValues.Add(go.transform.GetComponent<Detection>().RensaMultiplier);
-			}
-			int highestRensa = rensaValues.Max();
-			PlayerManager.Score += highestRensa * scoreValue * Hits.Count;
-			PlayerManager.NumberOfBallsBeingCleared += Hits.Count;
-			foreach(GameObject Hit in Hits){
-				Hit.SetActive(false);
-			}
-		}
-	}
 	private IEnumerator WaitForColorChange(float ChangeTime, bool rensaChain){
 		yield return new WaitForSeconds(ChangeTime);
 		if(HorizontalHits.Count >= 3){
@@ -143,7 +132,42 @@ private string PlayerPrefix;
 		if(DiagonalHitsURDL.Count >= 3){
 			Hits.AddRange(DiagonalHitsURDL);
 		}
-		DeactivateHits(Hits, rensaChain);
+		CheckForEnoughHits(Hits, rensaChain);
+	}
+	private void CheckForEnoughHits(List<GameObject> Hits, bool rensaChain){
+		if(Hits.Count >= 3){
+			PlayParticleEffect();
+			DeactivateHits();
+			//StartCoroutine(WaitForParticles());
+		}
+	}
+	private void DeactivateHits(){
+		PassRensaMultiplier();
+		AddToBallCount(BallColor, Hits.Count);
+		int scoreValue = PointValue(Hits[0].GetComponent<Ball>().BallColor);
+		List<int> rensaValues = new List<int>();				
+		foreach(GameObject go in Hits){
+			rensaValues.Add(go.transform.GetComponent<Detection>().RensaMultiplier);
+		}
+		int highestRensa = rensaValues.Max();
+		AddHighestRensa(highestRensa);
+		PlayerManager.Score += highestRensa * scoreValue * Hits.Count;
+		PlayerManager.NumberOfBallsBeingCleared += Hits.Count;
+		foreach(GameObject Hit in Hits){
+			Hit.SetActive(false);
+		}
+	}
+	private void PlayParticleEffect(){
+		foreach(GameObject go in GameBoard.ObjectPooler.PooledParticleEmitters){
+			if(!go.GetComponent<ParticleSystem>().isPlaying){
+				go.transform.position = gameObject.transform.position;
+				var ps = go.GetComponent<ParticleSystem>();
+				var main = ps.main;
+				var color = Constants.FindColor(Ball.BallColor, Ball.PlayerManager.ColorScheme);
+				main.startColor = color;
+				ps.Play();
+			}
+		}
 	}
 
 	private bool CheckForBlackAndWhite(GameObject Ball){
@@ -173,6 +197,49 @@ private string PlayerPrefix;
 			if(hit.transform.tag == "Ball" + PlayerManager.PlayerNumberManager.PlayerPrefix){
 				hit.transform.GetComponent<Detection>().RensaMultiplier += 1;
 				hit.transform.GetComponent<Detection>().RensaTime = 1f;
+			}
+		}
+	}
+	private void AddToBallCount(BallColor color, int numberOfBalls){
+		switch(color){
+			case BallColor.red:
+			PlayerManager.PlayerStats.RedCleared += numberOfBalls;
+			break;
+			case BallColor.blue:
+			PlayerManager.PlayerStats.BlueCleared += numberOfBalls;
+			break;
+			case BallColor.yellow:
+			PlayerManager.PlayerStats.YellowCleared += numberOfBalls;
+			break;
+			case BallColor.orange:
+			PlayerManager.PlayerStats.OrangeCleared += numberOfBalls;
+			break;
+			case BallColor.purple:
+			PlayerManager.PlayerStats.PurpleCleared += numberOfBalls;
+			break;
+			case BallColor.green:
+			PlayerManager.PlayerStats.GreenCleared += numberOfBalls;
+			break;
+			case BallColor.brown:
+			PlayerManager.PlayerStats.BrownCleared += numberOfBalls;
+			break;
+
+		}
+	}
+	private void AddHighestRensa(int rensa){
+		if(rensa >= 10){
+			PlayerManager.PlayerStats.TenRensa += 1;
+		}
+		else{
+			switch(rensa){
+				case 2: PlayerManager.PlayerStats.TwoRensa += 1; break;
+				case 3: PlayerManager.PlayerStats.ThreeRensa += 1; break;
+				case 4: PlayerManager.PlayerStats.FourRensa += 1; break;
+				case 5: PlayerManager.PlayerStats.FiveRensa += 1; break;
+				case 6: PlayerManager.PlayerStats.SixRensa += 1; break;
+				case 7: PlayerManager.PlayerStats.SevenRensa += 1; break;
+				case 8: PlayerManager.PlayerStats.EightRensa += 1; break;
+				case 9: PlayerManager.PlayerStats.NineRensa += 1; break;	
 			}
 		}
 	}

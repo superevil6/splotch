@@ -11,4 +11,5 @@ public static class GameOptions
     public static PlayerType PlayerTwo;
     public static PlayerType PlayerThree;
     public static PlayerType PlayerFour;
+    public static Mission Mission;
 }

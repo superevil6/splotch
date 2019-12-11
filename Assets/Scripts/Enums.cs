@@ -30,6 +30,7 @@ namespace Enums{
 		Arcade,
 		Puzzle,
 		Story,
+		Mission,
 		VS,
 		Battle
 	}
@@ -86,5 +87,12 @@ namespace Enums{
 		Human,
 		CPU,
 		None
+	}
+	public enum MissionType{
+		ClearColor,
+		ScoreAttack,
+		TimeAttack,
+		AvoidColor,
+		Rensa
 	}
 }
