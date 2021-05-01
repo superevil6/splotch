@@ -8,7 +8,8 @@ using Enums;
 public class Ball : MonoBehaviour {
 public BallColor BallColor;
 //public BallColor IgnoredColor;
-public int[] WeightedBallColorPool;
+//public int[] WeightedBallColorPool;
+public WeightedBallPools WeightedBallColorPool;
 public PlayerManager PlayerManager;
 public ColorScheme ColorScheme;
 public Detection Detection;
@@ -33,7 +34,7 @@ public bool InitialBall;
 		PlayerManager = GetComponentInParent<PlayerManager>();
 		//ParticleMain = ParticleSystem.main;
 		ColorScheme = PlayerManager.ColorScheme;
-		WeightedBallColorPool = PlayerManager.WeightedBallColorPool;
+		WeightedBallColorPool = PlayerManager.WeightedBallPool;
 		Detection = GetComponent<Detection>();
 		transform.localScale = new Vector3((GameBoard.GameboardWidth / GameBoard.Columns) * 0.5f, ((GameBoard.GameboardHeight) / GameBoard.Columns) * 0.5f, 1);
 		gameObject.layer = 8;
@@ -52,14 +53,21 @@ public bool InitialBall;
 			SpriteRenderer.color = Color.Lerp(SpriteRenderer.color, NewBallColor, Time.deltaTime / TimeLeft);
 			TimeLeft -= Time.deltaTime;
 		}
-		if(Rigidbody2D.velocity.magnitude >= 0.1){
-			HasMoved = true;
+		if(TimeBetweenChecks > 0){
+			TimeBetweenChecks -= Time.deltaTime;
 		}
-		if(Rigidbody2D.velocity.magnitude <= 0.1 && HasMoved){
-			//The true is because this is a rensa check
+		if(TimeBetweenChecks <= 0 && Rigidbody2D.velocity.normalized.magnitude < 0.25 && TimeLeft <= 0){
 			Detection.CheckForMatches(true);
-			HasMoved = false;
+			TimeBetweenChecks = TimeBetweenChecksTotal;
 		}
+		// if(Rigidbody2D.velocity.normalized.magnitude >= 0.1 && !HasMoved){
+		// 	HasMoved = true;
+		// }
+		// if(Rigidbody2D.velocity.normalized.magnitude <= 0.5 && HasMoved){
+		// 	//The true is because this is a rensa check
+		// 	Detection.CheckForMatches(true);
+		// 	HasMoved = false;
+		// }
 		if(PlayerManager.GameOver && BallColor != BallColor.black){
 			SetNewBallColor(BallColor.black);
 		}
@@ -75,17 +83,6 @@ public bool InitialBall;
 			ColorToReturn = (BallColor)Colors.GetValue(UnityEngine.Random.Range(0, Colors.Length));
 		}
 		return ColorToReturn;
-	}
-	public BallColor WeightedGenerateColor(){
-		Array Colors = Enum.GetValues(typeof(BallColor));
-		for(int i = 0; i < WeightedBallColorPool.Length; i++){
-			int RNG = UnityEngine.Random.Range(0, 100);
-			if(RNG < WeightedBallColorPool[i]){
-				return (BallColor)Colors.GetValue(i);
-			}
-			continue;
-		}
-		return BallColor.white;
 	}
 	public Color SetColor(BallColor ballColor){
 		switch(ballColor){
@@ -115,8 +112,6 @@ public bool InitialBall;
 		BoxCollider2D = GetComponent<BoxCollider2D>();
 		SpecialBallCheck(false);
 		if(Type != BallType.rainbow){
-			//This is a temp fix if you can't fix the issue that lets you click brown balls.
-			//NewBallColor = OldBallColor;
 			if(InitialBall){
 				DetermineColor(true);
 				InitialBall = false;
@@ -129,7 +124,7 @@ public bool InitialBall;
 
 	public void DetermineColor(bool InitialDrop){
 		if(!InitialDrop){
-			BallColor = WeightedGenerateColor();
+			BallColor = WeightedBallColorPool.RandomBallColor();
 		}
 		NewColor = BallColor;
 		SpriteRenderer.color = SetColor(BallColor);

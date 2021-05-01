@@ -5,11 +5,13 @@ using UnityEngine;
 public class ObjectPooler : MonoBehaviour {
 public List<GameObject> PooledItems;
 public List<GameObject> PooledParticleEmitters;
+public List<GameObject> PooledTestingObjects;
 public PunishmentManager PunishmentManager;
 public PlayerManager PlayerManager;
 public Transform ParentTransform;
 public GameObject ItemToPool;
 public GameObject ParticleObjectToPool;
+public GameObject TestingObject;
 
 	// Use this for initialization
 	void Start () {
@@ -37,9 +39,7 @@ public GameObject ParticleObjectToPool;
 			PooledParticleEmitters.Add(obj);
 		}
 	}
-	
 	public IEnumerator RensaCheck(){
-		print("Rensa Check");
 		foreach(GameObject obj in PooledItems){
 			if(obj.activeInHierarchy){
 				obj.GetComponent<Detection>().CheckForMatches(false);

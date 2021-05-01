@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 114108338342639858}
   - component: {fileID: 50413992120349606}
   - component: {fileID: 61898284635218806}
+  - component: {fileID: 2915165914539322283}
+  - component: {fileID: -1719784370440946397}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Ball
@@ -102,7 +104,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BallColor: 0
-  WeightedBallColorPool: 
+  WeightedBallColorPool: {fileID: 11400000, guid: 7d6d361afb5043348bca053f1ef6dddd,
+    type: 2}
   PlayerManager: {fileID: 0}
   ColorScheme: {fileID: 11400000, guid: 39e4b2cfac07e6d47b152bfccc8cf4f4, type: 2}
   Detection: {fileID: 114108338342639858}
@@ -111,9 +114,9 @@ MonoBehaviour:
   BoxCollider2D: {fileID: 61898284635218806}
   Rigidbody2D: {fileID: 50413992120349606}
   GameBoard: {fileID: 0}
-  ParticleSystem: {fileID: 0}
   TransitionTime: 0.5
-  TimeBetweenChecksTotal: 1
+  TimeBetweenChecksTotal: 0.5
+  InitialBall: 0
 --- !u!114 &114108338342639858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,12 +130,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerManager: {fileID: 0}
+  ScoreManager: {fileID: 0}
   Ball: {fileID: 114911392157144544}
   ParticleSystem: {fileID: 0}
   ParticleObject: {fileID: 5003818253585743066, guid: 73faff16cbbd4b94bad63ab9a6b55a6e,
     type: 3}
   Rigidbody2D: {fileID: 50413992120349606}
+  CheckDistance: 14
   RensaMultiplier: 0
+  RensaTime: 0
 --- !u!50 &50413992120349606
 Rigidbody2D:
   serializedVersion: 4
@@ -180,3 +186,43 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.25, y: 2}
   m_EdgeRadius: 0
+--- !u!222 &2915165914539322283
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254343284260142}
+  m_CullTransparentMesh: 0
+--- !u!114 &-1719784370440946397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254343284260142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 0
+    m_BestFit: 1
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 

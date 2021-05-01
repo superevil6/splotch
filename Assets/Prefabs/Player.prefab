@@ -1249,8 +1249,7 @@ MonoBehaviour:
   PlayerNumberManager: {fileID: 2358953631067472858}
   PlayerStats: {fileID: 4146664678371869085}
   MissionMode: {fileID: 5568646466937108094}
-  WeightedBallColorPool: 
-  DefaultColorWeights: 320000000100000000000000050000000500000005000000140000001400000014000000
+  WeightedBallPool: {fileID: 11400000, guid: 7d6d361afb5043348bca053f1ef6dddd, type: 2}
   PlayerColorPool: 
   DropSpeed: 20
   DropSpeedIncrease: 5
@@ -1992,6 +1991,7 @@ MonoBehaviour:
   Cursor: {fileID: 2358953630411914060}
   BallPopSound: {fileID: 8300000, guid: b68cf2a38728ab44d95f731288d157c0, type: 3}
   AudioSource: {fileID: 2358953631747229480}
+  CurrentRensa: 0
 --- !u!114 &2358953631747229495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2620,11 +2620,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PooledItems: []
   PooledParticleEmitters: []
+  PooledTestingObjects: []
   PunishmentManager: {fileID: 2846498298074260240}
   PlayerManager: {fileID: 2358953631067472861}
   ParentTransform: {fileID: 2358953631999700109}
   ItemToPool: {fileID: 1254343284260142, guid: 79ae8dd76bb384c328c25239630fa4a4, type: 3}
   ParticleObjectToPool: {fileID: 5003818253585743066, guid: 73faff16cbbd4b94bad63ab9a6b55a6e,
+    type: 3}
+  TestingObject: {fileID: 934217578282557969, guid: 5cfbdb4946657b94dbbeed692a046916,
     type: 3}
 --- !u!114 &2358953631999700106
 MonoBehaviour:
@@ -2927,6 +2930,11 @@ MonoBehaviour:
   PlayerTwoIndex: 0
   PlayerThreeIndex: 0
   PlayerFourIndex: 0
+  Missions: []
+  ChosenMission: {fileID: 0}
+  MissionPanel: {fileID: 0}
+  MissionButton: {fileID: 0}
+  MissionDescription: {fileID: 0}
 --- !u!1 &5002171972596224346
 GameObject:
   m_ObjectHideFlags: 0

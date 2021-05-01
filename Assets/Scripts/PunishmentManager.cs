@@ -26,6 +26,7 @@ public class PunishmentManager : MonoBehaviour
     void Update()
     {
         if(GameManager.NumberOfPlayers > 1 && ShouldPunish){
+            print("Hi, this is happening");
             PunishOtherPlayer(PickPlayerToPunish(), PlayerManager.NumberOfSecondsForPunishment, PlayerManager.NumberOfBallsBeingCleared);
             PlayerManager.NumberOfSecondsForPunishment = 0;
             PlayerManager.NumberOfBallsBeingCleared = 0;

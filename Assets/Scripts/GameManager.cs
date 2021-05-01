@@ -8,11 +8,12 @@ public class GameManager : MonoBehaviour
     public List<GameObject> Players;
     public GameObject PlayerPrefab;
     public List<Theme> Themes = new List<Theme>();
+    public WeightedBallPools WeightedBallPool;
     public List<BallColor> TwoColorInitialBalls;
     public List<BallColor> ThreeColorInitialBalls;
     public int NumberOfPlayers;
     public int InitialBallCount;
-    public int[] WeightBallPool;
+    //public int[] WeightBallPool;
     // Start is called before the first frame update
     void Start()
     {
@@ -90,7 +91,7 @@ public class GameManager : MonoBehaviour
     }
 	public void GenerateInitialBallList(bool threeColors){
 		for(int i = 0; i < InitialBallCount; i++){
-			ThreeColorInitialBalls.Add(Constants.RandomWeightedBallColor(WeightBallPool));
+			ThreeColorInitialBalls.Add(WeightedBallPool.RandomBallColor());
 		}
 	}
 }

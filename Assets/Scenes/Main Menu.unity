@@ -754,27 +754,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 332296870}
-        m_MethodName: SetMissionMode
-        m_Mode: 1
+      - m_Target: {fileID: 1455215563}
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 332296870}
-        m_MethodName: SceneChange
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &230041487
 MonoBehaviour:
@@ -1240,6 +1229,7 @@ MonoBehaviour:
   Missions:
   - {fileID: 11400000, guid: 9c51b690aa0d87f44ab52a2e8fd2e838, type: 2}
   - {fileID: 11400000, guid: 3e37a59b012703e4dad189853a33fe8e, type: 2}
+  - {fileID: 11400000, guid: bc12c7c3734e77a47959944306bc3ee7, type: 2}
   ChosenMission: {fileID: 0}
   MissionPanel: {fileID: 1455215563}
   MissionButton: {fileID: 2042748882184542654, guid: d49e9a5f985417d419c9b41cc0a15c39,
@@ -4035,10 +4025,10 @@ RectTransform:
   m_Father: {fileID: 1455215564}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 856, y: -520.275}
+  m_SizeDelta: {x: 1712, y: 346.85}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1234959485
 MonoBehaviour:
@@ -4083,17 +4073,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 775191513}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
       - m_Target: {fileID: 1455215563}
         m_MethodName: SetActive
         m_Mode: 6
@@ -4633,7 +4612,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1455215564
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4856,10 +4835,10 @@ RectTransform:
   m_Father: {fileID: 1455215564}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 856, y: -173.425}
+  m_SizeDelta: {x: 1712, y: 346.85}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1520510353
 MonoBehaviour:

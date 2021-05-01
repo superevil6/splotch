@@ -11,6 +11,7 @@ public class CPU : MonoBehaviour
     public cpuDifficulty cpuDifficulty;
     private float cursorMovementSpeed;
     private float coolDownTime;
+    private float movableDistance = 1000;
     public Vector2 BallSize;
     private RaycastHit2D CurrentBall;
     private List<Ball> UsableBalls = new List<Ball>();
@@ -23,9 +24,11 @@ public class CPU : MonoBehaviour
     private List<GameObject> Hits;
     private List<Detector> Detectors;
     private string PlayerPrefix;
+    public bool ShowDebug;
     // Start is called before the first frame update
     void Start()
     {
+        ShowDebug = true;
         //BallSize = Constants.FindOffset(Cursor.Ball.gameObject);
         PlayerManager = GetComponentInParent<PlayerManager>();
         PlayerColorManager = PlayerManager.PlayerColorManager;
@@ -46,12 +49,15 @@ public class CPU : MonoBehaviour
     void Update()
     {
         if(coolDownTime <= 0 && !PlayerManager.GameOver){
+            if(ShowDebug){
+                print(PlayerManager.PlayerNumber.ToString() + ": " + action);
+            }
             switch(action){
                 case CPUActions.CheckColumns:
                 //print("Checvking COlumns");
                 foreach(Detector detector in Detectors){
                     if(detector.BallCount()){
-                        print("Mkae brown");
+                        print("Make a brown");
                         action = CPUActions.MakeBrown;
                         break;
                     }
@@ -189,7 +195,7 @@ public class CPU : MonoBehaviour
         return false;
     }
     private bool MoveDown(){
-        RaycastHit2D[] HitDown = Physics2D.RaycastAll(transform.position, -Vector2.up, 100, 1 << 8); // Gameboard.Rows);
+        RaycastHit2D[] HitDown = Physics2D.RaycastAll(transform.position, -Vector2.up, movableDistance, 1 << 8); // Gameboard.Rows);
         if(HitDown.Length >= 1 && HitDown[0].transform.gameObject.tag == "Ball" + PlayerPrefix){
             if(transform.position.y - HitDown[0].transform.position.y >= BallSize.y / 4){
                 transform.position = HitDown[0].transform.position;
@@ -203,7 +209,7 @@ public class CPU : MonoBehaviour
         return false;
     }
     private bool MoveLeft(){
-        RaycastHit2D[] HitLeft = Physics2D.RaycastAll(transform.position, -Vector2.right, 100, 1 << 8); // Gameboard.Columns);
+        RaycastHit2D[] HitLeft = Physics2D.RaycastAll(transform.position, -Vector2.right, movableDistance, 1 << 8); // Gameboard.Columns);
         if(HitLeft.Length >= 1 && HitLeft[0].transform.gameObject.tag == "Ball" + PlayerPrefix){
             if(transform.position.x - HitLeft[0].transform.position.x >= BallSize.x / 4){
                 transform.position = HitLeft[0].transform.position;
@@ -217,7 +223,7 @@ public class CPU : MonoBehaviour
         return false;
     }
     private bool MoveRight(){
-        RaycastHit2D[] HitRight = Physics2D.RaycastAll(transform.position, Vector2.right, 100, 1 << 8); // Gameboard.Columns);
+        RaycastHit2D[] HitRight = Physics2D.RaycastAll(transform.position, Vector2.right, movableDistance, 1 << 8); // Gameboard.Columns);
         if(HitRight.Length >= 1 && HitRight[0].transform.gameObject.tag == "Ball" + PlayerPrefix){
             if(transform.position.x - HitRight[0].transform.position.x >= BallSize.x / 4){
                 transform.position = HitRight[0].transform.position;
@@ -246,13 +252,13 @@ public class CPU : MonoBehaviour
         }
     }
     private GameObject PickBallToGoTo(List<GameObject> MultipleMatchingNeighbors, List<GameObject> SingleMatchingNeighbors){
-        int singleOrMultiple = Random.Range(0, 1);
+        int singleOrMultiple = Random.Range(0, 2);
         GameObject ball = null;
         if(SingleMatchingNeighbors != null && MultipleMatchingNeighbors != null){
             if(singleOrMultiple == 0 && SingleMatchingNeighbors.Count > 1){
                 ball = SingleMatchingNeighbors[Random.Range(0, SingleMatchingNeighbors.Count)]; 
             }
-            else if(singleOrMultiple == 1 && MultipleMatchingNeighbors.Count > 1){
+            else if(singleOrMultiple >= 1 && MultipleMatchingNeighbors.Count > 1){
                 ball = MultipleMatchingNeighbors[Random.Range(0, MultipleMatchingNeighbors.Count)];
             }
         }
@@ -260,7 +266,7 @@ public class CPU : MonoBehaviour
             ball = SingleMatchingNeighbors[Random.Range(0, SingleMatchingNeighbors.Count)]; 
         }
         else if(SingleMatchingNeighbors == null && MultipleMatchingNeighbors.Count > 0){
-            ball = SingleMatchingNeighbors[Random.Range(0, SingleMatchingNeighbors.Count)]; 
+            ball = MultipleMatchingNeighbors[Random.Range(0, MultipleMatchingNeighbors.Count)]; 
         }
         //ball.transform.GetComponent<Ball>().SpriteRenderer.color = new Color(255, 0, 155, 255);
         return ball;
@@ -272,7 +278,7 @@ public class CPU : MonoBehaviour
         CurrentBalls.Clear();
         //Get the current color
         PlayerColor playerColor = PlayerColorManager.ColorQueue[0];
-        BallColor ballColor = BallColor.white;;
+        BallColor ballColor = BallColor.white;
         BallColor secondaryBallColor = BallColor.white;
         BallColor tertiaryBallColor = BallColor.white; 
         switch(playerColor){
@@ -306,6 +312,7 @@ public class CPU : MonoBehaviour
                 action = CPUActions.Move;
                 return;
             }
+            //Branch to consider using a whiteout if there aren't any matching colors.
             if((ball.BallColor == ballColor || ball.BallColor == secondaryBallColor || ball.BallColor == tertiaryBallColor)){
                 UsableBalls.Add(ball);
             }
@@ -465,5 +472,6 @@ public class CPU : MonoBehaviour
         }
 		return eligibleBalls[UnityEngine.Random.Range(0, eligibleBalls.Count)].transform.gameObject;
 	}
+
     #endregion
 }

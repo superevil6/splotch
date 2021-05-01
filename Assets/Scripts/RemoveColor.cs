@@ -33,7 +33,6 @@ public class RemoveColor : MonoBehaviour
 
     public IEnumerator RegenerateRemoveColor(float RegenTime){
         yield return new WaitForSecondsRealtime(RegenTime);
-        print("uses plus 1");
         Uses += 1;
         IndicatorOn();
     }

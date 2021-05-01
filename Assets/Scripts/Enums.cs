@@ -75,6 +75,7 @@ namespace Enums{
 		WhiteOut,
 		CheckColumns,
 		MakeBrown,
+		SpeedUp,
 		Nothing
 	}
 	public enum Powerups{

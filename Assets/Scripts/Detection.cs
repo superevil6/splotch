@@ -6,12 +6,13 @@ using Enums;
 
 public class Detection : MonoBehaviour {
 public PlayerManager PlayerManager;
+public ScoreManager ScoreManager;
 public Ball Ball;
 private GameBoard GameBoard;
 public ParticleSystem ParticleSystem;
 public GameObject ParticleObject;
 private Vector2 BallSize;
-//public ObjectPooler ObjectPooler;
+private RectTransform RectTransform;
 public Rigidbody2D Rigidbody2D;
 private RaycastHit2D[] HitUp;
 private RaycastHit2D[] HitDown;
@@ -27,25 +28,23 @@ private List<GameObject> VerticalHits;
 private List<GameObject> HorizontalHits;
 private List<GameObject> DiagonalHitsULDR; //from upleft to downright
 private List<GameObject> DiagonalHitsURDL; //from upright to downleft
-
 private BallColor BallColor;
-public int RensaMultiplier;
-private float RensaTime;
+public int CheckDistance;
+public int RensaMultiplier = 1;
+public float RensaTime;
 private string PlayerPrefix;
 //Rework this so Columns is in a more accessible area, so I don't have repeate variables.
 	// Use this for initialization
 	void Start () {
-		//ParticleMain = ParticleSystem.MainModule;
 		PlayerManager = GetComponentInParent<PlayerManager>();
+		ScoreManager = PlayerManager.ScoreManager;
 		PlayerPrefix = PlayerManager.PlayerNumberManager.PlayerPrefix;
 		BallColor = Ball.BallColor;
+		RensaMultiplier = 1;
+		RectTransform = (RectTransform)gameObject.transform;
 		BallSize = new Vector2(gameObject.transform.localScale.x, gameObject.transform.localScale.y);
 		GameBoard = Ball.GameBoard;
 		ParticleSystem = ParticleObject.GetComponent<ParticleSystem>();
-		//BallSize = transform.localScale;
-		// var PartMain = ParticleSystem.main; 
-		// PartMain.startColor = Ball.SetColor(Ball.BallColor);
-		//BallSize = Constants.FindOffset(Ball.gameObject);
 		Hits = new List<GameObject>();
 		VerticalHits = new List<GameObject>();
 		HorizontalHits = new List<GameObject>();
@@ -60,12 +59,11 @@ private string PlayerPrefix;
 			RensaTime -= Time.deltaTime;
 		}
 		if(RensaTime <= 0 && RensaMultiplier > 1){
-			//print("rensa time expired.");
 			RensaMultiplier = 1;
 		}
 	}
 
-	public void CheckForMatches(bool renseChain){
+	public void CheckForMatches(bool rensaChain){
 		Hits.Clear();
 		VerticalHits.Clear();
 		HorizontalHits.Clear();
@@ -74,14 +72,15 @@ private string PlayerPrefix;
 		BallColor = Ball.BallColor;
 		/* HitUp will check for as many balls that spawn in a column, that way if bottom ball detects the max
 		number of balls, it knows the game is over. Kind of hacky, I might redo this. */
-		HitUp = Physics2D.RaycastAll(transform.position, Vector2.up, BallSize.y * 2, 1 << 8);
-		HitDown = Physics2D.RaycastAll(transform.position, -Vector2.up, BallSize.y * 2, 1 << 8);
-		HitLeft = Physics2D.RaycastAll(transform.position, -Vector2.right, BallSize.x * 2, 1 << 8);
-		HitRight = Physics2D.RaycastAll(transform.position, Vector2.right, BallSize.x * 2, 1 << 8);
-		HitUpLeft = Physics2D.RaycastAll(transform.position, new Vector2(-transform.localScale.x, transform.localScale.y), 100, 1 << 8);
-		HitUpRight = Physics2D.RaycastAll(transform.position, new Vector2(transform.localScale.x, transform.localScale.y), 100, 1 << 8);
-		HitDownLeft = Physics2D.RaycastAll(transform.position, new Vector2(-transform.localScale.x, -transform.localScale.y), 100, 1 << 8);
-		HitDownRight = Physics2D.RaycastAll(transform.position, new Vector2(transform.localScale.x, -transform.localScale.y), 100, 1 << 8);
+		HitUp = Physics2D.RaycastAll(transform.position, Vector2.up, transform.lossyScale.y * CheckDistance, 1 << 8);
+		Debug.DrawRay(transform.position, Vector2.up * transform.lossyScale.y * 3, Color.blue, 4);
+		HitDown = Physics2D.RaycastAll(transform.position, -Vector2.up, transform.lossyScale.y * CheckDistance, 1 << 8);
+		HitLeft = Physics2D.RaycastAll(transform.position, -Vector2.right, transform.lossyScale.x * CheckDistance, 1 << 8);
+		HitRight = Physics2D.RaycastAll(transform.position, Vector2.right, transform.lossyScale.x * CheckDistance, 1 << 8);
+		HitUpLeft = Physics2D.RaycastAll(transform.position, new Vector2(-transform.lossyScale.x, transform.lossyScale.y), (transform.lossyScale.x * transform.lossyScale.y) * CheckDistance, 1 << 8);
+		HitUpRight = Physics2D.RaycastAll(transform.position, new Vector2(transform.lossyScale.x, transform.lossyScale.y), (transform.lossyScale.x * transform.lossyScale.y) * CheckDistance, 1 << 8);
+		HitDownLeft = Physics2D.RaycastAll(transform.position, new Vector2(-transform.lossyScale.x, -transform.lossyScale.y), (transform.lossyScale.x * transform.lossyScale.y) * CheckDistance, 1 << 8);
+		HitDownRight = Physics2D.RaycastAll(transform.position, new Vector2(transform.lossyScale.x, -transform.lossyScale.y), (transform.lossyScale.x * transform.lossyScale.y) * CheckDistance, 1 << 8);
 
 		CheckDirection(HitUp, VerticalHits);
 		CheckDirection(HitDown, VerticalHits);
@@ -92,8 +91,8 @@ private string PlayerPrefix;
 		CheckDirection(HitUpRight, DiagonalHitsURDL);
 		CheckDirection(HitDownLeft, DiagonalHitsURDL);
 
-		StartCoroutine(WaitForColorChange(Ball.TransitionTime, renseChain));
-		
+		//StartCoroutine(WaitForColorChange(Ball.TransitionTime, renseChain));
+		CheckForEnoughHits(Hits, rensaChain);
 	}
 
 	private void CheckDirection(RaycastHit2D[] Direction, List<GameObject> hits){
@@ -120,6 +119,10 @@ private string PlayerPrefix;
 	}
 	private IEnumerator WaitForColorChange(float ChangeTime, bool rensaChain){
 		yield return new WaitForSeconds(ChangeTime);
+
+		CheckForEnoughHits(Hits, rensaChain);
+	}
+	private void CheckForEnoughHits(List<GameObject> Hits, bool rensaChain){
 		if(HorizontalHits.Count >= 3){
 			Hits.AddRange(HorizontalHits);
 		}
@@ -132,31 +135,12 @@ private string PlayerPrefix;
 		if(DiagonalHitsURDL.Count >= 3){
 			Hits.AddRange(DiagonalHitsURDL);
 		}
-		CheckForEnoughHits(Hits, rensaChain);
-	}
-	private void CheckForEnoughHits(List<GameObject> Hits, bool rensaChain){
 		if(Hits.Count >= 3){
 			PlayParticleEffect();
-			DeactivateHits();
-			//StartCoroutine(WaitForParticles());
+			ScoreManager.DeactivateHits(Hits);
 		}
 	}
-	private void DeactivateHits(){
-		PassRensaMultiplier();
-		AddToBallCount(BallColor, Hits.Count);
-		int scoreValue = PointValue(Hits[0].GetComponent<Ball>().BallColor);
-		List<int> rensaValues = new List<int>();				
-		foreach(GameObject go in Hits){
-			rensaValues.Add(go.transform.GetComponent<Detection>().RensaMultiplier);
-		}
-		int highestRensa = rensaValues.Max();
-		AddHighestRensa(highestRensa);
-		PlayerManager.Score += highestRensa * scoreValue * Hits.Count;
-		PlayerManager.NumberOfBallsBeingCleared += Hits.Count;
-		foreach(GameObject Hit in Hits){
-			Hit.SetActive(false);
-		}
-	}
+
 	private void PlayParticleEffect(){
 		foreach(GameObject go in GameBoard.ObjectPooler.PooledParticleEmitters){
 			if(!go.GetComponent<ParticleSystem>().isPlaying){
@@ -176,71 +160,6 @@ private string PlayerPrefix;
 		}
 		else{
 			return false;
-		}
-	}
-	private int PointValue(BallColor ballColor){
-		if(ballColor == BallColor.red || ballColor == BallColor.blue || ballColor == BallColor.yellow){
-			return 100;
-		}
-		if(ballColor == BallColor.purple || ballColor == BallColor.green || ballColor == BallColor.orange || Ball.Type == BallType.rainbow){
-			return 200;
-		}
-		if(ballColor == BallColor.brown){
-			return 50;
-		}
-		return 0;
-	}
-
-	private void PassRensaMultiplier(){
-		RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, Vector2.up, 1000, 1 << 8);
-		foreach(RaycastHit2D hit in hits){
-			if(hit.transform.tag == "Ball" + PlayerManager.PlayerNumberManager.PlayerPrefix){
-				hit.transform.GetComponent<Detection>().RensaMultiplier += 1;
-				hit.transform.GetComponent<Detection>().RensaTime = 1f;
-			}
-		}
-	}
-	private void AddToBallCount(BallColor color, int numberOfBalls){
-		switch(color){
-			case BallColor.red:
-			PlayerManager.PlayerStats.RedCleared += numberOfBalls;
-			break;
-			case BallColor.blue:
-			PlayerManager.PlayerStats.BlueCleared += numberOfBalls;
-			break;
-			case BallColor.yellow:
-			PlayerManager.PlayerStats.YellowCleared += numberOfBalls;
-			break;
-			case BallColor.orange:
-			PlayerManager.PlayerStats.OrangeCleared += numberOfBalls;
-			break;
-			case BallColor.purple:
-			PlayerManager.PlayerStats.PurpleCleared += numberOfBalls;
-			break;
-			case BallColor.green:
-			PlayerManager.PlayerStats.GreenCleared += numberOfBalls;
-			break;
-			case BallColor.brown:
-			PlayerManager.PlayerStats.BrownCleared += numberOfBalls;
-			break;
-
-		}
-	}
-	private void AddHighestRensa(int rensa){
-		if(rensa >= 10){
-			PlayerManager.PlayerStats.TenRensa += 1;
-		}
-		else{
-			switch(rensa){
-				case 2: PlayerManager.PlayerStats.TwoRensa += 1; break;
-				case 3: PlayerManager.PlayerStats.ThreeRensa += 1; break;
-				case 4: PlayerManager.PlayerStats.FourRensa += 1; break;
-				case 5: PlayerManager.PlayerStats.FiveRensa += 1; break;
-				case 6: PlayerManager.PlayerStats.SixRensa += 1; break;
-				case 7: PlayerManager.PlayerStats.SevenRensa += 1; break;
-				case 8: PlayerManager.PlayerStats.EightRensa += 1; break;
-				case 9: PlayerManager.PlayerStats.NineRensa += 1; break;	
-			}
 		}
 	}
 }

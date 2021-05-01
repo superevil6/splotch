@@ -72,6 +72,7 @@
      <Compile Include="Assets\Scripts\Mission.cs" />
      <Compile Include="Assets\Scripts\MissionButton.cs" />
      <Compile Include="Assets\Scripts\MissionMode.cs" />
+     <Compile Include="Assets\Scripts\MusicManager.cs" />
      <Compile Include="Assets\Scripts\ObjectPooler.cs" />
      <Compile Include="Assets\Scripts\PlayerColorManager.cs" />
      <Compile Include="Assets\Scripts\PlayerManager.cs" />
@@ -80,7 +81,9 @@
      <Compile Include="Assets\Scripts\PunishmentManager.cs" />
      <Compile Include="Assets\Scripts\RemoveColor.cs" />
      <Compile Include="Assets\Scripts\ScoreManager.cs" />
+     <Compile Include="Assets\Scripts\Song.cs" />
      <Compile Include="Assets\Scripts\Theme.cs" />
+     <Compile Include="Assets\Scripts\WeightedBallPools.cs" />
      <Compile Include="Assets\TheTopicbirdTools\ToDoList\ToDoList.cs" />
      <None Include="Assets\TheTopicbirdTools\ToDoList\readme.txt" />
  <Reference Include="Unity.Timeline.Editor">

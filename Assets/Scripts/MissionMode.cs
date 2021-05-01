@@ -73,7 +73,6 @@ public class MissionMode : MonoBehaviour
         if(FinalResults() && !ResultsPanel.activeInHierarchy){
             Victory = true;
             PlayerManager.GameOver = true;
-            print("This is working somewhat.");
             if(Victory){
                 ResultText.text = "Success!";
             } else{
@@ -107,9 +106,7 @@ public class MissionMode : MonoBehaviour
             break;
             case MissionType.ClearColor:
                 GoalValue = FindGoalColor(Mission.ColorToClear);
-                print(GoalValue + " " + Mission.ColorGoalAmount);
                 if(GoalValue >= Mission.ColorGoalAmount){
-                    print("What?");
                     return true;
                 }
             break;
